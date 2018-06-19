@@ -3,7 +3,7 @@
 *URL:* <https://www.applanga.com> 
 ***
 
-### Version 1.0.25 (19 Jun 2018)
+### Version 1.0.26 (19 Jun 2018)
 #### Added
 - documentation update
 
