@@ -1,0 +1,117 @@
+# Applanga CLI
+
+***
+*Version:* 1.0.25
+
+*URL:* <https://applanga.com>
+***
+
+
+## Usage
+
+### Initialize Project
+
+To initialize a new project the API token is needed. It can be found in the App under "App Settings" on https://applanga.com
+
+The project can then be initialized by running the following in the project directory:
+```sh
+applanga init
+```
+
+In the appearing dialog project data like the API token and the type of project will be requested.
+It will then save all the data to a configuration file into the current directory with the name `.applanga.json`
+
+
+### Push & Pull translations
+
+The translations can now simply be pushed to and pulled from Applanga with the corresponding commands.
+
+To push existing local translations to Applanga:
+```sh
+applanga push
+```
+
+To pull translations from Applanga into local files:
+```sh
+applanga pull
+```
+
+
+### Configuration File
+
+By default, the configuration file gets read from the current folder. It is however also possible to set an additional path to check for with the environment variable `APPLANGA_CONFIG`. If set it checks additionally also in its location.
+Additionally. can the configuration file be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.
+
+
+#### Custom Project Structure
+
+In case the project uses a custom structure the configuration file `.applanga.json` can get edited manually.
+
+The most basic configuration file will look like this:
+
+```json
+{
+  "app": {
+    "access_token": "5b1f....2ab",
+    "base_language": "en",
+    "push": {
+      "source": [
+        {
+          "file_format": "android_xml",
+          "path": "./res/values-<language>/strings.xml"
+        }
+      ]
+    },
+    "pull": {
+      "target": [
+        {
+          "file_format": "android_xml",
+          "path": "./res/values-<language>/strings.xml"
+        }
+      ]
+    },
+  }
+}
+```
+
+It should only be needed to make changes in "target" and "source". Both have the same properties:
+
+#### Target/Source Properties
+
+ - file_format: The format the files are in
+ - path: The path to the files
+ - tag: Name of the tag to apply when pushing or to export on pull
+ - language : The language of the file
+
+
+##### file_format
+
+Currently, the following formats are supported:
+
+ - android_xml : Android XML (.xml)
+ - ios_strings : iOS strings (.strings)
+ - ios_stringsdict : iOS stringsdict (.stringsdict)
+
+*Example: "android_xml"*
+
+
+##### path
+
+In the "source" block it defines the files to upload and in "target" block the files to download.
+It is possible to set the variable `<language>` in the path. In the "source" block it will look for local files which have the language code set at its location (like: "en") and then upload the file for the found language. In "target" block it will replace it with the name of the languages which exist on Applanga and create the files accordingly.
+
+*Example: "./res/values-<language>/strings.xml"*
+
+
+##### tag (optional)
+
+Name of tag to use. If defined in the "source" block it will apply the tag to all translations uploaded. In the "target" block it will only download translations which have this tag applied.
+
+*Example: "main page"*
+
+
+##### language (optional)
+
+The language of the file. Is only needed if there is no placeholder `<language>` defined in "path".
+
+*Example: "en"*
