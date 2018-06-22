@@ -1,7 +1,7 @@
 # Applanga CLI
 
 ***
-*Version:* 1.0.29
+*Version:* 1.0.30
 
 *URL:* <https://www.applanga.com>
 ***
@@ -35,7 +35,12 @@ On OSX we provide a homebrew tap to make the installation easier and up to date:
 	brew install applanga
 ```
 
-The tap will be updated, when you call `brew update`.
+To update to the latest version call:
+
+```sh
+	brew upgrade applanga
+```
+
 ## Usage
 
 ### Initialize Project
