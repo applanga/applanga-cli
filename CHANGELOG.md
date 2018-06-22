@@ -3,7 +3,7 @@
 *URL:* <https://www.applanga.com> 
 ***
 
-### Version 1.0.28 (22 Jun 2018)
+### Version 1.0.29 (22 Jun 2018)
 #### Added
 - added installation instructions and homebrew support
 
