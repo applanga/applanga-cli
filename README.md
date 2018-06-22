@@ -1,12 +1,41 @@
 # Applanga CLI
 
 ***
-*Version:* 1.0.26
+*Version:* 1.0.27
 
-*URL:* <https://applanga.com>
+*URL:* <https://www.applanga.com>
 ***
 
+## Installation
 
+##### Manual
+
+1. [Download and extract](https://github.com/applanga/applanga-cli/releases/latest) the latest client binary for your platform.
+
+2. Store the binary at a location where it can be found and executed by the system or adjust your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) accordingly
+
+3. You should now be able to execute it on the commandline like:
+
+```sh
+	applanga --help
+```
+or
+
+```batch
+	applanga.exe --help
+```
+
+
+##### Homebrew
+
+On OSX we provide a homebrew tap to make the installation easier and up to date:
+
+```sh
+	brew tap applanga/cli
+	brew install applanga
+```
+
+The tap will be updated, when you call `brew update`.
 ## Usage
 
 ### Initialize Project
@@ -14,8 +43,9 @@
 To initialize a new project the API token is needed. It can be found in the App under "App Settings" on https://applanga.com
 
 The project can then be initialized by running the following in the project directory:
+
 ```sh
-applanga init
+	applanga init
 ```
 
 In the appearing dialog project data like the API token and the type of project will be requested.
@@ -27,13 +57,15 @@ It will then save all the data to a configuration file into the current director
 The translations can now simply be pushed to and pulled from Applanga with the corresponding commands.
 
 To push existing local translations to Applanga:
+
 ```sh
-applanga push
+	applanga push
 ```
 
 To pull translations from Applanga into local files:
+
 ```sh
-applanga pull
+	applanga pull
 ```
 
 
@@ -47,7 +79,7 @@ Additionally. can the configuration file be located in the home folder set in th
 
 In case the project uses a custom structure the configuration file `.applanga.json` can get edited manually.
 
-The most basic configuration file will look like this:
+The most basic configuration file for Android will look like this:
 
 ```json
 {
@@ -112,6 +144,6 @@ Name of tag to use. If defined in the "source" block it will apply the tag to al
 
 ##### language (optional)
 
-The language of the file. Is only needed if there is no placeholder `<language>` defined in "path".
+The language of the file. Is only needed if there is no placeholder `<language>` defined in "path" e.g. for your base **"./values/"** or **"./Base.lproj/"** folder.
 
 *Example: "en"*
