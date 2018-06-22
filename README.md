@@ -1,7 +1,7 @@
 # Applanga CLI
 
 ***
-*Version:* 1.0.27
+*Version:* 1.0.28
 
 *URL:* <https://www.applanga.com>
 ***
