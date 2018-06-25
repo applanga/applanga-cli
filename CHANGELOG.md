@@ -1,8 +1,15 @@
-# Applanga Command Line Interface CHANGELOG
+# Applanga Localization Command Line Interface CHANGELOG
 ***
-*URL:* <https://www.applanga.com> 
+*Website:* <https://www.applanga.com> 
+
+*Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.31 (25 Jun 2018)
+#### Added
+- added links to cli on applanga website and other doc updates
+
+---
 ### Version 1.0.30 (22 Jun 2018)
 #### Added
 - homebrew doc update

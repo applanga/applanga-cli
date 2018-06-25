@@ -1,11 +1,21 @@
-# Applanga CLI
+# Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.30
+*Version:* 1.0.31
 
-*URL:* <https://www.applanga.com>
+*Website:* <https://www.applanga.com>
+
+*Changelog:* <https://www.applanga.com/changelog/cli> 
 ***
 
+## Table of Contents
+
+  1. [Installation](#installation)
+  2. [Initialization](#initialize-project)
+  3. [Usage](#push-pull-translations)
+  4. [Configuration](#configuration)
+
+  
 ## Installation
 
 ##### Manual
@@ -21,7 +31,7 @@
 ```
 or
 
-```batch
+```sh
 	applanga.exe --help
 ```
 
@@ -41,11 +51,10 @@ To update to the latest version call:
 	brew upgrade applanga
 ```
 
-## Usage
 
-### Initialize Project
+## Initialize Project
 
-To initialize a new project the API token is needed. It can be found in the App under "App Settings" on https://applanga.com
+To initialize a new project the API token is needed. It can be found in the App under **App Settings** on the [Applanga Dashboard](https://dashboard.applanga.com).
 
 The project can then be initialized by running the following in the project directory:
 
@@ -57,9 +66,9 @@ In the appearing dialog project data like the API token and the type of project 
 It will then save all the data to a configuration file into the current directory with the name `.applanga.json`
 
 
-### Push & Pull translations
+## Push & Pull Translation Files
 
-The translations can now simply be pushed to and pulled from Applanga with the corresponding commands.
+The translations can simply be pushed to and pulled from Applanga with the corresponding commands.
 
 To push existing local translations to Applanga:
 
@@ -74,9 +83,9 @@ To pull translations from Applanga into local files:
 ```
 
 
-### Configuration File
+## Configuration
 
-By default, the configuration file gets read from the current folder. It is however also possible to set an additional path to check for with the environment variable `APPLANGA_CONFIG`. If set it checks additionally also in its location.
+By default, the configuration file (`.applanga.json`) gets read from the current folder. It is however also possible to set an additional path to check for with the environment variable `APPLANGA_CONFIG`. If set it checks additionally also in its location.
 Additionally. can the configuration file be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.
 
 
