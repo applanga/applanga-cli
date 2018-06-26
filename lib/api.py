@@ -62,7 +62,7 @@ def downloadFile(file_data, debug=False):
 
 
 
-def uploadFiles(file_data, debug=False):
+def uploadFiles(file_data, force=False, debug=False):
     """Uploads multiple files to Applanga.
 
     Args:
@@ -100,7 +100,7 @@ def uploadFiles(file_data, debug=False):
 
         for file_path in language_files['found'][language]:
             try:
-                response = uploadFile({'file_format':  file_data['file_format'], 'language': language, 'tag':  file_data['tag'], 'path': file_path}, debug=debug)
+                response = uploadFile({'file_format':  file_data['file_format'], 'language': language, 'tag':  file_data['tag'], 'path': file_path}, force=force, debug=debug)
                 return_data.append(
                     {
                         'language': language,
@@ -121,7 +121,7 @@ def uploadFiles(file_data, debug=False):
 
 
 
-def uploadFile(file_data, debug=False):
+def uploadFile(file_data, force=False, debug=False):
     """Uploads a file to Applanga.
 
     Args:
@@ -137,7 +137,10 @@ def uploadFile(file_data, debug=False):
         # Request the file from server
         request_data = {
             'file-format': file_data['file_format'],
-            'language': file_data['language']
+            'language': file_data['language'],
+            'options': json.dumps({
+                'onlyIfTextEmpty': not force
+            })
         }
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']

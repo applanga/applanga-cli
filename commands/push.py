@@ -6,7 +6,8 @@ from lib import output
 
 @click.command()
 @click.pass_context
-def push(ctx):
+@click.option('--force', type=click.BOOL, is_flag=True, help="Overwrite existing values")
+def push(ctx, force):
     output.showCommandHeader('push', ctx)
 
     try:
@@ -17,7 +18,7 @@ def push(ctx):
 
     for source in config_file_data['app']['push']['source']:
         try:
-            file_responses = api.uploadFiles(source, debug=ctx.obj['DEBUG'])
+            file_responses = api.uploadFiles(source, force=force, debug=ctx.obj['DEBUG'])
         except api.ApplangaRequestException as e:
             click.secho('There was a problem with importing file:\n%s\n' % str(e), err=True, fg='red')
             return

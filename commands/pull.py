@@ -31,7 +31,6 @@ def pull(ctx):
                 click.secho('There was a problem getting the app languages:\n%s\n' % str(e), err=True, fg='red')
                 return
 
-            click.echo(all_app_languages)
             break
 
 
