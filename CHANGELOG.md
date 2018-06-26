@@ -5,6 +5,13 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.33 (26 Jun 2018)
+#### Fixed
+- do not download empty strings
+#### Added
+- option to overwrite values on push
+
+---
 ### Version 1.0.32 (26 Jun 2018)
 #### Added
 - added links to cli on applanga website and other doc updates

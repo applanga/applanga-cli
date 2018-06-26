@@ -35,7 +35,10 @@ def downloadFile(file_data, debug=False):
         # Request the file from server
         request_data = {
             'file-format': file_data['file_format'],
-            'language': file_data['language']
+            'language': file_data['language'],
+            'options': json.dumps({
+                'exportOnlyWithTranslation': True
+            })
         }
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']
