@@ -1,11 +1,11 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.33
+*Version:* 1.0.34
 
 *Website:* <https://www.applanga.com>
 
-*Changelog:* <https://www.applanga.com/changelog/cli> 
+*Changelog:* <https://www.applanga.com/changelog/cli>
 ***
 
 ## Table of Contents
@@ -15,7 +15,7 @@
   3. [Usage](#push-pull-translations)
   4. [Configuration](#configuration)
 
-  
+
 ## Installation
 
 ##### Manual
@@ -161,3 +161,10 @@ Name of tag to use. If defined in the "source" block it will apply the tag to al
 The language of the file. Is only needed if there is no placeholder `<language>` defined in "path" e.g. for your base **"./values/"** or **"./Base.lproj/"** folder.
 
 *Example: "en"*
+
+
+##### exclude_languages (optional)
+
+Excludes languages from being pushed or pulled.
+
+*Example: ["en", "de-AT"]*

@@ -38,10 +38,23 @@ def convertLanguageName(language_name):
         if len(split_name) != 2:
             # It has to have exactly two parts else it is not valid
             return None
-        return split_name[0].lower() + '-' + split_name[1].upper()
+
+        second_part = split_name[1].lower();
+
+        if len(second_part) == 2:
+            # Normally the most have only two letters so return
+            return split_name[0].lower() + '-' + split_name[1].upper()
+        elif len(second_part) == 4:
+            # Two special cases of 4 letter ones that are supported
+            if second_part == 'hant':
+                return split_name[0].lower() + '-Hant'
+            elif second_part == 'hans':
+                return split_name[0].lower() + '-Hans'
+
     else:
         return language_name.lower()
 
+    return None
 
 
 def getFiles(source):
@@ -63,6 +76,7 @@ def getFiles(source):
     source_language = None
     language_regex_path = None
     search_path = path
+    uses_placeholder = False
 
     if 'language' in source:
         # Language is given as parameter
@@ -70,7 +84,8 @@ def getFiles(source):
     else:
         # Language is in path
         search_path = path.replace('<language>', '*')
-        language_regex_path = re.escape(path).replace('\*', '.*').replace('\<language\>', '([a-zA-Z]{2}(\-[a-zA-Z]{2})?)')
+        language_regex_path = re.escape(path).replace('\*', '.*').replace('\<language\>', '([a-zA-Z]{2}(\-[a-zA-Z]{2,4})?)')
+        uses_placeholder = True
 
     files = glob2.glob(search_path)
 
@@ -95,13 +110,26 @@ def getFiles(source):
             # Make sure the language name is in the correct format
             file_language = convertLanguageName(file_language)
 
-            if file_language not in return_files:
-                return_files[file_language] = []
-            return_files[file_language].append(file)
-        else:
-            skipped_files.append(file)
+            if file_language == None:
+                skipped_files.append(file)
+                continue
+
+            # Remove all the languages on the exclude list
+            if 'exclude_languages' in source:
+                if file_language in source['exclude_languages']:
+                    continue
+
+            return_files[file] = {'language': file_language}
+
+            # Add other properties which got defined for file
+            if 'tag' in source:
+                return_files[file]['tag'] = source['tag']
+            if 'file_format' in source:
+                return_files[file]['file_format'] = source['file_format']
+
 
     return {
                 'skipped': skipped_files,
-                'found': return_files
+                'found': return_files,
+                'uses_placeholder': uses_placeholder
             }

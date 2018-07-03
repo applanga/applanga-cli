@@ -65,7 +65,7 @@ def downloadFile(file_data, debug=False):
 
 
 
-def uploadFiles(file_data, force=False, debug=False):
+def uploadFiles(upload_files, force=False, debug=False):
     """Uploads multiple files to Applanga.
 
     Args:
@@ -77,36 +77,69 @@ def uploadFiles(file_data, force=False, debug=False):
 
     """
 
-    # Make sure it contains all the data that is needed
-    if 'file_format' not in file_data:
-        raise ApplangaRequestException('Request is incomplete. The file_format is missing.')
-    if 'path' not in file_data:
-        raise ApplangaRequestException('Request is incomplete. The path is missing.')
-    if 'tag' not in file_data:
-        file_data['tag'] = None
-
-    try:
-        language_files = files.getFiles(file_data)
-    except files.ApplangaTranslationsException as e:
-        raise ApplangaRequestException('Could not download file "%s": %s' % (file_data['path'], str(e)))
+    placeholder_files = {}
 
     return_data = []
-    for file_path in language_files['skipped']:
-        return_data.append(
-            {
-                'path': file_path,
-                'error': 'No language defined'
-            }
-        )
 
-    for language in language_files['found']:
+    files_to_upload = [];
 
-        for file_path in language_files['found'][language]:
-            try:
-                response = uploadFile({'file_format':  file_data['file_format'], 'language': language, 'tag':  file_data['tag'], 'path': file_path}, force=force, debug=debug)
+    for source in upload_files:
+        # Check if we have the data we need for sure
+        if 'path' not in source:
+            return_data.append(
+                {
+                    'path': 'unknown',
+                    'error': 'No path defined'
+                }
+            )
+            continue
+        if 'file_format' not in source:
+            return_data.append(
+                {
+                    'path': source['path'],
+                    'error': 'No file-format defined'
+                }
+            )
+            continue
+
+
+        language_files = files.getFiles(source)
+
+        files_to_upload.append(language_files['found'])
+
+        if language_files['uses_placeholder'] == True:
+            placeholder_files.update()
+
+    # Upload all the files
+    for files_data in files_to_upload:
+
+        for file_path in files_data:
+            file_data = files_data[file_path]
+
+            # Make sure it contains all the data that is needed
+            if 'file_format' not in file_data:
                 return_data.append(
                     {
-                        'language': language,
+                        'language': file_data['language'],
+                        'path': file_path,
+                        'error': 'Request is incomplete. The file_format is missing.'
+                    }
+                )
+
+            try:
+                send_data = {
+                    'file_format':  file_data['file_format'],
+                    'language': file_data['language'],
+                    'path': file_path
+                }
+
+                if 'tag' in file_data:
+                    send_data['tag'] = file_data['tag']
+
+                response = uploadFile(send_data, force=force, debug=debug)
+                return_data.append(
+                    {
+                        'language': file_data['language'],
                         'path': file_path,
                         'response': response
                     }
@@ -114,7 +147,7 @@ def uploadFiles(file_data, force=False, debug=False):
             except ApplangaRequestException as e:
                 return_data.append(
                     {
-                        'language': language,
+                        'language': file_data['language'],
                         'path': file_path,
                         'error': str(e)
                     }
@@ -234,13 +267,21 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
         click.secho('  Data: %s'  % (data), fg=constants.DEBUG_TEXT_COLOR)
 
     if method == 'GET':
-        response = requests.get(url, params=data, headers=headers)
+        try:
+            response = requests.get(url, params=data, headers=headers)
+        except requests.exceptions.ConnectionError as e:
+            raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
     else:
         if upload_file:
             try:
                 with open(upload_file, 'rb') as upload_file_content:
-                    response = requests.post(url, params=data, headers=headers, files={upload_file: upload_file_content})
-            except IOError:
+                    try:
+                        response = requests.post(url, params=data, headers=headers, files={upload_file: upload_file_content})
+                    except requests.exceptions.ConnectionError as e:
+                        raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
+
+            except IOError as e:
+                click.echo(e)
                 raise ApplangaRequestException('Problem with accessing file to upload. The file does probably not exist or there are problems with the access rights.')
 
         else:
