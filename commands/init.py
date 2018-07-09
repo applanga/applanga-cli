@@ -68,9 +68,12 @@ def init(ctx, access_token, file_format, source_path, target_path, force):
 
         # Display a list of all the different available file formats
         counter = 0
-        for key in constants.FILE_FORMATS.keys():
+        sorted_file_keys = sorted(constants.FILE_FORMATS.keys())
+        for key in sorted_file_keys:
             counter += 1
-            click.echo('[%d]\t%s\t\t%s' % (counter, constants.FILE_FORMATS[key]['name'], key))
+            spaces_1 = 28 - len(constants.FILE_FORMATS[key]['name'])
+            spaces_2 = 15 - len(constants.FILE_FORMATS[key]['extension'])
+            click.echo('[%d]\t%s%s.%s%s%s' % (counter, constants.FILE_FORMATS[key]['name'], ' '*spaces_1, constants.FILE_FORMATS[key]['extension'], ' '*spaces_2, key))
         file_format_number = input('File format [%d-%d]: ' % (1, len(constants.FILE_FORMATS)))
 
         # Make sure that the selection is a number
@@ -83,7 +86,7 @@ def init(ctx, access_token, file_format, source_path, target_path, force):
         if file_format_number < 1 or file_format_number > len(constants.FILE_FORMATS):
             click.secho('The value "%s" is not valid. A a valid value is a number between 1 and %d.' % ( file_format_number, len(constants.FILE_FORMATS)), err=True, fg='red')
         else:
-            file_format = list(constants.FILE_FORMATS.keys())[file_format_number-1]
+            file_format = list(sorted_file_keys)[file_format_number-1]
             click.echo('You selected: %s\n' % file_format)
 
     if not source_path:

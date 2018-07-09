@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.34
+*Version:* 1.0.35
 
 *Website:* <https://www.applanga.com>
 
@@ -135,6 +135,8 @@ It should only be needed to make changes in "target" and "source". Both have the
 Currently, the following formats are supported:
 
  - android_xml : Android XML (.xml)
+ - gettext_po : Gettext PO File (.po)
+ - gettext_pot : Gettext POT File (.pot)
  - ios_strings : iOS strings (.strings)
  - ios_stringsdict : iOS stringsdict (.stringsdict)
 

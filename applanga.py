@@ -5,7 +5,7 @@ from lib import constants
 import commands
 
 @click.group()
-@click.version_option('1.0.34')
+@click.version_option(constants.VERSION_NUMBER)
 @click.option('--debug/--no-debug', default=False)
 @click.pass_context
 def cli(ctx, debug):

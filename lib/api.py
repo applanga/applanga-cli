@@ -6,6 +6,8 @@ from lib import constants
 from lib import config_file
 from lib import files
 
+
+
 class ApplangaRequestException(Exception):
     pass
 
@@ -251,7 +253,10 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
     # separate as parameter as needed by API.
     app_id = access_token.split('!')[0]
 
-    headers = {'Authorization': 'Bearer ' + access_token}
+    headers = {
+        'Authorization': 'Bearer ' + access_token,
+        'CLI-Version': constants.VERSION_NUMBER
+    }
     url = constants.API_BASE_URL
 
     if api_path is not None:
