@@ -5,7 +5,7 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
-### Version 1.0.35 (9 Jul 2018)
+### Version 1.0.36 (10 Jul 2018)
 #### Fixed
 - do not download empty strings
 #### Added
