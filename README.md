@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.37
+*Version:* 1.0.39
 
 *Website:* <https://www.applanga.com>
 
@@ -135,10 +135,13 @@ It should only be needed to make changes in "target" and "source". Both have the
 Currently, the following formats are supported:
 
  - android_xml : Android XML (.xml)
+ - angular_translate_json : [i18next](https://github.com/angular-translate/angular-translate) (.json)
  - gettext_po : Gettext PO File (.po)
  - gettext_pot : Gettext POT File (.pot)
+ - i18next_json : [i18next](https://github.com/i18next/i18next) (.json)
  - ios_strings : iOS strings (.strings)
  - ios_stringsdict : iOS stringsdict (.stringsdict)
+ - node_2_json : [i18n-node-2](https://github.com/jeresig/i18n-node-2) (.json)
 
 *Example: "android_xml"*
 

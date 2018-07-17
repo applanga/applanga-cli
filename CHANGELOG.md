@@ -5,16 +5,26 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.39 (17 Jul 2018)
+#### Added
+- Support for angular translate json
+- Support for 18n-node2 json
+- Support for i18next json
+
+---
 ### Version 1.0.37 (10 Jul 2018)
 #### Fixed
-- do not download empty strings
+- Linux ssl/tls version
+
 #### Added
-- option to overwrite values on push
+- Support for poeditor .po & .pot files
+- Support for microsft .NET .resw & .resx files
 
 ---
 ### Version 1.0.34 (3 Jul 2018)
 #### Fixed
 - do not download empty strings
+
 #### Added
 - option to overwrite values on push
 

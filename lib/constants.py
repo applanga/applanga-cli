@@ -9,6 +9,11 @@ FILE_FORMATS = {
         'extension': 'xml',
         'default_file_path': './res/values-<language>/strings.xml'
     },
+    'angular_translate_json': {
+        'name': 'Angular Translate JSON',
+        'extension': 'json',
+        'default_file_path': './locale-<language>.json'
+    },
     'ios_strings': {
         'name': 'iOS strings',
         'extension': 'strings',
@@ -38,5 +43,15 @@ FILE_FORMATS = {
         'name': 'Microsoft Resource File',
         'extension': 'resx',
         'default_file_path': './<language>.resx'
-    }
+    },
+    'node_2_json': {
+        'name': 'i18n-node-2',
+        'extension': 'json',
+        'default_file_path': './locales/<language>.json'
+    },
+    'i18next_json': {
+        'name': 'i18next',
+        'extension': 'json',
+        'default_file_path': './locales/<language>/translations.json'
+    },
 }
