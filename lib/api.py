@@ -33,14 +33,21 @@ def downloadFile(file_data, debug=False):
     if 'path' not in file_data:
         raise ApplangaRequestException('Request is incomplete. The path is missing.')
 
+
+    request_options = {}
+    request_options['exportOnlyWithTranslation'] = True
+
+    if 'export_empty' in file_data:
+        if file_data['export_empty'] == True:
+            request_options['exportOnlyWithTranslation'] = False
+
+
     try:
         # Request the file from server
         request_data = {
             'file-format': file_data['file_format'],
             'language': file_data['language'],
-            'options': json.dumps({
-                'exportOnlyWithTranslation': True
-            })
+            'options': json.dumps(request_options)
         }
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']

@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.39
+*Version:* 1.0.40
 
 *Website:* <https://www.applanga.com>
 
@@ -14,7 +14,9 @@
   2. [Initialization](#initialize-project)
   3. [Usage](#push-pull-translations)
   4. [Configuration](#configuration)
-
+  5. [Configuration Examples](#configuration-examples)
+	- [Android Examples](#android-configuration-examples)
+	- [iOS Examples](#ios-configuration-examples)
 
 ## Installation
 
@@ -24,7 +26,7 @@
 
 2. Store the binary at a location where it can be found and executed by the system or adjust your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) accordingly
 
-3. You should now be able to execute it on the commandline like:
+3. You should now be able to execute it on the command-line like:
 
 ```sh
 	applanga --help
@@ -89,87 +91,383 @@ By default, the configuration file (`.applanga.json`) gets read from the current
 Additionally. can the configuration file be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.
 
 
-#### Custom Project Structure
+### Project Structure
 
-In case the project uses a custom structure the configuration file `.applanga.json` can get edited manually.
-
-The most basic configuration file for Android will look like this:
+The most basic configuration file generated after `applanga init` will look similar to this e.g. for a **.po** file:
 
 ```json
 {
-  "app": {
-    "access_token": "5b1f....2ab",
-    "base_language": "en",
-    "push": {
-      "source": [
-        {
-          "file_format": "android_xml",
-          "path": "./res/values-<language>/strings.xml"
-        }
-      ]
-    },
-    "pull": {
-      "target": [
-        {
-          "file_format": "android_xml",
-          "path": "./res/values-<language>/strings.xml"
-        }
-      ]
-    },
-  }
+	"app": {
+		"access_token": "5b1f..!..2ab",
+		"base_language": "en", 
+		"pull": {
+			"target": [
+				{
+					"file_format": "gettext_po", 
+					"path": "./<language>.po"
+				}
+			]
+		}, 
+		"push": {
+			"source": [
+				{
+					"file_format": "gettext_po", 
+					"path": "./<language>.po"
+				}
+			]
+		}
+	}
+}
+```
+If you are using file formats on platforms that have different folders for their base languages or more complex folder structures like iOS or Android you'll need to modify the config as show in the [configuration examples](#configuration-examples).
+
+### Target/Source Properties
+
+
+There are a few mandatory and several optional properties that you can use to customize the cli to match your specific project setup.
+
+#### Mandatory Properties:
+
+- **"file_format"**
+
+	The file format specifies the format of the file that you want to **push** or **pull** wich typically depends on the platform that you are localizing.
+
+	Currently, the following formats are supported:
+
+	 - android_xml : Android XML (.xml)
+	 - angular_translate_json : [i18next](https://github.com/angular-translate/angular-translate) (.json)
+	 - chrome_i18n_json : [Chrome i18n](https://developer.chrome.com/extensions/i18n) (.json)
+	 - gettext_po : Gettext PO File (.po)
+	 - gettext_pot : Gettext POT File (.pot)
+	 - go_i18n_json : [go-i18n](https://github.com/nicksnyder/go-i18n) (.json)
+	 - i18next_json : [i18next](https://github.com/i18next/i18next) (.json)
+	 - ios_strings : iOS strings (.strings)
+	 - ios_stringsdict : iOS stringsdict (.stringsdict)
+	 - java_properties : JAVA properties (.properties)
+	 - mozilla_i18n_json : [Mozilla i18n](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/i18n/getMessage) (.json)
+	 - mozilla_properties : Mozilla properties (.properties)
+	 - node_2_json : [i18n-node-2](https://github.com/jeresig/i18n-node-2) (.json)
+
+	***Example:*** `"file_format": "android_xml"`
+
+- **"path"**
+
+	In the **"source"** block it defines the files to upload and in **"target"** block the files to download.
+It is possible to set the variable `<language>` in the path. In the "source" block it will look for local files which have the language code set at its location (like: "en") and then upload the file for the found language. In "target" block it will replace it with the name of the languages which exist on Applanga and create the files accordingly.
+
+	***Example:*** `"path": "./app/src/main/res/values-<language>/strings.xml"`
+
+#### Optional Properties:
+
+- **"tag"**
+
+	Needed if you have multiple local files which is common on [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-submodule-library). If defined in the **"source"** block it will set the specified tag to all strings that are uploaded from the given **"path"**. In the **"target"** block it will only download translations which have this tag applied.
+	This is needed if you want to up and download only a subset of all available strings into or from certain files.
+
+	***Example:*** `"tag": "main page"`
+
+- **"language"**
+
+	The language of the file. Is only needed if there is no placeholder `<language>` defined in "path" e.g. for your base **"./values/"** or **"./Base.lproj/"** folder.
+
+	***Example:*** `"language": "en"`
+
+- **"exclude_languages"**
+
+	If you are using the placeholder `<language>` to download a file for all languages on the project it might be needed to exclude some languages from being pushed or pulled.
+
+	***Example:*** `"exclude_languages": ["en", "de-AT"]`
+
+- **"export_empty"** *(target only)*
+
+	**pull** translations that are empty on the applanga dashboard which by default would get skipped. This property is only evaluated in the **"target"** block.
+	This setting makes sense e.g. if you want the empty strings in your base language but not in the translations so they can fall back to the base strings or if you use the cli to pull files that you want to send to translators.
+
+	***Example:*** `"export_empty": true`
+
+# Configuration Examples
+---
+## Android Configuration Examples
+
+### Basic Android App
+The base Android strings are located in `./app/src/main/res/values/strings.xml`, other languages are located in `./app/src/main/res/values-<language>/strings.xml`. The following example shows the usage for a basic Android project with english set as base language.
+
+```json
+{
+	"app": {
+		"access_token": "5b1f..!..2ab", 
+		"base_language": "en", 
+		"pull": {
+			"target": [
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"export_empty": true,
+					"path": "./app/src/main/res/values/strings.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"path": "./app/src/main/res/values-<language>/strings.xml"
+				}
+			]
+		}, 
+		"push": {
+			"source": [
+				{
+					"language": "en",
+					"file_format": "android_xml", 
+					"path": "./app/src/main/res/values/strings.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml", 
+					"path": "./app/src/main/res/values-<language>/strings.xml"
+				}
+			]
+		}
+	}
 }
 ```
 
-It should only be needed to make changes in "target" and "source". Both have the same properties:
+### Android App with Multiple Files & Submodule / Library
 
-#### Target/Source Properties
+Apps can have strings in multiple files or in shared libraries. You can specify multiple files in the`.applanga.json` but to be able to up and download the subset of strings to the correct file you need to use the **"tag"** property so that Applanga can properly identify them.
 
- - file_format: The format the files are in
- - path: The path to the files
- - tag: Name of the tag to apply when pushing or to export on pull
- - language : The language of the file
+```json
+{
+	"app": {
+		"access_token": "5b1f..!..2ab", 
+		"base_language": "en", 
+		"pull": {
+			"target": [
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"export_empty": true,
+					"tag": "Main App Strings",
+					"path": "./app/src/main/res/values/strings.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"tag": "Main App Strings",
+					"path": "./app/src/main/res/values-<language>/strings.xml"
+				},
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"export_empty": true,
+					"tag": "Other App Strings",
+					"path": "./app/src/main/res/values/other.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"tag": "Other App Strings",
+					"path": "./app/src/main/res/values-<language>/other.xml"
+				},
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"export_empty": true,
+					"tag": "Main Library Strings", 
+					"path": "./mylibrary/src/main/res/values/strings.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"tag": "Main Library Strings",
+					"path": "./mylibrary/src/main/res/values-<language>/strings.xml"
+				}
+			]
+		}, 
+		"push": {
+			"source": [
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"tag": "Main App Strings",
+					"path": "./app/src/main/res/values/strings.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"tag": "Main App Strings",
+					"path": "./app/src/main/res/values-<language>/strings.xml"
+				},
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"tag": "Other App Strings",
+					"path": "./app/src/main/res/values/other.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"tag": "Other App Strings",
+					"path": "./app/src/main/res/values-<language>/other.xml"
+				},
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"tag": "Main Library Strings", 
+					"path": "./mylibrary/src/main/res/values/strings.xml"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"tag": "Main Library Strings",
+					"path": "./mylibrary/src/main/res/values-<language>/strings.xml"
+				}
+			]
+		}
+	}
+}
+```
 
+## iOS Configuration Examples
 
-##### file_format
+### Basic iOS App
+If Base Localization is enabled the base iOS strings are located in `./Base.lproj/Localizable.strings`, other languages are located in `./<language>.lproj/Localizable.strings`. The following example shows the usage for a basic iOS project with english set as base language.
 
-Currently, the following formats are supported:
+```json
+{
+	"app": {
+		"access_token": "5b1f..!..2ab", 
+		"base_language": "en", 
+		"pull": {
+			"target": [
+				{
+					"language": "en",
+					"file_format": "ios_strings",
+					"export_empty": true,
+					"path": "./Base.lproj/Localizable.strings"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_strings",
+					"path": "./<language>.lproj/Localizable.strings"
+				}
+			]
+		}, 
+		"push": {
+			"source": [
+				{
+					"language": "en",
+					"file_format": "ios_strings", 
+					"path": "./Base.lproj/Localizable.strings"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_strings", 
+					"path": "./<language>.lproj/Localizable.strings"
+				}
+			]
+		}
+	}
+}
+```
 
- - android_xml : Android XML (.xml)
- - angular_translate_json : [i18next](https://github.com/angular-translate/angular-translate) (.json)
- - gettext_po : Gettext PO File (.po)
- - gettext_pot : Gettext POT File (.pot)
- - i18next_json : [i18next](https://github.com/i18next/i18next) (.json)
- - ios_strings : iOS strings (.strings)
- - ios_stringsdict : iOS stringsdict (.stringsdict)
- - node_2_json : [i18n-node-2](https://github.com/jeresig/i18n-node-2) (.json)
+### iOS App with Pluralization .stringsdict and Storyboard .strings
+If you turn on localization on your storyboards you will end up with a .strings file for every storyboard in every language and since strings on the Applanga dashboard are merged to one big list you need to use the config **"tag"** property to tag the strings for the specific files on **push** and **pull** so you can identify them later on.
+To extract the .strings from your storyboard you can use the following command 
 
-*Example: "android_xml"*
+```sh
+ibtool MainStoryboard.storyboard --generate-strings-file MainStoryboard.strings
+```
 
+For Pluralization apple introduced the [.stringsdict File Format](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) which you can also conveniently **push** and **pull** with the Applanga command line interface. A .stringsdict file always need an accompanying .strings file so you can use the same **tag** for both.
 
-##### path
-
-In the "source" block it defines the files to upload and in "target" block the files to download.
-It is possible to set the variable `<language>` in the path. In the "source" block it will look for local files which have the language code set at its location (like: "en") and then upload the file for the found language. In "target" block it will replace it with the name of the languages which exist on Applanga and create the files accordingly.
-
-*Example: "./res/values-<language>/strings.xml"*
-
-
-##### tag (optional)
-
-Name of tag to use. If defined in the "source" block it will apply the tag to all translations uploaded. In the "target" block it will only download translations which have this tag applied.
-
-*Example: "main page"*
-
-
-##### language (optional)
-
-The language of the file. Is only needed if there is no placeholder `<language>` defined in "path" e.g. for your base **"./values/"** or **"./Base.lproj/"** folder.
-
-*Example: "en"*
-
-
-##### exclude_languages (optional)
-
-Excludes languages from being pushed or pulled.
-
-*Example: ["en", "de-AT"]*
+```json
+{
+	"app": {
+		"access_token": "5b1f..!..2ab", 
+		"base_language": "en", 
+		"pull": {
+			"target": [
+				{
+					"language": "en",
+					"file_format": "ios_strings",
+					"tag": "Localizable.strings",
+					"export_empty": true,
+					"path": "./Base.lproj/Localizable.strings"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_strings",
+					"tag": "Localizable.strings",
+					"path": "./<language>.lproj/Localizable.strings"
+				},
+				{
+					"language": "en",
+					"file_format": "ios_stringsdict",
+					"tag": "Localizable.strings",
+					"export_empty": true,
+					"path": "./Base.lproj/Localizable.stringsdict"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_stringsdict",
+					"tag": "Localizable.strings",
+					"path": "./<language>.lproj/Localizable.stringsdict"
+				},
+				{
+					"language": "en",
+					"file_format": "ios_strings",
+					"tag": "MainStoryboard.strings",
+					"export_empty": true,
+					"path": "./Base.lproj/MainStoryboard.strings"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_strings",
+					"tag": "MainStoryboard.strings",
+					"path": "./<language>.lproj/MainStoryboard.strings"
+				}
+			]
+		}, 
+		"push": {
+			"source": [
+				{
+					"language": "en",
+					"file_format": "ios_strings",
+					"tag": "Localizable.strings",
+					"export_empty": true,
+					"path": "./Base.lproj/Localizable.strings"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_strings",
+					"tag": "Localizable.strings",
+					"path": "./<language>.lproj/Localizable.strings"
+				},
+				{
+					"language": "en",
+					"file_format": "ios_stringsdict",
+					"tag": "Localizable.strings",
+					"path": "./Base.lproj/Localizable.stringsdict"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_stringsdict",
+					"tag": "Localizable.strings",
+					"path": "./<language>.lproj/Localizable.stringsdict"
+				},
+				{
+					"language": "en",
+					"file_format": "ios_strings",
+					"tag": "MainStoryboard.strings",
+					"path": "./Base.lproj/MainStoryboard.strings"
+				},
+				{
+					"exclude_languages": ["en"],
+					"file_format": "ios_strings",
+					"tag": "MainStoryboard.strings",
+					"path": "./<language>.lproj/MainStoryboard.strings"
+				}
+			]
+		}
+	}
+}
+```

@@ -5,6 +5,17 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.40 (25 Jul 2018)
+#### Added
+- Support for chrome i18n json localization
+- Support for go i18n json localization
+- Support for mozilla i18n json localization
+- Support for Mozilla .properties localization
+- Support for Java .properties localization
+- download empty values
+- extended documentation
+ 
+---
 ### Version 1.0.39 (17 Jul 2018)
 #### Added
 - Support for angular translate json
