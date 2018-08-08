@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.40
+*Version:* 1.0.41
 
 *Website:* <https://www.applanga.com>
 
@@ -12,7 +12,7 @@
 
   1. [Installation](#installation)
   2. [Initialization](#initialize-project)
-  3. [Usage](#push-pull-translations)
+  3. [Usage](#push-pull-translation-files)
   4. [Configuration](#configuration)
   5. [Configuration Examples](#configuration-examples)
 	- [Android Examples](#android-configuration-examples)
@@ -84,6 +84,7 @@ To pull translations from Applanga into local files:
 	applanga pull
 ```
 
+###### *NOTE: The CLI is communicating with the [Applanga API](https://www.applanga.com/docs-integration/api) through our CDN to make sure the data is always reachable but that also means changes (including `push`es) are only available to pull after a 10 minute delay even though they are already visible on the [Dashboard](https://dashboard.applanga.com)!*
 
 ## Configuration
 
@@ -119,7 +120,7 @@ The most basic configuration file generated after `applanga init` will look simi
 	}
 }
 ```
-If you are using file formats on platforms that have different folders for their base languages or more complex folder structures like iOS or Android you'll need to modify the config as show in the [configuration examples](#configuration-examples).
+If you are using multiple files, file formats on platforms that have different folders for their base languages or more complex folder structures like [iOS](#ios-configuration-examples) or [Android](#android-configuration-examples) you'll need to modify the config as show in the [configuration examples](#configuration-examples).
 
 ### Target/Source Properties
 
@@ -137,6 +138,7 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - android_xml : Android XML (.xml)
 	 - angular_translate_json : [i18next](https://github.com/angular-translate/angular-translate) (.json)
 	 - chrome_i18n_json : [Chrome i18n](https://developer.chrome.com/extensions/i18n) (.json)
+	 - ember_i18n_json_module : [Ember i18n JSON Module](https://github.com/jamesarosen/ember-i18n) (.js)
 	 - gettext_po : Gettext PO File (.po)
 	 - gettext_pot : Gettext POT File (.pot)
 	 - go_i18n_json : [go-i18n](https://github.com/nicksnyder/go-i18n) (.json)
@@ -146,7 +148,10 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - java_properties : JAVA properties (.properties)
 	 - mozilla_i18n_json : [Mozilla i18n](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/i18n/getMessage) (.json)
 	 - mozilla_properties : Mozilla properties (.properties)
+	 - nested_json : Nested JSON (.json)
 	 - node_2_json : [i18n-node-2](https://github.com/jeresig/i18n-node-2) (.json)
+	 - react_nested_json : [React Nested JSON](https://github.com/yahoo/react-intl) (.json)
+	 - react_simple_json : React Simple JSON (.json)
 
 	***Example:*** `"file_format": "android_xml"`
 

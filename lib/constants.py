@@ -1,6 +1,5 @@
 VERSION_NUMBER = '1.0.0'
-# API_BASE_URL = 'https://api.applanga.com/v1/api'
-API_BASE_URL = 'http://localhost:3000/v1/api'
+API_BASE_URL = 'https://api.applanga.com/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
 ENVIRONMENT_VARIABLE = 'APPLANGA_CONFIG'
@@ -20,10 +19,20 @@ FILE_FORMATS = {
         'extension': 'json',
         'default_file_path': './_locales/<language>/messages.json'
     },
+    'ember_i18n_json_module': {
+        'name': 'Ember i18n JSON Module',
+        'extension': 'js',
+        'default_file_path': './app/locales/<language>/translations.js'
+    },
     'mozilla_i18n_json': {
         'name': 'Mozilla i18n JSON',
         'extension': 'json',
         'default_file_path': './_locales/<language>/messages.json'
+    },
+    'nested_json': {
+        'name': 'Nested JSON',
+        'extension': 'json',
+        'default_file_path': './<language>.json'
     },
     'ios_strings': {
         'name': 'iOS strings',
@@ -79,5 +88,15 @@ FILE_FORMATS = {
         'name': 'i18next',
         'extension': 'json',
         'default_file_path': './locales/<language>/translations.json'
+    },
+    'react_simple_json': {
+        'name': 'React Simple JSON',
+        'extension': 'json',
+        'default_file_path': './<language>.json'
+    },
+    'react_nested_json': {
+        'name': 'React Nested JSON',
+        'extension': 'json',
+        'default_file_path': './<language>.json'
     },
 }
