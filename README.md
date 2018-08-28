@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.41
+*Version:* 1.0.42
 
 *Website:* <https://www.applanga.com>
 
@@ -136,7 +136,7 @@ There are a few mandatory and several optional properties that you can use to cu
 	Currently, the following formats are supported:
 
 	 - android_xml : Android XML (.xml)
-	 - angular_translate_json : [i18next](https://github.com/angular-translate/angular-translate) (.json)
+	 - angular_translate_json : [Angular Translate](https://github.com/angular-translate/angular-translate) (.json)
 	 - chrome_i18n_json : [Chrome i18n](https://developer.chrome.com/extensions/i18n) (.json)
 	 - ember_i18n_json_module : [Ember i18n JSON Module](https://github.com/jamesarosen/ember-i18n) (.js)
 	 - gettext_po : Gettext PO File (.po)
@@ -152,6 +152,9 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - node_2_json : [i18n-node-2](https://github.com/jeresig/i18n-node-2) (.json)
 	 - react_nested_json : [React Nested JSON](https://github.com/yahoo/react-intl) (.json)
 	 - react_simple_json : React Simple JSON (.json)
+	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://guides.rubyonrails.org/i18n.html) (.yaml)
+	 - symfony_yaml : Symfony YAML (.yaml)
+	 - symfony2_yaml : Symfony 2 YAML (.yaml)
 
 	***Example:*** `"file_format": "android_xml"`
 

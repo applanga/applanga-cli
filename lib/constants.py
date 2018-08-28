@@ -34,6 +34,11 @@ FILE_FORMATS = {
         'extension': 'json',
         'default_file_path': './<language>.json'
     },
+    'ini': {
+        'name': 'Ini File',
+        'extension': 'ini',
+        'default_file_path': './<language>.ini'
+    },
     'ios_strings': {
         'name': 'iOS strings',
         'extension': 'strings',
@@ -98,5 +103,20 @@ FILE_FORMATS = {
         'name': 'React Nested JSON',
         'extension': 'json',
         'default_file_path': './<language>.json'
+    },
+    'ruby_on_rails_yaml': {
+        'name': 'Ruby on Rails YAML',
+        'extension': 'yaml',
+        'default_file_path': './<language>.yaml'
+    },
+    'symfony_yaml': {
+        'name': 'Symfony YAML',
+        'extension': 'yaml',
+        'default_file_path': './<language>.yaml'
+    },
+    'symfony2_yaml': {
+        'name': 'Symfony 2 YAML',
+        'extension': 'yaml',
+        'default_file_path': './<language>.yaml'
     },
 }
