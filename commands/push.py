@@ -7,7 +7,8 @@ from lib import output
 @click.command()
 @click.pass_context
 @click.option('--force', type=click.BOOL, is_flag=True, help="Overwrite existing values")
-def push(ctx, force):
+@click.option('--draft', type=click.BOOL, is_flag=True, help="Upload values as draft")
+def push(ctx, force, draft):
     output.showCommandHeader('push', ctx)
 
     try:
@@ -17,7 +18,7 @@ def push(ctx, force):
         return
 
     try:
-        file_responses = api.uploadFiles(config_file_data['app']['push']['source'], force=force, debug=ctx.obj['DEBUG'])
+        file_responses = api.uploadFiles(config_file_data['app']['push']['source'], force=force, draft=draft, debug=ctx.obj['DEBUG'])
     except api.ApplangaRequestException as e:
         click.secho('There was a problem with pushing files:\n%s\n' % str(e), err=True, fg='red')
         return

@@ -74,7 +74,7 @@ def downloadFile(file_data, debug=False):
 
 
 
-def uploadFiles(upload_files, force=False, debug=False):
+def uploadFiles(upload_files, force=False, draft=False, debug=False):
     """Uploads multiple files to Applanga.
 
     Args:
@@ -145,7 +145,7 @@ def uploadFiles(upload_files, force=False, debug=False):
                 if 'tag' in file_data:
                     send_data['tag'] = file_data['tag']
 
-                response = uploadFile(send_data, force=force, debug=debug)
+                response = uploadFile(send_data, force=force, draft=draft, debug=debug)
                 return_data.append(
                     {
                         'language': file_data['language'],
@@ -166,7 +166,7 @@ def uploadFiles(upload_files, force=False, debug=False):
 
 
 
-def uploadFile(file_data, force=False, debug=False):
+def uploadFile(file_data, force=False, draft=False, debug=False):
     """Uploads a file to Applanga.
 
     Args:
@@ -184,7 +184,8 @@ def uploadFile(file_data, force=False, debug=False):
             'file-format': file_data['file_format'],
             'language': file_data['language'],
             'options': json.dumps({
-                'onlyIfTextEmpty': not force
+                'onlyIfTextEmpty': not force,
+                'onlyAsDraft': draft
             })
         }
         if 'tag' in file_data:

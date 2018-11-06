@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.42
+*Version:* 1.0.43
 
 *Website:* <https://www.applanga.com>
 
@@ -72,12 +72,6 @@ It will then save all the data to a configuration file into the current director
 
 The translations can simply be pushed to and pulled from Applanga with the corresponding commands.
 
-To push existing local translations to Applanga:
-
-```sh
-	applanga push
-```
-
 To pull translations from Applanga into local files:
 
 ```sh
@@ -85,6 +79,32 @@ To pull translations from Applanga into local files:
 ```
 
 ###### *NOTE: The CLI is communicating with the [Applanga API](https://www.applanga.com/docs-integration/api) through our CDN to make sure the data is always reachable but that also means changes (including `push`es) are only available to pull after a 10 minute delay even though they are already visible on the [Dashboard](https://dashboard.applanga.com)!*
+
+To push existing local translations to Applanga:
+
+```sh
+	applanga push
+```
+
+### Push Options
+
+ - **--force**
+ 
+By default values only get pushed if they aren't existing already on the dashboard to make sure not to accidentally overwrite translations. If you want to push local changed files you can do so with the `--force` option. But be cautios that this might overwrite values set ny a translator on the dashboard so be sure to pull before you push.
+
+```sh
+	applanga push --force
+```
+
+ - **--draft**
+ 
+You can push values into that draft field to review them on the dashboard before you release them with the `--draft` option. 
+
+```sh
+	applanga push --draft
+```
+
+
 
 ## Configuration
 
@@ -133,28 +153,31 @@ There are a few mandatory and several optional properties that you can use to cu
 
 	The file format specifies the format of the file that you want to **push** or **pull** wich typically depends on the platform that you are localizing.
 
+	For a detailed format description check out the [Applanga File Format Documentation](https://www.applanga.com/docs/formats)
+	
 	Currently, the following formats are supported:
 
-	 - android_xml : Android XML (.xml)
-	 - angular_translate_json : [Angular Translate](https://github.com/angular-translate/angular-translate) (.json)
-	 - chrome_i18n_json : [Chrome i18n](https://developer.chrome.com/extensions/i18n) (.json)
-	 - ember_i18n_json_module : [Ember i18n JSON Module](https://github.com/jamesarosen/ember-i18n) (.js)
-	 - gettext_po : Gettext PO File (.po)
-	 - gettext_pot : Gettext POT File (.pot)
-	 - go_i18n_json : [go-i18n](https://github.com/nicksnyder/go-i18n) (.json)
-	 - i18next_json : [i18next](https://github.com/i18next/i18next) (.json)
-	 - ios_strings : iOS strings (.strings)
-	 - ios_stringsdict : iOS stringsdict (.stringsdict)
-	 - java_properties : JAVA properties (.properties)
-	 - mozilla_i18n_json : [Mozilla i18n](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/i18n/getMessage) (.json)
-	 - mozilla_properties : Mozilla properties (.properties)
-	 - nested_json : Nested JSON (.json)
-	 - node_2_json : [i18n-node-2](https://github.com/jeresig/i18n-node-2) (.json)
-	 - react_nested_json : [React Nested JSON](https://github.com/yahoo/react-intl) (.json)
-	 - react_simple_json : React Simple JSON (.json)
-	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://guides.rubyonrails.org/i18n.html) (.yaml)
-	 - symfony_yaml : Symfony YAML (.yaml)
-	 - symfony2_yaml : Symfony 2 YAML (.yaml)
+	 - android_xml : [Android XML ](https://www.applanga.com/docs/formats/android_xml) (.xml)
+	 - angular_translate_json : [Angular Translate](https://www.applanga.com/docs/formats/angular_translate_json) (.json)
+	 - chrome_i18n_json : [Chrome i18n](https://www.applanga.com/docs/formats/chrome_i18n_json) (.json)
+	 - ember_i18n_json_module : [Ember i18n JSON Module](https://www.applanga.com/docs/formats/ember_i18n_json_module) (.js)
+	 - ini : [INI](https://www.applanga.com/docs/formats/ini) (.ini)
+	 - gettext_po : [Gettext PO File](https://www.applanga.com/docs/formats/gettext_po) (.po)
+	 - gettext_pot : [Gettext POT File](https://www.applanga.com/docs/formats/gettext_pot) (.pot)
+	 - go_i18n_json : [go-i18n](https://www.applanga.com/docs/formats/go_i18n_json) (.json)
+	 - i18next_json : [i18next](https://www.applanga.com/docs/formats/i18next_json) (.json)
+	 - ios_strings : [iOS strings](https://www.applanga.com/docs/formats/ios_strings) (.strings)
+	 - ios_stringsdict : [iOS stringsdict](https://www.applanga.com/docs/formats/ios_stringsdict) (.stringsdict)
+	 - java_properties : [JAVA properties](https://www.applanga.com/docs/formats/java_properties)(.properties)
+	 - mozilla_i18n_json : [Mozilla i18n](https://www.applanga.com/docs/formats/mozilla_i18n_json) (.json)
+	 - mozilla_properties : [Mozilla properties](https://www.applanga.com/docs/formats/mozilla_properties) (.properties)
+	 - nested_json : [Nested JSON](https://www.applanga.com/docs/formats/nested_json)(.json)
+	 - node_2_json : [i18n-node-2](https://www.applanga.com/docs/formats/node_2_json) (.json)
+	 - react_nested_json : [React Nested JSON](https://www.applanga.com/docs/formats/react_nested_json) (.json)
+	 - react_simple_json : [React Simple JSON](https://www.applanga.com/docs/formats/react_simple_json) (.json)
+	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://www.applanga.com/docs/formats/ruby_on_rails_yaml) (.yaml)
+	 - symfony_yaml : [Symfony YAML](https://www.applanga.com/docs/formats/symfony_yaml) (.yaml)
+	 - symfony2_yaml : [Symfony 2 YAML](https://www.applanga.com/docs/formats/symfony2_yaml) (.yaml)
 
 	***Example:*** `"file_format": "android_xml"`
 

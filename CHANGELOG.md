@@ -5,6 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.43 (7 Nov 2018)
+#### Added
+- Support for pushing changed local strings with the --force option
+- Support for pushing strings as draft with the --draft option
+  
+---
 ### Version 1.0.42 (28 Aug 2018)
 #### Added
 - Support for ini file localization
