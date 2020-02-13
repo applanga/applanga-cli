@@ -19,11 +19,12 @@ except NameError:
 @click.option('--file_format', help='the format of files (xml/strings)')
 @click.option('--source_path', help='path to read files from')
 @click.option('--target_path', help='path to writes files to')
+@click.option('--baselanguage_path', help='path to read and write base language files to')
 @click.option('--force', type=click.BOOL, is_flag=True)
 # @click.option('--count', default=1, help='number of greetings')
 # @click.argument('name')
 
-def init(ctx, access_token, file_format, source_path, target_path, force):
+def init(ctx, access_token, file_format, source_path, target_path, baselanguage_path, force):
     output.showCommandHeader('init', ctx)
 
     config_file_path = config_file.getFilePath(current_folder=True)
@@ -98,6 +99,7 @@ def init(ctx, access_token, file_format, source_path, target_path, force):
 
         source_path = input('Source path [\"%s\"]: ' % default_source_path)
         source_path = source_path or default_source_path
+
     if not target_path:
         target_path = input('Target path [\"%s\"]: ' % source_path)
         target_path = target_path or source_path
@@ -125,6 +127,55 @@ def init(ctx, access_token, file_format, source_path, target_path, force):
             }
         }
     }
+
+    # use default base language path for ios and android projects
+    if file_format in ['android_xml','ios_strings','ios_stringsdict']:
+        if not baselanguage_path:
+            default_baselanguage_path = constants.FILE_FORMATS[file_format]['default_baselanguage_path']
+            if platform.system() == 'Windows':
+                # If we are in Windows convert into correct format
+                default_baselanguage_path = files.convertToWindowsPath(defaultdefault_baselanguage_path_source_baselanguage_path)
+
+            baselanguage_path = input('Base language path [\"%s\"]: ' % default_baselanguage_path)
+            baselanguage_path = baselanguage_path or default_baselanguage_path
+
+    # if a base language path has been set either through param or because we have a ios or android config use it
+    if baselanguage_path:
+        configfile_data = {
+            'app': {
+                'access_token': access_token,
+                'base_language': base_language,
+                'push': {
+                    'source': [
+                        {
+                            'language': base_language,
+                            'file_format': file_format,
+                            'path': baselanguage_path
+                        },
+                        {
+                            'exclude_languages': [base_language],
+                            'file_format': file_format,
+                            'path': source_path
+                        }
+                    ]
+                },
+                'pull': {
+                    'target': [
+                        {
+                            'language': base_language,
+                            'file_format': file_format,
+                            "export_empty": True,
+                            'path': baselanguage_path
+                        },
+                        {
+                            'exclude_languages': [base_language],
+                            'file_format': file_format,
+                            'path': target_path
+                        }
+                    ]
+                }
+            }
+        }
 
     # Write the new config file to local folder
     config_file.write(configfile_data)

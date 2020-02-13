@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.43
+*Version:* 1.0.44
 
 *Website:* <https://www.applanga.com>
 
@@ -178,6 +178,8 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://www.applanga.com/docs/formats/ruby_on_rails_yaml) (.yaml)
 	 - symfony_yaml : [Symfony YAML](https://www.applanga.com/docs/formats/symfony_yaml) (.yaml)
 	 - symfony2_yaml : [Symfony 2 YAML](https://www.applanga.com/docs/formats/symfony2_yaml) (.yaml)
+	 - arb : [Flutter](https://www.applanga.com/docs/formats) (.arb)
+	 - laravel_php : [PHP Laravel](https://www.applanga.com/docs/formats) (.php)
 
 	***Example:*** `"file_format": "android_xml"`
 

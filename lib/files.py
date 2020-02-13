@@ -44,6 +44,9 @@ def convertLanguageName(language_name):
         if len(second_part) == 2:
             # Normally the most have only two letters so return
             return split_name[0].lower() + '-' + split_name[1].upper()
+        elif len(second_part) == 3 and second_part[0] == 'r':
+            # android prefixes the region with an lowercase r
+            return split_name[0].lower() + '-' + second_part[1:].upper()
         elif len(second_part) == 4:
             # Two special cases of 4 letter ones that are supported
             if second_part == 'hant':
@@ -88,7 +91,6 @@ def getFiles(source):
         uses_placeholder = True
 
     files = glob2.glob(search_path)
-
 
     # Go through all matched files of the current source block and add them
     # according to their language

@@ -7,6 +7,7 @@ FILE_FORMATS = {
     'android_xml': {
         'name': 'Android XML',
         'extension': 'xml',
+        'default_baselanguage_path': './res/values/strings.xml',
         'default_file_path': './res/values-<language>/strings.xml'
     },
     'angular_translate_json': {
@@ -42,11 +43,13 @@ FILE_FORMATS = {
     'ios_strings': {
         'name': 'iOS strings',
         'extension': 'strings',
+        'default_baselanguage_path': './Base.lproj/Localizable.strings',
         'default_file_path': './<language>.lproj/Localizable.strings'
     },
     'ios_stringsdict': {
         'name': 'iOS stringsdict',
         'extension': 'stringsdict',
+        'default_baselanguage_path': './Base.lproj/Localizable.stringsdict',
         'default_file_path': './<language>.lproj/Localizable.stringsdict'
     },
     'java_properties': {
@@ -118,5 +121,15 @@ FILE_FORMATS = {
         'name': 'Symfony 2 YAML',
         'extension': 'yaml',
         'default_file_path': './<language>.yaml'
+    },
+    'laravel_php': {
+        'name': 'PHP Laravel',
+        'extension': 'php',
+        'default_file_path': './<language>.php'
+    },
+    'arb': {
+        'name': 'Flutter ARB',
+        'extension': 'arb',
+        'default_file_path': './<language>.arb'
     },
 }

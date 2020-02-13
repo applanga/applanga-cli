@@ -5,6 +5,15 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.44 (13 Feb 2020)
+#### Added
+- Support for Flutter .arb files
+- Support for Laravel .php files
+- Automatic `r` prefix for android locale region directories with `<language>` wildcard
+- Setup proper base language folders for iOS and Android default config
+- (optional) provide base language folder as command line parameter
+
+---  
 ### Version 1.0.43 (7 Nov 2018)
 #### Added
 - Support for pushing changed local strings with the --force option

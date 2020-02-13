@@ -57,7 +57,11 @@ def downloadFile(file_data, debug=False):
     except ApplangaRequestException as e:
         raise ApplangaRequestException(str(e))
 
-    file_path = file_data['path'].replace('<language>', file_data['language'])
+    language = file_data['language']
+    if 'android_xml' == file_data['file_format'] and len(language) == 5:
+        language = language.replace('-', '-r')
+
+    file_path = file_data['path'].replace('<language>', language)
     try:
         # Makes sure that the directory we want to write into exists
         if not os.path.exists(os.path.dirname(file_path)):
