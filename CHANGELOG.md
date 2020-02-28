@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.45 (28 Feb 2020)
+#### Added
+- option to provide `access_token` as environment variable
+
+---
 ### Version 1.0.44 (13 Feb 2020)
 #### Added
 - Support for Flutter .arb files

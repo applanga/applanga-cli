@@ -92,9 +92,14 @@ def readRaw():
                 # Make sure thae config file contains all the needed data
                 if 'app' not in config_data:
                     raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have app data set.')
-
+                
+                env_access_token = os.environ.get('APPLANGA_ACCESS_TOKEN')
                 if 'access_token' not in config_data['app']:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have an access token set.')
+                    if env_access_token:
+                        #click.echo('\nUsing access_token from enviroment var APPLANGA_ACCESS_TOKEN: %s' % env_access_token)
+                        config_data['app']['access_token'] = env_access_token
+                    else:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have an access token set.')
 
                 if 'push' not in config_data['app']:
                     raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have push set.')

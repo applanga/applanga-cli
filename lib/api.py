@@ -271,6 +271,12 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
     }
     url = constants.API_BASE_URL
 
+    env_api_base_url = os.environ.get('APPLANGA_API_BASE_URL')
+
+    if env_api_base_url:
+        url = env_api_base_url
+    
+
     if api_path is not None:
         url += api_path
 
@@ -305,7 +311,7 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
             response = requests.post(url, params=data, headers=headers)
 
     if debug:
-        click.secho('\nRequest response:', fg=constants.DEBUG_TEXT_COLOR)
+        click.secho('\nRequest response: %s' % response.text, fg=constants.DEBUG_TEXT_COLOR)
         click.secho('  Status code: %s'  % (response.status_code), fg=constants.DEBUG_TEXT_COLOR)
 
 

@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.44
+*Version:* 1.0.45
 
 *Website:* <https://www.applanga.com>
 
@@ -90,7 +90,7 @@ To push existing local translations to Applanga:
 
  - **--force**
  
-By default values only get pushed if they aren't existing already on the dashboard to make sure not to accidentally overwrite translations. If you want to push local changed files you can do so with the `--force` option. But be cautios that this might overwrite values set ny a translator on the dashboard so be sure to pull before you push.
+By default values only get pushed if they aren't existing already on the dashboard to make sure not to accidentally overwrite translations. If you want to push local changed files you can do so with the `--force` option. But be cautios that this might overwrite values set by a translator on the dashboard, so be sure to pull before you push.
 
 ```sh
 	applanga push --force
@@ -109,7 +109,8 @@ You can push values into that draft field to review them on the dashboard before
 ## Configuration
 
 By default, the configuration file (`.applanga.json`) gets read from the current folder. It is however also possible to set an additional path to check for with the environment variable `APPLANGA_CONFIG`. If set it checks additionally also in its location.
-Additionally. can the configuration file be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.
+Additionally. can the configuration file be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.  
+If you do not want to have your `access_token` token stored in the config and commited to your scm you can remove it from the config and instead provide it as environment variable called `APPLANGA_ACCESS_TOKEN`.
 
 
 ### Project Structure
