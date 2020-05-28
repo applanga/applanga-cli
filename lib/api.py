@@ -6,7 +6,10 @@ from lib import constants
 from lib import config_file
 from lib import files
 
-
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
 
 class ApplangaRequestException(Exception):
     pass

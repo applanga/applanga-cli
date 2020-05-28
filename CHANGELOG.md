@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.46 (28 May 2020)
+#### Fixed
+- fixed FileNotFoundError on Python 2
+
+---
 ### Version 1.0.45 (28 Feb 2020)
 #### Added
 - option to provide `access_token` as environment variable
