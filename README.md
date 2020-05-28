@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.46
+*Version:* 1.0.47
 
 *Website:* <https://www.applanga.com>
 

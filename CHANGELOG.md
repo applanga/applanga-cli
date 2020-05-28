@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.47 (28 May 2020)
+#### Fixed
+- fixed RequestsDependencyWarning: urllib3 or chardet doesn't match a supported version!
+
+---
 ### Version 1.0.46 (28 May 2020)
 #### Fixed
 - fixed FileNotFoundError on Python 2
