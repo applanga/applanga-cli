@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.48 (16 Jun 2020)
+#### Fixed
+- fixed arb files will use locales with _ instead of - if a region suffix is present
+
+---
 ### Version 1.0.47 (28 May 2020)
 #### Fixed
 - fixed RequestsDependencyWarning: urllib3 or chardet doesn't match a supported version!

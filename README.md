@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.47
+*Version:* 1.0.48
 
 *Website:* <https://www.applanga.com>
 
@@ -53,6 +53,9 @@ To update to the latest version call:
 	brew upgrade applanga
 ```
 
+##### Github
+
+To automate localization through Github please check the [Applanga Github Workflow Documentation](https://www.applanga.com/docs/integration-documentation/github-action).
 
 ## Initialize Project
 

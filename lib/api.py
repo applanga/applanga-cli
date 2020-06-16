@@ -64,6 +64,9 @@ def downloadFile(file_data, debug=False):
     if 'android_xml' == file_data['file_format'] and len(language) == 5:
         language = language.replace('-', '-r')
 
+    if 'arb' == file_data['file_format'] and len(language) >= 5:
+        language = language.replace('-', '_')
+
     file_path = file_data['path'].replace('<language>', language)
     try:
         # Makes sure that the directory we want to write into exists

@@ -33,11 +33,13 @@ def convertLanguageName(language_name):
         The converted language or None if conversion was not possible.
 
     """
-    if '-' in language_name:
+    if '-' in language_name or '_' in language_name:
         split_name = language_name.split('-')
         if len(split_name) != 2:
-            # It has to have exactly two parts else it is not valid
-            return None
+            split_name = language_name.split('_')
+            if len(split_name) != 2:
+                # It has to have exactly two parts else it is not valid
+                return None
 
         second_part = split_name[1].lower();
 
@@ -87,7 +89,7 @@ def getFiles(source):
     else:
         # Language is in path
         search_path = path.replace('<language>', '*')
-        language_regex_path = re.escape(path).replace('\*', '.*').replace('\<language\>', '([a-zA-Z]{2}(\-[a-zA-Z]{2,4})?)')
+        language_regex_path = re.escape(path).replace('\*', '.*').replace('\<language\>', '([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)')
         uses_placeholder = True
 
     files = glob2.glob(search_path)
