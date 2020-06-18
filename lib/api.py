@@ -61,13 +61,20 @@ def downloadFile(file_data, debug=False):
         raise ApplangaRequestException(str(e))
 
     language = file_data['language']
+    language_ = file_data['language'].replace('-', '_')
     if 'android_xml' == file_data['file_format'] and len(language) == 5:
         language = language.replace('-', '-r')
 
-    if 'arb' == file_data['file_format'] and len(language) >= 5:
-        language = language.replace('-', '_')
 
+    if 'arb' == file_data['file_format'] and len(language) >= 5:
+        language = language_
+
+    #if we detect a language folder with an _ locale but non with - we store the files int the _ folder
     file_path = file_data['path'].replace('<language>', language)
+    file_path_ = file_data['path'].replace('<language>', language_)
+    if not os.path.exists(os.path.dirname(file_path)) and os.path.exists(os.path.dirname(file_path_)):
+        file_path = file_path_
+        
     try:
         # Makes sure that the directory we want to write into exists
         if not os.path.exists(os.path.dirname(file_path)):

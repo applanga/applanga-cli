@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
 ***
 
+### Version 1.0.49 (18 Jun 2020)
+#### Added
+- made underscore locale folder support more generic as if a folder with a _ language code exists but non with - use the _ for `applanga pull` and for `push` both variants can be pushed
+ 
+---
 ### Version 1.0.48 (16 Jun 2020)
 #### Fixed
 - fixed arb files will use locales with _ instead of - if a region suffix is present
