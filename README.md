@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.49
+*Version:* 1.0.51
 
 *Website:* <https://www.applanga.com>
 
@@ -221,6 +221,49 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	This setting makes sense e.g. if you want the empty strings in your base language but not in the translations so they can fall back to the base strings or if you use the cli to pull files that you want to send to translators.
 
 	***Example:*** `"export_empty": true`
+
+- **"disable_plurals"**
+	
+	This option is only supported when `file_format` is set to `nested_json` or `react_nested_json`. It can be set to `true` or `false`. When set to `true` it means plural keys (`'zero', 'one', 'two', 'few', 'many', 'other'`) will be handled as regular keys and will not undergo any special transformation. For example if this option is set to `true` when `applange push` is executed for a `nested_json` file that contains the following content
+
+	```json
+	{
+		"some": {
+			"sub": {
+				"other": "foo"
+			}
+		}
+	}
+	``` 
+
+	when the operation completes the resulting string key will be `some.sub.other` instead of `some.sub[other]`. Then for 
+	`applanga pull`, if `disable_plural` is set to `true` then keys like `some.sub[other]` with value as `foo` will become
+
+	```json
+	{
+		"some.sub[other]": "foo"
+	}
+	``` 
+
+	instead of 
+
+	```json
+	{
+		"some": {
+			"sub": {
+				"other": "foo"
+			}
+		}
+	}
+	```
+
+	***Example:*** `"disable_plural": true`
+
+- **"ignore_duplicates"** *(target only)*
+
+	This option if set to `true`, the cli will skip duplicate keys whenever `applanga pull` is executed. For instance if we have keys and values as follows `test = “teststring”`, `test.sub1 = “subteststring1“` and `test.sub2 = “subteststring2“` when we try to pull files then the key `test = “teststring"` and its value will be excluded from the imported file if this option is set to `true`. But when set to `false` the pull operation will fail and the cli will log an error to console stating which keys conflict.
+
+	***Example:*** `"ignore_duplicates": true`
 
 # Configuration Examples
 ---

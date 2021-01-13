@@ -44,6 +44,12 @@ def downloadFile(file_data, debug=False):
         if file_data['export_empty'] == True:
             request_options['exportOnlyWithTranslation'] = False
 
+    if 'ignore_duplicates' in file_data:
+        request_options['ignoreDuplicates'] = file_data['ignore_duplicates'] is True
+        
+    if file_data['file_format'] in ['nested_json', 'react_nested_json'] and 'disable_plurals' in file_data:
+            request_options['disablePlurals'] = file_data['disable_plurals'] is True
+
 
     try:
         # Request the file from server
@@ -162,6 +168,9 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 if 'tag' in file_data:
                     send_data['tag'] = file_data['tag']
 
+                if  'disable_plurals' in file_data:
+                    send_data['disable_plurals'] = file_data['disable_plurals']
+
                 response = uploadFile(send_data, force=force, draft=draft, debug=debug)
                 return_data.append(
                     {
@@ -197,16 +206,23 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
 
     try:
         # Request the file from server
+        request_options = {
+            'onlyIfTextEmpty': not force,
+            'onlyAsDraft': draft
+        }
+
+        if file_data['file_format'] in ['nested_json', 'react_nested_json'] and 'disable_plurals' in file_data:
+            request_options['disablePlurals'] = file_data['disable_plurals'] is True
+
         request_data = {
             'file-format': file_data['file_format'],
             'language': file_data['language'],
-            'options': json.dumps({
-                'onlyIfTextEmpty': not force,
-                'onlyAsDraft': draft
-            })
+            'options': json.dumps(request_options)
         }
+
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']
+
 
         return makeRequest(data=request_data, api_path='/files', upload_file=file_data['path'], method='POST', debug=debug)
     except ApplangaRequestException as e:

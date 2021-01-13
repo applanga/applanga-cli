@@ -131,6 +131,9 @@ def getFiles(source):
             if 'file_format' in source:
                 return_files[file]['file_format'] = source['file_format']
 
+            if 'disable_plurals' in source:
+                return_files[file]['disable_plurals'] = source['disable_plurals']
+
 
     return {
                 'skipped': skipped_files,
