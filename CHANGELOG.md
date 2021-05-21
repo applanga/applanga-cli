@@ -5,7 +5,7 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.63 (21 May 2021)
+### Version 1.0.65 (21 May 2021)
 #### Added
 - Support for Qt Linguist files (.ts)
 - added 'disable plurals' configuration option for .yaml, ember-i18n and node-2 .json formats
