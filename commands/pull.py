@@ -42,7 +42,7 @@ def pull(ctx):
             request_languages = [ target['language'] ]
         elif '<language>' in target['path']:
             # Language placeholder is defined in path so download all languages
-            request_languages = all_app_languages[:]
+            request_languages = list(all_app_languages)
         else:
             # No language defined so error
             click.echo('\nDownload :  %s\nLanguage :  %s' % (target['path'], 'missing'))
@@ -50,6 +50,7 @@ def pull(ctx):
             click.echo('Result: "Error"')
             click.secho('No language defined. It either has to be set as property or as placeholder in path.\n', err=True, fg='red')
             continue
+
 
         # Remove all the languages on the exclude list
         exclude_languages = []

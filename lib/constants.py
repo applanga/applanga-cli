@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.0'
+VERSION_NUMBER = '1.0.63'
 API_BASE_URL = 'https://api.applanga.com/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
@@ -132,4 +132,9 @@ FILE_FORMATS = {
         'extension': 'arb',
         'default_file_path': './<language>.arb'
     },
+	'qt_ts': {
+		'name': 'Qt Linguist',
+		'extension': 'ts',
+		'default_file_path': './<language>.ts'
+	}
 }

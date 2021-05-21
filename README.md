@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.51
+*Version:* 1.0.63
 
 *Website:* <https://www.applanga.com>
 
@@ -184,6 +184,7 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - symfony2_yaml : [Symfony 2 YAML](https://www.applanga.com/docs/formats/symfony2_yaml) (.yaml)
 	 - arb : [Flutter](https://www.applanga.com/docs/formats) (.arb)
 	 - laravel_php : [PHP Laravel](https://www.applanga.com/docs/formats) (.php)
+	 - ts : [Qt Linguist](https://www.applanga.com/docs/formats) (.ts)
 
 	***Example:*** `"file_format": "android_xml"`
 
@@ -224,7 +225,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 - **"disable_plurals"**
 	
-	This option is only supported when `file_format` is set to `nested_json` or `react_nested_json`. It can be set to `true` or `false`. When set to `true` it means plural keys (`'zero', 'one', 'two', 'few', 'many', 'other'`) will be handled as regular keys and will not undergo any special transformation. For example if this option is set to `true` when `applange push` is executed for a `nested_json` file that contains the following content
+	This option is only supported when `file_format` is set to `nested_json`, `react_nested_json`, `ruby_on_rails_yaml`, `symfony_yaml`, `symfony2_yaml`, `ember_i18n_json_module` or `node_2_json`. It can be set to `true` or `false`. When set to `true` it means plural keys (`'zero', 'one', 'two', 'few', 'many', 'other'`) will be handled as regular keys and will not undergo any special transformation. For example if this option is set to `true` when `applange push` is executed for a `nested_json` file that contains the following content
 
 	```json
 	{

@@ -89,7 +89,7 @@ def getFiles(source):
     else:
         # Language is in path
         search_path = path.replace('<language>', '*')
-        language_regex_path = re.escape(path).replace('\*', '.*').replace('\<language\>', '([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)')
+        language_regex_path = re.escape(path).replace('\*', '.*').replace(re.escape('<language>'), '([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)')
         uses_placeholder = True
 
     files = glob2.glob(search_path)

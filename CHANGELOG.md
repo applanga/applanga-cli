@@ -1,21 +1,26 @@
 # Applanga Localization Command Line Interface CHANGELOG
 ***
-*Website:* <https://www.applanga.com> 
+*Website:* <https://www.applanga.com>
 
-*Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli> 
+*Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
+
+### Version 1.0.63 (21 May 2021)
+#### Added
+- Support for Qt Linguist files (.ts)
+- added 'disable plurals' configuration option for .yaml, ember-i18n and node-2 .json formats
+---
 
 ### Version 1.0.51 (13 Jan 2021)
 #### Added
 - option `disable_plurals` support in `.applanga.json` file. Used to disable plural when `applanga push` or `applanga pull` is executed for `nested_json` and `react_nested_json` file formats.
 - `ignore_duplicates` option support `.applanga.json` file, which when set will ignore duplicate keys when `applanga pull` is executed.
- 
 ---
 
 ### Version 1.0.49 (18 Jun 2020)
 #### Added
 - made underscore locale folder support more generic as if a folder with a _ language code exists but non with - use the _ for `applanga pull` and for `push` both variants can be pushed
- 
+
 ---
 ### Version 1.0.48 (16 Jun 2020)
 #### Fixed
@@ -45,17 +50,17 @@
 - Setup proper base language folders for iOS and Android default config
 - (optional) provide base language folder as command line parameter
 
----  
+---
 ### Version 1.0.43 (7 Nov 2018)
 #### Added
 - Support for pushing changed local strings with the --force option
 - Support for pushing strings as draft with the --draft option
-  
+
 ---
 ### Version 1.0.42 (28 Aug 2018)
 #### Added
 - Support for ini file localization
- 
+
 ---
 ### Version 1.0.41 (8 Aug 2018)
 #### Added
@@ -66,7 +71,7 @@
 - Support for Java .properties localization
 - download empty values
 - extended documentation
- 
+
 ---
 ### Version 1.0.39 (17 Jul 2018)
 #### Added
@@ -79,6 +84,7 @@
 #### Fixed
 - Linux ssl/tls version
 
+---
 #### Added
 - Support for poeditor .po & .pot files
 - Support for microsft .NET .resw & .resx files
