@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.65
+*Version:* 1.0.67
 
 *Website:* <https://www.applanga.com>
 
@@ -59,7 +59,7 @@ To automate localization through Github please check the [Applanga Github Workfl
 
 ## Initialize Project
 
-To initialize a new project the API token is needed. It can be found in the App under **App Settings** on the [Applanga Dashboard](https://dashboard.applanga.com).
+To initialize a new project the API token is needed. It can be found in the App under **Project Settings** on the [Applanga Dashboard](https://dashboard.applanga.com).
 
 The project can then be initialized by running the following in the project directory:
 
@@ -200,9 +200,12 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 - **"tag"**
 
 	Needed if you have multiple local files which is common on [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-submodule-library). If defined in the **"source"** block it will set the specified tag to all strings that are uploaded from the given **"path"**. In the **"target"** block it will only download translations which have this tag applied.
-	This is needed if you want to up and download only a subset of all available strings into or from certain files.
+	This is needed if you want to up and download only a subset of all available strings into or from certain files. In addition to a single tag you can also provide an array if you want to **pull** elements that are tagged differently into one file or if you want to add multiple tags for certain files on **push**.
 
-	***Example:*** `"tag": "main page"`
+	***Example (Single Tag):*** `"tag": "main page"`
+	
+	***Example (Tag Array):*** `"tag": ["main page", "other page"]`
+
 
 - **"language"**
 
@@ -265,6 +268,19 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	This option if set to `true`, the cli will skip duplicate keys whenever `applanga pull` is executed. For instance if we have keys and values as follows `test = “teststring”`, `test.sub1 = “subteststring1“` and `test.sub2 = “subteststring2“` when we try to pull files then the key `test = “teststring"` and its value will be excluded from the imported file if this option is set to `true`. But when set to `false` the pull operation will fail and the cli will log an error to console stating which keys conflict.
 
 	***Example:*** `"ignore_duplicates": true`
+
+- **"languageMapping"**
+
+	If you use the `<language>` wildcard this option allows to specify a map from Applanga language names to different language names that you use in your folders or filenames locally. The example below maps “nb-NO” which is the language name as its defined on the Applanga dashboard to “no_NO” in a local project.
+
+	***Example:***
+	```json
+	"languageMap": {
+		"nb-NO": "no_NO",
+		"zh-Hans": "zh_CN"
+	}
+	```
+    
 
 # Configuration Examples
 ---
@@ -549,6 +565,40 @@ For Pluralization apple introduced the [.stringsdict File Format](https://develo
 				}
 			]
 		}
+	}
+}
+```
+
+
+### Php Laravel App with language mapping
+The following example shows the usage for a basic Laravel project with english set as base language. Note that Laravel uses a different Pattern for [short keys](https://laravel.com/docs/8.x/localization#using-short-keys) than Applanga. In order to circumvent this issue a custom language mapping is set via the **languageMap** key
+
+
+```json
+{
+	"app": {
+		"access_token": "5b1f..!..2ab",
+		"base_language": "en",
+		"pull": {
+			"target": [
+				{
+					"file_format": "laravel_php",
+					"path": "./<language>.php"
+				}
+			]
+		},
+		"push": {
+			"source": [
+				{
+					"file_format": "laravel_php",
+					"path": "./<language>.php"
+				}
+			]
+		}
+	},
+	"languageMap": {
+		"nb-NO": "no_NO",
+		"zh-Hans": "zh_CN"
 	}
 }
 ```

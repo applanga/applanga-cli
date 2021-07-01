@@ -67,13 +67,23 @@ def downloadFile(file_data, debug=False):
         raise ApplangaRequestException(str(e))
 
     language = file_data['language']
-    language_ = file_data['language'].replace('-', '_')
+
+    language_ = language.replace('-', '_')
     if 'android_xml' == file_data['file_format'] and len(language) == 5:
         language = language.replace('-', '-r')
 
 
     if 'arb' == file_data['file_format'] and len(language) >= 5:
         language = language_
+
+    try:
+        config_file_data = config_file.readRaw()
+        languageMapping = config_file_data['languageMap']
+        if languageMapping[language]:
+            language = languageMapping[language]
+    except Exception as e:
+        pass
+    
 
     #if we detect a language folder with an _ locale but non with - we store the files int the _ folder
     file_path = file_data['path'].replace('<language>', language)

@@ -13,9 +13,14 @@ def push(ctx, force, draft):
 
     try:
         config_file_data = config_file.readRaw()
+
+        if 'push' not in config_file_data['app']:
+            click.echo('In order to Push you need to have a push configuration set in your config file')
+            return
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
         return
+
 
     try:
         file_responses = api.uploadFiles(config_file_data['app']['push']['source'], force=force, draft=draft, debug=ctx.obj['DEBUG'])

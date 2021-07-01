@@ -12,6 +12,10 @@ def pull(ctx):
 
     try:
         config_file_data = config_file.readRaw()
+
+        if 'pull' not in config_file_data['app']:
+            click.echo('In order to Pull you need to have a pull configuration set in your config file')
+            return
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
         return

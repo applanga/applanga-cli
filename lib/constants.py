@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.65'
+VERSION_NUMBER = '1.0.67'
 API_BASE_URL = 'https://api.applanga.com/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'

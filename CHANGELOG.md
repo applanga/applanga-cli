@@ -5,6 +5,13 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.67 (1 Jul 2021)
+#### Added
+- Added Push / Pull language mappings for <language> selector
+- Added support for configurations which only provide either a push or pull block
+- Support for specifying an Array of tags for the push/pull command
+---
+
 ### Version 1.0.65 (21 May 2021)
 #### Added
 - Support for Qt Linguist files (.ts)

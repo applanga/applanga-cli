@@ -89,7 +89,7 @@ def getFiles(source):
     else:
         # Language is in path
         search_path = path.replace('<language>', '*')
-        language_regex_path = re.escape(path).replace('\*', '.*').replace(re.escape('<language>'), '([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)')
+        language_regex_path = re.escape(path).replace(r'\*', '.*').replace(re.escape('<language>'), r'([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)')
         uses_placeholder = True
 
     files = glob2.glob(search_path)
@@ -111,6 +111,14 @@ def getFiles(source):
             file_language = source_language
 
         if file_language:
+            try:
+                config_file_data = config_file.readRaw()
+                reversedDir = dict(map(reversed, config_file_data['languageMap'].items()))
+                file_language = reversedDir[file_language]
+            except (config_file.ApplangaConfigFileNotValidException, KeyError) as e:
+                pass
+            
+                    
             # Make sure the language name is in the correct format
             file_language = convertLanguageName(file_language)
 

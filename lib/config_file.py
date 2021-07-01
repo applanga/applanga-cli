@@ -101,28 +101,29 @@ def readRaw():
                     else:
                         raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have an access token set.')
 
-                if 'push' not in config_data['app']:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have push set.')
-                if 'source' not in config_data['app']['push']:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source set.')
-                if 1 > len(config_data['app']['push']['source']):
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. The source does not have any entry.')
-                if 'path' not in config_data['app']['push']['source'][0]:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source path set under source.')
-                if 'file_format' not in config_data['app']['push']['source'][0]:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source file_format set under source.')
+                if 'push' not in config_data['app'] and 'pull' not in config_data['app']:
+                    raise ApplangaConfigFileNotValidException('The config file is not valid. Either a push or pull block has to be set')
+
+                if 'push' in config_data['app']:
+	                if 'source' not in config_data['app']['push']:
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source set.')
+	                if 1 > len(config_data['app']['push']['source']):
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. The source does not have any entry.')
+	                if 'path' not in config_data['app']['push']['source'][0]:
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source path set under source.')
+	                if 'file_format' not in config_data['app']['push']['source'][0]:
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source file_format set under source.')
 
 
-                if 'pull' not in config_data['app']:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have pull set.')
-                if 'target' not in config_data['app']['pull']:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target set.')
-                if 1 > len(config_data['app']['pull']['target']):
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. The target does not have any entry.')
-                if 'path' not in config_data['app']['pull']['target'][0]:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target path set under target.')
-                if 'file_format' not in config_data['app']['pull']['target'][0]:
-                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target file_format set under target.')
+                if 'pull' in config_data['app']:
+	                if 'target' not in config_data['app']['pull']:
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target set.')
+	                if 1 > len(config_data['app']['pull']['target']):
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. The target does not have any entry.')
+	                if 'path' not in config_data['app']['pull']['target'][0]:
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target path set under target.')
+	                if 'file_format' not in config_data['app']['pull']['target'][0]:
+	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target file_format set under target.')
 
                 return config_data
 
