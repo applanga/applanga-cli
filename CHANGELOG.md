@@ -5,9 +5,15 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.68 (2 Sep 2021)
+#### Added
+- Added installation instructions for the CLI for pre macOS 11 systems
+- Improved error messages for multiple complex errors
+---
+
 ### Version 1.0.67 (1 Jul 2021)
 #### Added
-- Added Push / Pull language mappings for <language> selector
+- Added Push / Pull language mappings for selector
 - Added support for configurations which only provide either a push or pull block
 - Support for specifying an Array of tags for the push/pull command
 ---

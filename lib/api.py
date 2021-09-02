@@ -47,7 +47,7 @@ def downloadFile(file_data, debug=False):
     if 'ignore_duplicates' in file_data:
         request_options['ignoreDuplicates'] = file_data['ignore_duplicates'] is True
         
-    if file_data['file_format'] in ['nested_json', 'react_nested_json', 'ruby_on_rails_yaml', 'symfony_yaml', 'symfony2_yaml', 'ember_i18n_json_module', 'node_2_json'] and 'disable_plurals' in file_data:
+    if file_data['file_format'] in ['nested_json', 'react_nested_json', 'ruby_on_rails_yaml', 'symfony_yaml', 'symfony2_yaml', 'ember_i18n_json_module', 'node_2_json', 'go_i18n_json'] and 'disable_plurals' in file_data:
             request_options['disablePlurals'] = file_data['disable_plurals'] is True
 
 

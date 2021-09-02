@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.67'
+VERSION_NUMBER = '1.0.68'
 API_BASE_URL = 'https://api.applanga.com/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
@@ -67,8 +67,8 @@ FILE_FORMATS = {
         'extension': 'pot',
         'default_file_path': './<language>.pot'
     },
-    'go_i18n_translate_json': {
-        'name': 'go-i18n JSON',
+    'go_i18n_json': {
+        'name': 'go-i18n v1 JSON',
         'extension': 'json',
         'default_file_path': './<language>.json'
     },
