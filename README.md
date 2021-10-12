@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.68
+*Version:* 1.0.69
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOSX 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.68](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.69](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.68
+	brew install applanga@1.0.69
 ```
 
 ##### Github
@@ -278,6 +278,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	***Example:*** `"ignore_duplicates": true`
 
+
 - **"languageMapping"**
 
 	If you use the `<language>` wildcard this option allows to specify a map from Applanga language names to different language names that you use in your folders or filenames locally. The example below maps “nb-NO” which is the language name as its defined on the Applanga dashboard to “no_NO” in a local project.
@@ -291,6 +292,46 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	```
     
 
+- **"convert_placeholder"**
+
+	If you use the string formatter or placeholder in your strings, as part of your project, you can use this option to convert the placeholders between IOS and Android platforms. If convert_placeholder is set to `true`, the CLI will convert and export your string whenever `applanga pull` is executed. For example, if you have a project in IOS where your string is `"Hello %@"` use convert_placeholder key to convert it to the Android format `"Hello %s"`.
+
+	***Example:*** `"convert_placeholder": true`
+
+	Convert placeholder works in conjunction with "file_format" key. To generate the file and convert from IOS to  Android must be specified "android_xml" and to change from Android to IOS must be "ios_strings" or "ios_stringsdict".
+
+
+	***Example:*** 
+	
+	IOS to Android: 	`"file_format":"android_xml"`
+
+	Android to IOS:  `"file_format":"ios_strings"`
+
+
+
+	***IOS to Android conversion rules***
+	- Length format is converted to  "%d".
+
+	- Unsupported conversion types by default will converted to "%s".
+
+	- Float "%f", double "%g"  and "%p" are converted to "%d".
+
+	- All Instances of "%@" will converted to "%s".
+
+	- Objective C integer types like "%i" and "%u" are converted to "%d".
+
+	- If it is the same pattern, it will keep the original.  
+
+	***Android to IOS conversion rules***
+
+	- Unsupported conversion types such as "%h" and "%tY" will convert to default "%@" type.
+
+	- Positional Arguments "%1$s" will be converted to "%1$@"
+
+	- All instances of "%s" will be converted to "%@".
+
+	- If it is the same pattern, will keep the original.  
+	
 # Configuration Examples
 ---
 ## Android Configuration Examples

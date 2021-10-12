@@ -44,6 +44,10 @@ def downloadFile(file_data, debug=False):
         if file_data['export_empty'] == True:
             request_options['exportOnlyWithTranslation'] = False
 
+    if 'convert_placeholder' in file_data:
+        if file_data['convert_placeholder'] == True:
+            request_options['convertPlaceholder'] = True
+
     if 'ignore_duplicates' in file_data:
         request_options['ignoreDuplicates'] = file_data['ignore_duplicates'] is True
         
