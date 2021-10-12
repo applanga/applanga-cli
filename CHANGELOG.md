@@ -5,7 +5,7 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.69 (12 Oct 2021)
+### Version 1.0.70 (12 Oct 2021)
 #### Added
 - Added Pull option `convert_placeholder` to support converting string formatters or placeholder between IOS to Android or viceversa. See Readme documentation for more information.
 ---
