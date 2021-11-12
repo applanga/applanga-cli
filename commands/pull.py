@@ -52,7 +52,7 @@ def pull(ctx):
             click.echo('\nDownload :  %s\nLanguage :  %s' % (target['path'], 'missing'))
             click.echo('=' * 60)
             click.echo('Result: "Error"')
-            click.secho('No language defined. It either has to be set as property or as placeholder in path.\n', err=True, fg='red')
+            click.secho('You either need to use the <language> wildcard inside the path string or set it explicitly per file via the "language" property. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.\n', err=True, fg='red')
             continue
 
 

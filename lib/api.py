@@ -54,6 +54,10 @@ def downloadFile(file_data, debug=False):
     if file_data['file_format'] in ['nested_json', 'react_nested_json', 'ruby_on_rails_yaml', 'symfony_yaml', 'symfony2_yaml', 'ember_i18n_json_module', 'node_2_json', 'go_i18n_json'] and 'disable_plurals' in file_data:
             request_options['disablePlurals'] = file_data['disable_plurals'] is True
 
+    if 'includeMetadata' in file_data:
+        request_options['includeMetadata'] = file_data['includeMetadata']
+
+
 
     try:
         # Request the file from server
@@ -147,7 +151,14 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 }
             )
             continue
-
+        if 'path' in source and source['path'].find('<language>') == -1 and 'language' not in source:
+            return_data.append(
+                {
+                    'path': source['path'],
+                    'error': 'You either need to use the <language> wildcard inside the path string or set it explicitly per file via the "language" property. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                }
+            )
+            continue
 
         language_files = files.getFiles(source)
 

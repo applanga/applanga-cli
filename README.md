@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.70
+*Version:* 1.0.71
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOSX 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.70](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.71](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.70
+	brew install applanga@1.0.71
 ```
 
 ##### Github
@@ -290,26 +290,32 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 		"zh-Hans": "zh_CN"
 	}
 	```
+	
+- **"includeMetadata"** *(target only)*
+
+	This option is by default set to `true`, if false metadata information will be excluded from the given target.
+
+	***Example:*** `"includeMetadata": false`
     
 
 - **"convert_placeholder"**
 
-	If you use the string formatter or placeholder in your strings, as part of your project, you can use this option to convert the placeholders between IOS and Android platforms. If convert_placeholder is set to `true`, the CLI will convert and export your string whenever `applanga pull` is executed. For example, if you have a project in IOS where your string is `"Hello %@"` use convert_placeholder key to convert it to the Android format `"Hello %s"`.
+	If you use the string formatter or placeholder in your strings, as part of your project, you can use this option to convert the placeholders between iOS and Android platforms. If convert_placeholder is set to `true`, the CLI will convert and export your string whenever `applanga pull` is executed. For example, if you have a project in IOS where your string is `"Hello %@"` use convert_placeholder key to convert it to the Android format `"Hello %s"`.
 
 	***Example:*** `"convert_placeholder": true`
 
-	Convert placeholder works in conjunction with "file_format" key. To generate the file and convert from IOS to  Android must be specified "android_xml" and to change from Android to IOS must be "ios_strings" or "ios_stringsdict".
+	Convert placeholder works in conjunction with "file_format" key. To generate the file and convert from iOS to Android must be specified "android_xml" and to change from Android to iOS must be "ios_strings" or "ios_stringsdict".
 
 
 	***Example:*** 
 	
-	IOS to Android: 	`"file_format":"android_xml"`
+	iOS to Android: 	`"file_format":"android_xml"`
 
-	Android to IOS:  `"file_format":"ios_strings"`
+	Android to iOS:  `"file_format":"ios_strings"`
 
 
 
-	***IOS to Android conversion rules***
+	***iOS to Android conversion rules***
 	- Length format is converted to  "%d".
 
 	- Unsupported conversion types by default will converted to "%s".
@@ -322,7 +328,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	- If it is the same pattern, it will keep the original.  
 
-	***Android to IOS conversion rules***
+	***Android to iOS conversion rules***
 
 	- Unsupported conversion types such as "%h" and "%tY" will convert to default "%@" type.
 

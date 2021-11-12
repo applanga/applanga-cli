@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.70'
+VERSION_NUMBER = '1.0.71'
 API_BASE_URL = 'https://api.applanga.com/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
@@ -136,5 +136,10 @@ FILE_FORMATS = {
 		'name': 'Qt Linguist',
 		'extension': 'ts',
 		'default_file_path': './<language>.ts'
-	}
+	},
+    'toml': {
+        'name': 'TOML',
+		'extension': 'toml',
+		'default_file_path': './<language>.toml'
+    }
 }
