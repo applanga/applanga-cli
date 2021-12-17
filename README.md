@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.71
+*Version:* 1.0.72
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOSX 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.71](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.72](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.71
+	brew install applanga@1.0.72
 ```
 
 ##### Github
@@ -97,6 +97,20 @@ To push existing local translations to Applanga:
 ```sh
 	applanga push
 ```
+
+The default config usually just pushes the source language and pull's all target languages. For some initial setup cases it might be needed to Push Target values as well. For this there is the **pushtarget** command. It behaves the same as the push command but pushes all files that are set as targets in the config. If you want to override already existing translations on the backend you’ll need to combine this with the --force command
+
+```sh
+	applanga pushtarget
+```
+
+For cases where you need to pull the source language changes from the dashboard into your source file you can use the **pullsource** command. It behaves the same as a pull but only pulls source files. Please be aware that local changes that are not yet pushed to Applanga will be overwritten.
+
+```sh
+	applanga pullsource
+```
+
+
 
 ### Push Options
 
@@ -137,6 +151,7 @@ The most basic configuration file generated after `applanga init` will look simi
 		"pull": {
 			"target": [
 				{
+					"exclude_languages": ["en"],
 					"file_format": "gettext_po", 
 					"path": "./<language>.po"
 				}
@@ -145,8 +160,9 @@ The most basic configuration file generated after `applanga init` will look simi
 		"push": {
 			"source": [
 				{
+					"language": "en",
 					"file_format": "gettext_po", 
-					"path": "./<language>.po"
+					"path": "./en.po"
 				}
 			]
 		}
@@ -210,7 +226,13 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	Needed if you have multiple local files which is common on [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-submodule-library). If defined in the **"source"** block it will set the specified tag to all strings that are uploaded from the given **"path"**. In the **"target"** block it will only download translations which have this tag applied.
 	This is needed if you want to up and download only a subset of all available strings into or from certain files. In addition to a single tag you can also provide an array if you want to **pull** elements that are tagged differently into one file or if you want to add multiple tags for certain files on **push**.
-
+	
+	**Warning**: 
+	
+	If you’re pushing the same file in multiple languages you need to make sure that all of them contain the same keys or some Tags will get deleted or mixed up.
+	
+	All related plurals must be included in the uploaded file to ensure they share an identical tag. This includes adding all plural forms required by other languages even if the uploaded language does not use those forms. This ensures that all plurals are tagged appropriately and exported across languages.
+	
 	***Example (Single Tag):*** `"tag": "main page"`
 	
 	***Example (Tag Array):*** `"tag": ["main page", "other page"]`
@@ -323,6 +345,8 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	- Float "%f", double "%g"  and "%p" are converted to "%d".
 
 	- All Instances of "%@" will converted to "%s".
+	
+	- Positional Arguments "%1$@" will be converted to "%1$s"
 
 	- Objective C integer types like "%i" and "%u" are converted to "%d".
 
@@ -330,9 +354,13 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	***Android to iOS conversion rules***
 
-	- Unsupported conversion types such as "%h" and "%tY" will convert to default "%@" type.
+	- Unsupported conversion types will convert to default "%@" type.
+
+	- Date/Time conversion types like "%1$te" will convert to "%1$@"
 
 	- Positional Arguments "%1$s" will be converted to "%1$@"
+	
+	- Relative positional arguments like "%1$s %<s" will be converted to "%1$@ %1$@"
 
 	- All instances of "%s" will be converted to "%@".
 
@@ -638,6 +666,7 @@ The following example shows the usage for a basic Laravel project with english s
 		"pull": {
 			"target": [
 				{
+					"exclude_languages": ["en"],
 					"file_format": "laravel_php",
 					"path": "./<language>.php"
 				}
@@ -646,8 +675,9 @@ The following example shows the usage for a basic Laravel project with english s
 		"push": {
 			"source": [
 				{
+					"language": "en",
 					"file_format": "laravel_php",
-					"path": "./<language>.php"
+					"path": "./en.php"
 				}
 			]
 		}

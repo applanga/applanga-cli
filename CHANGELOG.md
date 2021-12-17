@@ -5,9 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.71 (12 Nov 2021)
+### Version 1.0.72 (17 Dec 2021)
 #### Added
 - Improved error messages for certain configuration files
+- Added keepTagIds option for push command
+- Modified default configuration from the init script
+- Added pullsource and pushtarget command
 ---
 
 ### Version 1.0.70 (12 Oct 2021)

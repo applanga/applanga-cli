@@ -97,12 +97,12 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
             # If we are in Windows convert into correct format
             default_source_path = files.convertToWindowsPath(default_source_path)
 
-        source_path = input('Source path [\"%s\"]: ' % default_source_path)
-        source_path = source_path or default_source_path
+        source_path = input('Source path [\"%s\"]: ' % default_source_path.replace('<language>', base_language))
+        source_path = source_path or default_source_path.replace('<language>', base_language)
 
     if not target_path:
-        target_path = input('Target path [\"%s\"]: ' % source_path)
-        target_path = target_path or source_path
+        target_path = input('Target path [\"%s\"]: ' % default_source_path)
+        target_path = target_path or default_source_path
 
     # Save the configuration file
     configfile_data = {
@@ -112,6 +112,7 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
             'push': {
                 'source': [
                     {
+                        'language': base_language,
                         'file_format': file_format,
                         'path': source_path
                     }
@@ -120,6 +121,7 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
             'pull': {
                 'target': [
                     {
+                        'exclude_languages': [base_language],
                         'file_format': file_format,
                         'path': target_path
                     }
