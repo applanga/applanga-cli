@@ -56,6 +56,9 @@ def downloadFile(file_data, debug=False):
 
     if 'includeMetadata' in file_data:
         request_options['includeMetadata'] = file_data['includeMetadata']
+    
+    if 'includeInvisibleId' in file_data:
+        request_options['includeInvisibleId'] = file_data['includeInvisibleId']
 
 
 

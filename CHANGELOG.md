@@ -5,6 +5,10 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.73 (10 Mar 2022)
+#### Added
+- Added includeInvisibleId option for push command
+
 ### Version 1.0.72 (17 Dec 2021)
 #### Added
 - Improved error messages for certain configuration files
