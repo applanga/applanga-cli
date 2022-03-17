@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.73
+*Version:* 1.0.74
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOSX 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.73](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.74](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.73
+	brew install applanga@1.0.74
 ```
 
 ##### Github
@@ -653,6 +653,15 @@ For Pluralization apple introduced the [.stringsdict File Format](https://develo
 }
 ```
 
+## Update Applanga Settings File
+
+To update Applanga Settings File within a project, simply execute the following command:
+
+```sh
+	applanga updateSettingsfiles
+```
+
+The above command will recursively check and update any Applanga Settings File if there are new versions found.
 
 ### Php Laravel App with language mapping
 The following example shows the usage for a basic Laravel project with english set as base language. Note that Laravel uses a different Pattern for [short keys](https://laravel.com/docs/8.x/localization#using-short-keys) than Applanga. In order to circumvent this issue a custom language mapping is set via the **languageMap** key

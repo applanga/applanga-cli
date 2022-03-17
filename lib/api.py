@@ -287,7 +287,7 @@ def getAllAppLanguages(debug):
 
 
 
-def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, method='GET', debug=False):
+def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, method='GET', debug=False, base_path=constants.API_BASE_PATH):
     """Makes a request to Applanga API.
 
     Args:
@@ -297,6 +297,7 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
         upload_file: File to upload with request.
         method: Request method to use.
         debug: Display debug output.
+        base_url: Api base path if specified will overwrite default '/v1/api'
 
     Returns:
         API response
@@ -326,12 +327,15 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
         'Authorization': 'Bearer ' + access_token,
         'CLI-Version': constants.VERSION_NUMBER
     }
-    url = constants.API_BASE_URL
 
-    env_api_base_url = os.environ.get('APPLANGA_API_BASE_URL')
+    url = constants.APPLANGA_HOST
+
+    env_api_base_url = os.environ.get('APPLANGA_API_HOST')
 
     if env_api_base_url:
         url = env_api_base_url
+
+    url = url + base_path
     
 
     if api_path is not None:

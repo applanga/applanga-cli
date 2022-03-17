@@ -1,5 +1,6 @@
-VERSION_NUMBER = '1.0.73'
-API_BASE_URL = 'https://api.applanga.com/v1/api'
+VERSION_NUMBER = '1.0.74'
+APPLANGA_HOST = 'https://api.applanga.com'
+API_BASE_PATH = '/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
 ENVIRONMENT_VARIABLE = 'APPLANGA_CONFIG'

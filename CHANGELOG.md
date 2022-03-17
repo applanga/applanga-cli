@@ -5,9 +5,14 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.74 (17 Mar 2022)
+#### Added
+- added new command `updateSettingsfiles`
+---
 ### Version 1.0.73 (10 Mar 2022)
 #### Added
-- Added includeInvisibleId option for push command
+- Added includeInvisibleId option for pull command
+---
 
 ### Version 1.0.72 (17 Dec 2021)
 #### Added
