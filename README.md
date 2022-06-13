@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.74
+*Version:* 1.0.75
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOSX 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.74](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.75](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.74
+	brew install applanga@1.0.75
 ```
 
 ##### Github
@@ -318,7 +318,12 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	This option is by default set to `true`, if false metadata information will be excluded from the given target.
 
 	***Example:*** `"includeMetadata": false`
-    
+	
+- **"includeInvisibleId"**  *(target only)*
+
+	This option is by default set to `false`, if true an invisible Id will be added in front of each translation value. The invisible Id consists of zero width invisible unicode characters to not mess up the look of your application. This allows us to enable additional features like for example a live web view of your application. 
+	
+	This should only be used in your application during the development process not in production settings.
 
 - **"convert_placeholder"**
 
