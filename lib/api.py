@@ -2,6 +2,7 @@ import click
 import requests
 import json
 import os
+import re
 from lib import constants
 from lib import config_file
 from lib import files
@@ -60,7 +61,15 @@ def downloadFile(file_data, debug=False):
     if 'includeInvisibleId' in file_data:
         request_options['includeInvisibleId'] = file_data['includeInvisibleId']
 
+    # check conditions for key_prefix
+    if 'key_prefix' in file_data:
+        if len(file_data['key_prefix']) > 50:
+            raise ApplangaRequestException('The key prefix cannot be longer than 50 characters: %s\nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.' % (file_data['key_prefix']))
 
+        pattern = re.compile('^[a-zA-Z0-9 _-]*$')
+        matchPatter = pattern.match(file_data['key_prefix'])
+        if not matchPatter:
+            raise ApplangaRequestException('The key prefix can contain only letters, numbers, space, undescore and dash: %s\nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.' % (file_data['key_prefix']))
 
     try:
         # Request the file from server
@@ -71,6 +80,9 @@ def downloadFile(file_data, debug=False):
         }
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']
+        
+        if 'key_prefix' in file_data:
+            request_data['removeKeyPrefix'] = file_data['key_prefix']
 
         response = makeRequest(data=request_data, api_path='/files', debug=debug)
 
@@ -163,6 +175,27 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
             )
             continue
 
+        # check conditions for key_prefix
+        if 'path' in source and 'key_prefix' in source:
+            if len(source['key_prefix']) > 50:
+                return_data.append(
+                    {
+                        'path': source['key_prefix'],
+                        'error': 'The key prefix cannot be longer than 50 characters. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                    }
+                )
+                continue
+            pattern = re.compile('^[a-zA-Z0-9 _-]*$')
+            matchPatter = pattern.match(source['key_prefix'])
+            if not matchPatter:
+                return_data.append(
+                    {
+                        'path': source['key_prefix'],
+                        'error': 'The key prefix can contain only letters, numbers, space, undescore and dash. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                    }
+                )
+                continue
+
         language_files = files.getFiles(source)
 
         files_to_upload.append(language_files['found'])
@@ -195,6 +228,9 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
 
                 if 'tag' in file_data:
                     send_data['tag'] = file_data['tag']
+
+                if 'key_prefix' in file_data:
+                    send_data['key_prefix'] = file_data['key_prefix']
 
                 if  'disable_plurals' in file_data:
                     send_data['disable_plurals'] = file_data['disable_plurals']
@@ -251,6 +287,8 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']
 
+        if 'key_prefix' in file_data:
+            request_data['addKeyPrefix'] = file_data['key_prefix']
 
         return makeRequest(data=request_data, api_path='/files', upload_file=file_data['path'], method='POST', debug=debug)
     except ApplangaRequestException as e:

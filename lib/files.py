@@ -138,6 +138,8 @@ def getFiles(source):
                 return_files[file]['tag'] = source['tag']
             if 'file_format' in source:
                 return_files[file]['file_format'] = source['file_format']
+            if 'key_prefix' in source:
+                return_files[file]['key_prefix'] = source['key_prefix']
 
             if 'disable_plurals' in source:
                 return_files[file]['disable_plurals'] = source['disable_plurals']

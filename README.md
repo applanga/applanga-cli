@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.75
+*Version:* 1.0.76
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOSX 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.75](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.76](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.75
+	brew install applanga@1.0.76
 ```
 
 ##### Github
@@ -370,6 +370,16 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	- All instances of "%s" will be converted to "%@".
 
 	- If it is the same pattern, will keep the original.  
+
+- **"key_prefix"**
+
+	If you need to import multiple files with similar keys but different text, the option allows to add prefixes to the keys on import and remove prefixes on export.
+
+	**Note**: 
+
+	The `key_prefix` text property cannot be longer than 50 characters and can only contains letters, numbers, space, undescore and dash. 
+
+	***Example:*** `"key_prefix": "added_prefix1-"`
 	
 # Configuration Examples
 ---

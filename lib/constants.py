@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.75'
+VERSION_NUMBER = '1.0.76'
 APPLANGA_HOST = 'https://api.applanga.com'
 API_BASE_PATH = '/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'

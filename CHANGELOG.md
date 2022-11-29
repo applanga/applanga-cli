@@ -5,6 +5,10 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.76 (29 Nov 2022)
+#### Added
+- Added `key_prefix` option
+
 ### Version 1.0.75 (13 Jun 2022)
 #### Fixed
 - Fixed documentation to include the new includeInvisibleId command option
