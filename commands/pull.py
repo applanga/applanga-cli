@@ -78,4 +78,6 @@ def pull(ctx):
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')
                 click.secho('There was a problem with downloading file:\n%s\n' % str(e), err=True, fg='red')
+                if str(e).startswith('API response: Error: Tag with name'):
+                    click.echo('You might need to push your content in order to have the Tag created first')
                 return

@@ -15,30 +15,32 @@ except NameError:
 
 @click.command()
 @click.pass_context
-@click.option('--access_token', help='access token of app')
-@click.option('--file_format', help='the format of files (xml/strings)')
-@click.option('--source_path', help='path to read files from')
-@click.option('--target_path', help='path to writes files to')
-@click.option('--baselanguage_path', help='path to read and write base language files to')
-@click.option('--force', type=click.BOOL, is_flag=True)
 # @click.option('--count', default=1, help='number of greetings')
 # @click.argument('name')
 
-def init(ctx, access_token, file_format, source_path, target_path, baselanguage_path, force):
+def init(ctx):
     output.showCommandHeader('init', ctx)
 
     config_file_path = config_file.getFilePath(current_folder=True)
     if os.path.isfile(config_file_path):
-        if force != True:
-            click.secho('Configuration file already exists at this location: %s' % config_file_path, err=True, fg='red')
-            overwrite = input("To overwrite the file, type \"YES\": ")
-            if overwrite == "YES":
-                click.echo("File will be overwritten!\n")
-            else:
-                click.echo("File will not be overwritten so cancel!\n")
-                return
+        click.secho('Configuration file already exists at this location: %s' % config_file_path, err=True, fg='red')
+        overwrite = input("To overwrite the file, type \"YES\": ")
+        if overwrite == "YES":
+            click.echo("File will be overwritten!\n")
+        else:
+            click.echo("File will not be overwritten so cancel!\n")
+            return
 
     base_language = 'en'
+
+    access_token = None
+    file_format = None
+    source_path = None
+    target_path = None
+    baselanguage_path = None
+    tag = None
+	
+	
 
     # Request all properties which are needed and did not get supplied
     # as arguments by user
@@ -103,6 +105,12 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
     if not target_path:
         target_path = input('Target path [\"%s\"]: ' % default_source_path)
         target_path = target_path or default_source_path
+    
+    if not tag:
+        default_tag_name = constants.FILE_FORMATS[file_format]['default_tag_name']
+        tag = input('Tag name [\"%s\"]: ' % default_tag_name)
+        tag = tag or default_tag_name
+
 
     # Save the configuration file
     configfile_data = {
@@ -114,7 +122,8 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
                     {
                         'language': base_language,
                         'file_format': file_format,
-                        'path': source_path
+                        'path': source_path,
+                        'tag': tag
                     }
                 ]
             },
@@ -123,7 +132,8 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
                     {
                         'exclude_languages': [base_language],
                         'file_format': file_format,
-                        'path': target_path
+                        'path': target_path,
+                        'tag': tag
                     }
                 ]
             }
@@ -152,12 +162,14 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
                         {
                             'language': base_language,
                             'file_format': file_format,
-                            'path': baselanguage_path
+                            'path': baselanguage_path,
+                            'tag': tag
                         },
                         {
                             'exclude_languages': [base_language],
                             'file_format': file_format,
-                            'path': source_path
+                            'path': source_path,
+                            'tag': tag
                         }
                     ]
                 },
@@ -167,12 +179,14 @@ def init(ctx, access_token, file_format, source_path, target_path, baselanguage_
                             'language': base_language,
                             'file_format': file_format,
                             "export_empty": True,
-                            'path': baselanguage_path
+                            'path': baselanguage_path,
+                            'tag': tag
                         },
                         {
                             'exclude_languages': [base_language],
                             'file_format': file_format,
-                            'path': target_path
+                            'path': target_path,
+                            'tag': tag
                         }
                     ]
                 }
