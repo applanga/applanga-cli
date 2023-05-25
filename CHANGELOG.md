@@ -7,7 +7,13 @@
 
 ### Version 1.0.78 (25 May 2023)
 #### Added
+- Added missing File formats to the Documentation
+---
+
+### Version 1.0.77 (8 Dec 2022)
+#### Added
 - Improved init script to include 'tag' option by default
+---
 
 ### Version 1.0.76 (29 Nov 2022)
 #### Added
