@@ -5,7 +5,7 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.77 (8 Dec 2022)
+### Version 1.0.78 (25 May 2023)
 #### Added
 - Improved init script to include 'tag' option by default
 

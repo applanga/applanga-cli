@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.77
+*Version:* 1.0.78
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOS 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.77](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.78](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.77
+	brew install applanga@1.0.78
 ```
 
 ##### Github
@@ -209,9 +209,12 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://www.applanga.com/docs/formats/ruby_on_rails_yaml) (.yaml)
 	 - symfony_yaml : [Symfony YAML](https://www.applanga.com/docs/formats/symfony_yaml) (.yaml)
 	 - symfony2_yaml : [Symfony 2 YAML](https://www.applanga.com/docs/formats/symfony2_yaml) (.yaml)
-	 - arb : [Flutter](https://www.applanga.com/docs/formats) (.arb)
-	 - laravel_php : [PHP Laravel](https://www.applanga.com/docs/formats) (.php)
-	 - ts : [Qt Linguist](https://www.applanga.com/docs/formats) (.ts)
+	 - arb : [Flutter](https://www.applanga.com/docs/formats/arb) (.arb)
+	 - laravel_php : [PHP Laravel](https://www.applanga.com/docs/formats/laravel_php) (.php)
+	 - qt_ts : [Qt Linguist](https://www.applanga.com/docs/formats/ts) (.ts)
+	 - microsoft_resw: [Microsoft Resw](https://www.applanga.com/docs/formats/microsoft_resx) (.resw)
+	 - microsoft_resx: [Microsoft Resx](https://www.applanga.com/docs/formats/microsoft_resx) (.resx)
+	 - toml : [Toml](https://www.applanga.com/docs/formats/toml) (.toml)
 
 	***Example:*** `"file_format": "android_xml"`
 

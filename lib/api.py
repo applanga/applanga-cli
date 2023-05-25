@@ -343,6 +343,7 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
     """
 
     config_file_data = None
+    branch_id = None
     if access_token is None:
         # No access_token given so try to get from config file and stop when
         # nothing gets returned
@@ -352,6 +353,8 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
             raise ApplangaRequestException(str(e))
 
         access_token = config_file_data['app']['access_token']
+        if 'branch_id' in config_file_data['app']:
+            branch_id = config_file_data['app']['branch_id']
 
     if not access_token:
         if not config_file_data:
@@ -380,6 +383,9 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
         url += api_path
 
     data['app'] = app_id
+    if branch_id is not None:
+        data['branch'] = branch_id
+
 
     if debug:
         click.secho('\nStart request:', fg=constants.DEBUG_TEXT_COLOR)
