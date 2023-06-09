@@ -5,8 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.78 (25 May 2023)
+### Version 1.0.83 (9 Jun 2023)
 #### Added
+- Added `sort_by_key` option
+---
+
+### Version 1.0.78 (25 May 2023)
 - Added missing File formats to the Documentation
 ---
 
@@ -18,6 +22,7 @@
 ### Version 1.0.76 (29 Nov 2022)
 #### Added
 - Added `key_prefix` option
+---
 
 ### Version 1.0.75 (13 Jun 2022)
 #### Fixed

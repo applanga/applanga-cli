@@ -71,6 +71,10 @@ def downloadFile(file_data, debug=False):
         if not matchPatter:
             raise ApplangaRequestException('The key prefix can contain only letters, numbers, space, undescore and dash: %s\nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.' % (file_data['key_prefix']))
 
+    if 'sort_by_key' in file_data:
+        if file_data['sort_by_key'] == True:
+            request_options['sortByKey'] = True
+
     try:
         # Request the file from server
         request_data = {

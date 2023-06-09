@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.78
+*Version:* 1.0.83
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOS 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.78](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.83](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.78
+	brew install applanga@1.0.83
 ```
 
 ##### Github
@@ -385,6 +385,12 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	The `key_prefix` text property cannot be longer than 50 characters and can only contains letters, numbers, space, undescore and dash. 
 
 	***Example:*** `"key_prefix": "added_prefix1-"`
+
+- **"sort_by_key"** *(target only)*
+
+	The the keys in files downloaded on **pull** command are sorted alphabetically. This property is only evaluated in the **"target"** block. This option is by default set to `false`.
+
+	***Example:*** `"sort_by_key": true`
 	
 # Configuration Examples
 ---
