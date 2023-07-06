@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.83
+*Version:* 1.0.84
 
 *Website:* <https://www.applanga.com>
 
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre MacOS 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.83](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.84](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.83
+	brew install applanga@1.0.84
 ```
 
 ##### Github
@@ -226,6 +226,15 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	***Example:*** `"path": "./app/src/main/res/values-<language>/strings.xml"`
 
 #### Optional Properties:
+
+- **"branch_id"**:
+	
+	Defines the branch to use for the configuration. If not set the default branch will be used. This will only work for Projects, where branching is enabled. You can read find out the branch id in the Project settings.
+
+	To learn more about branching please have a look [here](www.applanga.com/docs/advanced-features/branching)
+
+	***Example:*** `"branch_id": "<branch_id>"`
+
 
 - **"tag"**
 
