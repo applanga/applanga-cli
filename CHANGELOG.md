@@ -5,7 +5,7 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.85 (7 Jul 2023)
+### Version 1.0.86 (7 Jul 2023)
 #### Added
 - Added `branch_id` description to the Documenation
 ---
