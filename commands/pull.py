@@ -20,6 +20,8 @@ def pull(ctx):
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
         return
 
+    projectVersion = api.getProjectVersion(debug=ctx.obj['DEBUG'])
+
     all_app_languages = []
     for target in config_file_data['app']['pull']['target']:
         if 'language' not in target:
@@ -29,14 +31,13 @@ def pull(ctx):
                 continue
 
             try:
-                all_app_languages = api.getAllAppLanguages(debug=ctx.obj['DEBUG'])
+                all_app_languages = api.getAllAppLanguages(projectVersion, debug=ctx.obj['DEBUG'])
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')
                 click.secho('There was a problem getting the app languages:\n%s\n' % str(e), err=True, fg='red')
                 return
 
             break
-
 
     request_languages = []
     for target in config_file_data['app']['pull']['target']:
@@ -63,6 +64,8 @@ def pull(ctx):
 
         request_languages = [x for x in request_languages if x not in exclude_languages]
 
+        target['projectVersion'] = projectVersion
+        
         # Go through all the languages that should be downloaded
         for language in request_languages:
             target['language'] = language

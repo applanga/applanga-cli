@@ -3,6 +3,7 @@ import requests
 import json
 import os
 import re
+import time
 from lib import constants
 from lib import config_file
 from lib import files
@@ -87,6 +88,8 @@ def downloadFile(file_data, debug=False):
         
         if 'key_prefix' in file_data:
             request_data['removeKeyPrefix'] = file_data['key_prefix']
+
+        request_data['version'] = file_data['projectVersion']
 
         response = makeRequest(data=request_data, api_path='/files', debug=debug)
 
@@ -300,7 +303,7 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
 
 
 
-def getAllAppLanguages(debug):
+def getAllAppLanguages(projectVersion, debug):
     """Gets all the languages the app has defined
 
     Args:
@@ -316,7 +319,8 @@ def getAllAppLanguages(debug):
         'includeSrc': 'false',
         'includeDescription' : 'false',
         'includeStatus' : 'false',
-        'keepEmptyDataEntries' : 'true'
+        'keepEmptyDataEntries' : 'true',
+        'version': projectVersion
     }
 
     response = makeRequest(data=data, debug=debug)
@@ -326,6 +330,29 @@ def getAllAppLanguages(debug):
         raise ApplangaRequestException('Response is incomplete. Data property is missing.')
 
     return response_data['data'].keys();
+
+
+
+def getProjectVersion(debug):
+    """Gets the latest project version
+
+    Args:
+        debug: Display debug output.
+
+    Returns:
+        Version number
+    """
+    request_data = {
+        'timestamp': time.time()
+    }
+
+    response = makeRequest(data=request_data, api_path='/projectVersion', debug=debug)
+    response_data = response.json()
+
+    if 'appVersion' not in response_data:
+        return 0;
+
+    return response_data['appVersion'];
 
 
 

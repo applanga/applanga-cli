@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.89 (7 Aug 2023)
+#### Added
+- Improved pull command to retrieve localization changes immediately
+---
+
 ### Version 1.0.86 (7 Jul 2023)
 #### Added
 - Added `branch_id` description to the Documenation

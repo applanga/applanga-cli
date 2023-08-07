@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.86
+*Version:* 1.0.89
 
 *Website:* <https://www.applanga.com>
 
@@ -24,7 +24,7 @@
 
 1. [Download and extract](https://github.com/applanga/applanga-cli/releases/latest) the latest client binary for your platform.
 	
-2. Store the binary at a location where it can be found and executed by the system or adjust your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) accordingly
+2. Store the binary at a location where it can be found and executed by the system or adjust your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) accordingly.
 
 3. You should now be able to execute it on the command-line like:
 
@@ -39,7 +39,7 @@ or
 
 ##### Homebrew
 
-On OSX we provide a homebrew tap to make the installation easier and up to date:
+On OSX we provide a homebrew tap to make the installation easier and up-to-date:
 
 ```sh
 	brew tap applanga/cli
@@ -52,14 +52,14 @@ To update to the latest version call:
 	brew upgrade applanga
 ```
 
-###### Installing on Mac pre MacOS 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you are stuck with an older macOS you can use [Applanga CLI 1.0.86](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+###### Installing on Mac pre-MacOS 11
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you have an older macOS you can use [Applanga CLI 1.0.89](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.86
+	brew install applanga@1.0.89
 ```
 
 ##### Github
@@ -68,7 +68,7 @@ To automate localization through Github please check the [Applanga Github Workfl
 
 ## Initialize Project
 
-To initialize a new project the API token is needed. It can be found in the App under **Project Settings** on the [Applanga Dashboard](https://dashboard.applanga.com).
+To initialize a new project the API token is needed. It can be found under **Project Settings** on the [Applanga Dashboard](https://dashboard.applanga.com).
 
 The project can then be initialized by running the following in the project directory:
 
@@ -76,8 +76,8 @@ The project can then be initialized by running the following in the project dire
 	applanga init
 ```
 
-In the appearing dialog project data like the API token and the type of project will be requested.
-It will then save all the data to a configuration file into the current directory with the name `.applanga.json`
+In the dialog that appears, project data like the API token and the type of project will be requested.
+It will then save all the data to a configuration file in the current directory with the name `.applanga.json`
 
 
 ## Push & Pull Translation Files
@@ -90,7 +90,7 @@ To pull translations from Applanga into local files:
 	applanga pull
 ```
 
-###### *NOTE: The CLI is communicating with the [Applanga API](https://www.applanga.com/docs-integration/api) through our CDN to make sure the data is always reachable but that also means changes (including `push`es) are only available to pull after a 10 minute delay even though they are already visible on the [Dashboard](https://dashboard.applanga.com)!*
+###### *NOTE: The CLI communicates with the [Applanga API](https://www.applanga.com/docs-integration/api) through our CDN to make sure the data is always reachable, but that also means changes (including pushes) are only available to pull after a 10 minute delay even if changes are already visible on the [Dashboard](https://dashboard.applanga.com)!*
 
 To push existing local translations to Applanga:
 
@@ -98,13 +98,13 @@ To push existing local translations to Applanga:
 	applanga push
 ```
 
-The default config usually just pushes the source language and pull's all target languages. For some initial setup cases it might be needed to Push Target values as well. For this there is the **pushtarget** command. It behaves the same as the push command but pushes all files that are set as targets in the config. If you want to override already existing translations on the backend you’ll need to combine this with the --force command
+The default config usually just pushes the source language and pulls all target languages. For some initial setup cases, you may need to push target values as well. For this case, there is the **pushtarget** command. It behaves the same as the push command, but this command pushes all files that are set as targets in the config. If you want to override already existing translations on the backend, you’ll need to combine this with the `--force` command
 
 ```sh
 	applanga pushtarget
 ```
 
-For cases where you need to pull the source language changes from the dashboard into your source file you can use the **pullsource** command. It behaves the same as a pull but only pulls source files. Please be aware that local changes that are not yet pushed to Applanga will be overwritten.
+For cases where you need to pull the source language changes from the dashboard into your source file you can use the **pullsource** command. It behaves the same as pull, but only pulls source files. Please be aware that local changes that are not yet pushed to Applanga will be overwritten.
 
 ```sh
 	applanga pullsource
@@ -116,7 +116,7 @@ For cases where you need to pull the source language changes from the dashboard 
 
  - **--force**
  
-By default values only get pushed if they aren't existing already on the dashboard to make sure not to accidentally overwrite translations. If you want to push local changed files you can do so with the `--force` option. But be cautios that this might overwrite values set by a translator on the dashboard, so be sure to pull before you push.
+By default values are only pushed if they do not yet exist on the dashboard. This prevents accidental overwrite of translations. If you want to push locally changed files you can do so with the `--force` option. But be cautious with this option as it might overwrite values set by a translator on the dashboard; be sure to pull before you push.
 
 ```sh
 	applanga push --force
@@ -124,7 +124,7 @@ By default values only get pushed if they aren't existing already on the dashboa
 
  - **--draft**
  
-You can push values into that draft field to review them on the dashboard before you release them with the `--draft` option. 
+You can push values into the draft field to review them on the dashboard before you release/publish them using the `--draft` option. This is optional and only recommended if you plan to incorporate review of content on the Applanga dashboard. 
 
 ```sh
 	applanga push --draft
@@ -134,9 +134,9 @@ You can push values into that draft field to review them on the dashboard before
 
 ## Configuration
 
-By default, the configuration file (`.applanga.json`) gets read from the current folder. It is however also possible to set an additional path to check for with the environment variable `APPLANGA_CONFIG`. If set it checks additionally also in its location.
-Additionally. can the configuration file be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.  
-If you do not want to have your `access_token` token stored in the config and commited to your scm you can remove it from the config and instead provide it as environment variable called `APPLANGA_ACCESS_TOKEN`.
+By default, the configuration file (`.applanga.json`) is read from the current folder. However, it is also possible to set an additional path to check for with the environment variable `APPLANGA_CONFIG`. If set, this location will also be checked.
+Additionally, the configuration file can be located in the home folder set in the environment variable `HOME` under Linux/Mac and `HomePath` under Windows.  
+If you do not want to have your `access_token` token stored in the config and committed to your scm you can remove it from the config and instead provide it as environment variable called `APPLANGA_ACCESS_TOKEN`.
 
 
 ### Project Structure
@@ -171,7 +171,7 @@ The most basic configuration file generated after `applanga init` will look simi
 	}
 }
 ```
-If you are using multiple files, file formats on platforms that have different folders for their base languages or more complex folder structures like [iOS](#ios-configuration-examples) or [Android](#android-configuration-examples) you'll need to modify the config as shown in the [configuration examples](#configuration-examples).
+If you are using multiple files, file formats on platforms that have different folders for their base languages, or more complex folder structures like [iOS](#ios-configuration-examples) or [Android](#android-configuration-examples) you'll need to modify the config as shown in the [configuration examples](#configuration-examples).
 
 ### Target/Source Properties
 
@@ -182,9 +182,9 @@ There are a few mandatory and several optional properties that you can use to cu
 
 - **"file_format"**
 
-	The file format specifies the format of the file that you want to **push** or **pull** which typically depends on the platform that you are localizing.
+	The file format specifies the format of the file that you want to push or pull which typically depends on the platform that you are localizing.
 
-	For a detailed format description check out the [Applanga File Format Documentation](https://www.applanga.com/docs/formats)
+	For a detailed format description check out the [Applanga File Format Documentation.](https://www.applanga.com/docs/formats)
 	
 	Currently, the following formats are supported:
 
@@ -220,8 +220,8 @@ There are a few mandatory and several optional properties that you can use to cu
 
 - **"path"**
 
-	In the **"source"** block it defines the files to upload and in **"target"** block the files to download.
-It is possible to set the variable `<language>` in the path. In the "source" block it will look for local files which have the language code set at its location (like: "en") and then upload the file for the found language. In "target" block it will replace it with the name of the languages which exist on Applanga and create the files accordingly.
+	In the "source" block it defines the files to upload and in "target" block the files to download.
+It is possible to set the variable `<language>` in the path. In the "source" block it will look for local files which have the language code set at its location (like: "en") and then upload the file for the found language. In the "target" block it will replace it with the name of the languages which exist on Applanga and create the files accordingly.
 
 	***Example:*** `"path": "./app/src/main/res/values-<language>/strings.xml"`
 
@@ -229,21 +229,21 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 - **"branch_id"**:
 	
-	Defines the branch to use for the configuration. If not set the default branch will be used. This will only work for Projects, where branching is enabled. You can read find out the branch id in the Project settings.
+	Defines the branch to use for the configuration. If the branch_id is not set, the default branch will be used. This will only work for Projects where branching is enabled. You can find the branch id in the **Project Settings** page.
 
-	To learn more about branching please have a look [here](www.applanga.com/docs/advanced-features/branching)
+	To learn more about branching, please see the [Branching Documentation.](www.applanga.com/docs/advanced-features/branching)
 
 	***Example:*** `"branch_id": "<branch_id>"`
 
 
 - **"tag"**
 
-	Needed if you have multiple local files which is common on [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-submodule-library). If defined in the **"source"** block it will set the specified tag to all strings that are uploaded from the given **"path"**. In the **"target"** block it will only download translations which have this tag applied.
-	This is needed if you want to up and download only a subset of all available strings into or from certain files. In addition to a single tag you can also provide an array if you want to **pull** elements that are tagged differently into one file or if you want to add multiple tags for certain files on **push**.
+	This option is needed if you have multiple local files which is common for [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-submodule-library). If defined in the "source" block, it will set the specified tag to all strings that are uploaded from the given "path". In the "target" block, it will only download translations which have this tag applied.
+	This option also allows you to upload and download only a subset of all available strings to or from certain files. In addition to a single tag, you can also provide an array if you want to pull elements that are tagged differently into one file or if you want to add multiple tags for certain files on push.
 	
 	**Warning**: 
 	
-	If you’re pushing the same file in multiple languages you need to make sure that all of them contain the same keys or some Tags will get deleted or mixed up.
+	If you’re pushing the same file in multiple languages you need to make sure that all of them contain the same keys or some Tags will be deleted or mixed up.
 	
 	All related plurals must be included in the uploaded file to ensure they share an identical tag. This includes adding all plural forms required by other languages even if the uploaded language does not use those forms. This ensures that all plurals are tagged appropriately and exported across languages.
 	
@@ -254,26 +254,26 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 - **"language"**
 
-	The language of the file. Is only needed if there is no placeholder `<language>` defined in "path" e.g. for your base **"./values/"** or **"./Base.lproj/"** folder.
+	The language of the file is only needed if there is no placeholder `<language>` defined in "path" e.g. for your base **"./values/"** or **"./Base.lproj/"** folder.
 
 	***Example:*** `"language": "en"`
 
 - **"exclude_languages"**
 
-	If you are using the placeholder `<language>` to download a file for all languages on the project it might be needed to exclude some languages from being pushed or pulled.
+	If you are using the placeholder `<language>` to download a file for all languages in the project, this option allows you exclude some languages from being pushed or pulled.
 
 	***Example:*** `"exclude_languages": ["en", "de-AT"]`
 
-- **"export_empty"** *(target only)*
+- **"export_empty"** *(pull commands only)*
 
-	**pull** translations that are empty on the applanga dashboard which by default would get skipped. This property is only evaluated in the **"target"** block.
-	This setting makes sense e.g. if you want the empty strings in your base language but not in the translations so they can fall back to the base strings or if you use the cli to pull files that you want to send to translators.
+	This option pulls translations that are empty on the Applanga dashboard (by default empty translations are skipped on pull.) This property is evaluated in the "target" block. (Except in **"target"** for the **pullsource** command).
+	This setting makes sense if you want the empty strings in your base language, but not in the translations so they can fall back to the base strings. This option is also helpful if you use the cli to pull files that you want to send to translators.
 
 	***Example:*** `"export_empty": true`
 
 - **"disable_plurals"**
 	
-	This option is only supported when `file_format` is set to `nested_json`, `react_nested_json`, `ruby_on_rails_yaml`, `symfony_yaml`, `symfony2_yaml`, `ember_i18n_json_module` or `node_2_json`. It can be set to `true` or `false`. When set to `true` it means plural keys (`'zero', 'one', 'two', 'few', 'many', 'other'`) will be handled as regular keys and will not undergo any special transformation. For example if this option is set to `true` when `applange push` is executed for a `nested_json` file that contains the following content
+	This option is only supported when `file_format` is set to `nested_json`, `react_nested_json`, `ruby_on_rails_yaml`, `symfony_yaml`, `symfony2_yaml`, `ember_i18n_json_module` or `node_2_json`. It can be set to `true` or `false`. When set to `true` it means plural keys (`'zero', 'one', 'two', 'few', 'many', 'other'`) will be handled as regular keys and will not undergo any special transformation. For example, if this option is set to `true` when `applanga push` is executed for a `nested_json` file that contains the following content
 
 	```json
 	{
@@ -285,7 +285,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	}
 	``` 
 
-	when the operation completes the resulting string key will be `some.sub.other` instead of `some.sub[other]`. Then for 
+	when the operation completes, the resulting string key will be `some.sub.other` instead of `some.sub[other]`. Then for 
 	`applanga pull`, if `disable_plural` is set to `true` then keys like `some.sub[other]` with value as `foo` will become
 
 	```json
@@ -308,16 +308,16 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	***Example:*** `"disable_plural": true`
 
-- **"ignore_duplicates"** *(target only)*
+- **"ignore_duplicates"** *(pull commands only)*
 
-	This option if set to `true`, the cli will skip duplicate keys whenever `applanga pull` is executed. For instance if we have keys and values as follows `test = “teststring”`, `test.sub1 = “subteststring1“` and `test.sub2 = “subteststring2“` when we try to pull files then the key `test = “teststring"` and its value will be excluded from the imported file if this option is set to `true`. But when set to `false` the pull operation will fail and the cli will log an error to console stating which keys conflict.
+	This option, if set to `true`, the cli will skip duplicate keys whenever `applanga pull` is executed. For instance if we have keys and values as follows `test = “teststring”`, `test.sub1 = “subteststring1“` and `test.sub2 = “subteststring2“` when we try to pull files then the key `test = “teststring"` and its value will be excluded from the imported file if this option is set to `true`. But when set to `false` the pull operation will fail and the cli will log an error to console stating which keys conflict.
 
 	***Example:*** `"ignore_duplicates": true`
 
 
 - **"languageMapping"**
 
-	If you use the `<language>` wildcard this option allows to specify a map from Applanga language names to different language names that you use in your folders or filenames locally. The example below maps “nb-NO” which is the language name as its defined on the Applanga dashboard to “no_NO” in a local project.
+	If you use the `<language>` wildcard this option allows you to specify a map from Applanga language codes to different language codes that you use in your local folders or filenames. The example below maps “nb-NO” which is the language code as it's defined on the Applanga dashboard to “no_NO” as defined in a local project.
 
 	***Example:***
 	```json
@@ -327,25 +327,27 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	}
 	```
 	
-- **"includeMetadata"** *(target only)*
+- **"includeMetadata"** *(pull commands only)*
 
-	This option is by default set to `true`, if false metadata information will be excluded from the given target.
+	This option is by default set to `true`, if false, metadata information will be excluded from the given target.
 
 	***Example:*** `"includeMetadata": false`
 	
-- **"includeInvisibleId"**  *(target only)*
+- **"includeInvisibleId"**  *(pull commands only)*
 
-	This option is by default set to `false`, if true an invisible Id will be added in front of each translation value. The invisible Id consists of zero width invisible unicode characters to not mess up the look of your application. This allows us to enable additional features like for example a live web view of your application. 
+	This option is by default set to `false`. If set to `true` an invisible Id will be added in front of each translation value. The invisible Id consists of zero width invisible unicode characters to prevent issues with the look of your application. This allows Applanga to enable additional features like the live web preview of your application. 
 	
-	This should only be used in your application during the development process not in production settings.
+	**Warning**:
+	
+	This option should only be used in an application during the development process, not in a production settings!
 
-- **"convert_placeholder"**
+- **"convert_placeholder"** *(pull commands only)*
 
-	If you use the string formatter or placeholder in your strings, as part of your project, you can use this option to convert the placeholders between iOS and Android platforms. If convert_placeholder is set to `true`, the CLI will convert and export your string whenever `applanga pull` is executed. For example, if you have a project in IOS where your string is `"Hello %@"` use convert_placeholder key to convert it to the Android format `"Hello %s"`.
+	If you use string formatters or placeholders in your strings as part of your project, you can use this option to convert the placeholders between iOS and Android platforms. If convert_placeholder is set to `true`, the CLI will convert and export your string whenever `applanga pull` is executed. For example, if you have a project in IOS where your string is `"Hello %@"` use convert_placeholder key to convert it to the Android format `"Hello %s"`.
 
 	***Example:*** `"convert_placeholder": true`
 
-	Convert placeholder works in conjunction with "file_format" key. To generate the file and convert from iOS to Android must be specified "android_xml" and to change from Android to iOS must be "ios_strings" or "ios_stringsdict".
+	Convert placeholder works in conjunction with "file_format" key. To generate the file and convert from iOS to Android, you must specify "android_xml" and to change from Android to iOS it must be "ios_strings" or "ios_stringsdict".
 
 
 	***Example:*** 
@@ -359,13 +361,13 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	***iOS to Android conversion rules***
 	- Length format is converted to  "%d".
 
-	- Unsupported conversion types by default will converted to "%s".
+	- Unsupported conversion types by default are converted to "%s".
 
 	- Float "%f", double "%g"  and "%p" are converted to "%d".
 
-	- All Instances of "%@" will converted to "%s".
+	- All Instances of "%@" are converted to "%s".
 	
-	- Positional Arguments "%1$@" will be converted to "%1$s"
+	- Positional Arguments "%1$@" are converted to "%1$s"
 
 	- Objective C integer types like "%i" and "%u" are converted to "%d".
 
@@ -373,31 +375,31 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	***Android to iOS conversion rules***
 
-	- Unsupported conversion types will convert to default "%@" type.
+	- Unsupported conversion types are converted to the default "%@" type.
 
-	- Date/Time conversion types like "%1$te" will convert to "%1$@"
+	- Date/Time conversion types like "%1$te" are converted to "%1$@"
 
-	- Positional Arguments "%1$s" will be converted to "%1$@"
+	- Positional Arguments "%1$s" are converted to "%1$@"
 	
-	- Relative positional arguments like "%1$s %<s" will be converted to "%1$@ %1$@"
+	- Relative positional arguments like "%1$s %<s" are converted to "%1$@ %1$@"
 
-	- All instances of "%s" will be converted to "%@".
+	- All instances of "%s" are converted to "%@".
 
-	- If it is the same pattern, will keep the original.  
+	- If it is the same pattern, it will keep the original.  
 
 - **"key_prefix"**
 
-	If you need to import multiple files with similar keys but different text, the option allows to add prefixes to the keys on import and remove prefixes on export.
+	If you need to import multiple files with similar keys, but different text, this option allows you to add prefixes to the keys on push and remove prefixes on pull.
 
 	**Note**: 
 
-	The `key_prefix` text property cannot be longer than 50 characters and can only contains letters, numbers, space, undescore and dash. 
+	The `key_prefix` text property cannot be longer than 50 characters and can only contain letters, numbers, spaces, underscores, and dashes. 
 
 	***Example:*** `"key_prefix": "added_prefix1-"`
 
-- **"sort_by_key"** *(target only)*
+- **"sort_by_key"** *(pull commands only)*
 
-	The the keys in files downloaded on **pull** command are sorted alphabetically. This property is only evaluated in the **"target"** block. This option is by default set to `false`.
+	The keys in files downloaded on pull or **pullsource** command are sorted alphabetically. This option is by default set to `false`.
 
 	***Example:*** `"sort_by_key": true`
 	
@@ -452,7 +454,7 @@ The base Android strings are located in `./app/src/main/res/values/strings.xml`,
 
 ### Android App with Multiple Files & Submodule / Library
 
-Apps can have strings in multiple files or in shared libraries. You can specify multiple files in the`.applanga.json` but to be able to up and download the subset of strings to the correct file you need to use the **"tag"** property so that Applanga can properly identify them.
+Apps can have strings in multiple files or in shared libraries. You can specify multiple files in the`.applanga.json` but to be able to upload and download the subset of strings to the correct file you need to use the **"tag"** property so that Applanga can properly identify which strings belong to which files.
 
 ```json
 {
@@ -549,7 +551,7 @@ Apps can have strings in multiple files or in shared libraries. You can specify 
 ## iOS Configuration Examples
 
 ### Basic iOS App
-If Base Localization is enabled the base iOS strings are located in `./Base.lproj/Localizable.strings`, other languages are located in `./<language>.lproj/Localizable.strings`. The following example shows the usage for a basic iOS project with english set as base language.
+If Base Localization is enabled, the base iOS strings are located in `./Base.lproj/Localizable.strings`, other languages are located in `./<language>.lproj/Localizable.strings`. The following example shows the usage for a basic iOS project with english set as base language.
 
 ```json
 {
@@ -594,14 +596,14 @@ If Base Localization is enabled the base iOS strings are located in `./Base.lpro
 ```
 
 ### iOS App with Pluralization .stringsdict and Storyboard .strings
-If you turn on localization on your storyboards you will end up with a .strings file for every storyboard in every language and since strings on the Applanga dashboard are merged to one big list you need to use the config **"tag"** property to tag the strings for the specific files on **push** and **pull** so you can identify them later on.
-To extract the .strings from your storyboard you can use the following command 
+If you turn on localization for your storyboards, you will end up with a .strings file for every storyboard in every language and since strings on the Applanga dashboard are merged to one big list you need to use the config **"tag"** property to tag the strings for the specific files on push and pull so you can identify them later on.
+To extract the .strings from your storyboard you can use the following command: 
 
 ```sh
 ibtool MainStoryboard.storyboard --generate-strings-file MainStoryboard.strings
 ```
 
-For Pluralization apple introduced the [.stringsdict File Format](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) which you can also conveniently **push** and **pull** with the Applanga command line interface. A .stringsdict file always need an accompanying .strings file so you can use the same **tag** for both.
+For Pluralization, apple introduced the [.stringsdict File Format](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) which you can also conveniently push and pull with the Applanga command line interface. A .stringsdict file always needs an accompanying .strings file so you can use the same **tag** for both.
 
 ```json
 {
@@ -698,16 +700,16 @@ For Pluralization apple introduced the [.stringsdict File Format](https://develo
 
 ## Update Applanga Settings File
 
-To update Applanga Settings File within a project, simply execute the following command:
+To update the Applanga Settingsfile within a project, simply execute the following command:
 
 ```sh
 	applanga updateSettingsfiles
 ```
 
-The above command will recursively check and update any Applanga Settings File if there are new versions found.
+The above command will recursively check and update any Applanga Settingsfile if there are new versions found.
 
 ### Php Laravel App with language mapping
-The following example shows the usage for a basic Laravel project with english set as base language. Note that Laravel uses a different Pattern for [short keys](https://laravel.com/docs/8.x/localization#using-short-keys) than Applanga. In order to circumvent this issue a custom language mapping is set via the **languageMap** key
+The following example shows the usage for a basic Laravel project with english set as base language. Note that Laravel uses a different pattern for [short keys](https://laravel.com/docs/8.x/localization#using-short-keys) than Applanga. In order to circumvent this issue, a custom language mapping is set via the **languageMap** key.
 
 
 ```json
