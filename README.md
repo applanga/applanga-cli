@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.89
+*Version:* 1.0.91
 
 *Website:* <https://www.applanga.com>
 
@@ -12,7 +12,7 @@
 
   1. [Installation](#installation)
   2. [Initialization](#initialize-project)
-  3. [Usage](#push-pull-translation-files)
+  3. [Usage](#push-and-pull-translation-files)
   4. [Configuration](#configuration)
   5. [Configuration Examples](#configuration-examples)
 	- [Android Examples](#android-configuration-examples)
@@ -53,13 +53,13 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre-MacOS 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you have an older macOS you can use [Applanga CLI 1.0.89](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you have an older macOS you can use [Applanga CLI 1.0.51](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
 ```sh
 	brew tap applanga/cli
-	brew install applanga@1.0.89
+	brew install applanga@1.0.51
 ```
 
 ##### Github
@@ -80,7 +80,7 @@ In the dialog that appears, project data like the API token and the type of proj
 It will then save all the data to a configuration file in the current directory with the name `.applanga.json`
 
 
-## Push & Pull Translation Files
+## Push and Pull Translation Files
 
 The translations can simply be pushed to and pulled from Applanga with the corresponding commands.
 
@@ -229,7 +229,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 - **"branch_id"**:
 	
-	Defines the branch to use for the configuration. If the branch_id is not set, the default branch will be used. This will only work for Projects where branching is enabled. You can find the branch id in the **Project Settings** page.
+	Defines the branch to use for the configuration. If the branch_id is not set, the "main" branch will be used. This will only work for Projects where branching is enabled. You can find the branch id in the **Project Settings** page.
 
 	To learn more about branching, please see the [Branching Documentation.](www.applanga.com/docs/advanced-features/branching)
 
@@ -402,6 +402,14 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	The keys in files downloaded on pull or **pullsource** command are sorted alphabetically. This option is by default set to `false`.
 
 	***Example:*** `"sort_by_key": true`
+
+- **"remove_cr_char"**
+
+	If the value is set to `true` the line endings in uploaded content will follow the Unicode and Mac new line format containing just the line feed character (LF, escape sequence \n). If present, any carriage return characters (CR, the escape sequence \r) will be removed. 
+
+	In download when the option set to `true`, the downloded files will contain only the Unicode/Mac new line character (LF).
+	
+	***Example:*** `"remove_cr_char": true`
 	
 # Configuration Examples
 ---

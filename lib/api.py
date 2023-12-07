@@ -76,6 +76,10 @@ def downloadFile(file_data, debug=False):
         if file_data['sort_by_key'] == True:
             request_options['sortByKey'] = True
 
+    if 'remove_cr_char' in file_data:
+        if file_data['remove_cr_char'] == True:
+            request_options['removeCrChar'] = True
+
     try:
         # Request the file from server
         request_data = {
@@ -242,6 +246,9 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 if  'disable_plurals' in file_data:
                     send_data['disable_plurals'] = file_data['disable_plurals']
 
+                if 'remove_cr_char' in file_data:
+                    send_data['removeCrChar'] = file_data['remove_cr_char']
+
                 response = uploadFile(send_data, force=force, draft=draft, debug=debug)
                 return_data.append(
                     {
@@ -284,6 +291,9 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
 
         if file_data['file_format'] in ['nested_json', 'react_nested_json'] and 'disable_plurals' in file_data:
             request_options['disablePlurals'] = file_data['disable_plurals'] is True
+
+        if 'removeCrChar' in file_data:
+            request_options['removeCrChar'] = file_data['removeCrChar']
 
         request_data = {
             'file-format': file_data['file_format'],
