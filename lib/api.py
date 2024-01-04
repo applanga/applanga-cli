@@ -62,6 +62,12 @@ def downloadFile(file_data, debug=False):
     if 'includeInvisibleId' in file_data:
         request_options['includeInvisibleId'] = file_data['includeInvisibleId']
 
+    if 'xliffStatus' in file_data:
+        request_options['xliffStatus'] = file_data['xliffStatus']
+
+    if 'includeContextUrl' in file_data:
+        request_options['includeContextUrl'] = file_data['includeContextUrl']
+
     # check conditions for key_prefix
     if 'key_prefix' in file_data:
         if len(file_data['key_prefix']) > 50:
@@ -246,8 +252,29 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 if  'disable_plurals' in file_data:
                     send_data['disable_plurals'] = file_data['disable_plurals']
 
+                if 'xliffStatus' in file_data:
+                    send_data['xliffStatus'] = file_data['xliffStatus']
+
+                if file_data['file_format'] in ['xliff'] and 'skipLockedTranslations' in file_data:
+                    send_data['skipLockedTranslations'] = file_data['skipLockedTranslations']
+
+                if file_data['file_format'] in ['xliff'] and 'skipEmptyTranslations' in file_data:
+                    send_data['skipEmptyTranslations'] = file_data['skipEmptyTranslations']
+
+                if file_data['file_format'] in ['xliff'] and 'createUnknownCustomStates' in file_data:
+                    send_data['createUnknownCustomStates'] = file_data['createUnknownCustomStates']
+
                 if 'remove_cr_char' in file_data:
                     send_data['removeCrChar'] = file_data['remove_cr_char']
+
+                if 'onlyIfTextEmpty' in file_data and file_data['file_format'] in ['xliff']:
+                    send_data['onlyIfTextEmpty'] = file_data['onlyIfTextEmpty']
+
+                if file_data['file_format'] in ['xliff'] and'onlyAsDraft' in file_data:
+                    send_data['onlyAsDraft'] = file_data['onlyAsDraft']
+
+                if file_data['file_format'] in ['xliff'] and 'importSourceLanguage' in file_data:
+                    send_data['importSourceLanguage'] = file_data['importSourceLanguage']
 
                 response = uploadFile(send_data, force=force, draft=draft, debug=debug)
                 return_data.append(
@@ -286,11 +313,34 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
         # Request the file from server
         request_options = {
             'onlyIfTextEmpty': not force,
-            'onlyAsDraft': draft
+            'onlyAsDraft': draft,
         }
 
         if file_data['file_format'] in ['nested_json', 'react_nested_json'] and 'disable_plurals' in file_data:
             request_options['disablePlurals'] = file_data['disable_plurals'] is True
+
+        if file_data['file_format'] in ['xliff'] and 'importSourceLanguage' in file_data:
+            request_options['importSourceLanguage'] = file_data['importSourceLanguage']
+
+        if file_data['file_format'] in ['xliff'] and 'xliffStatus' in file_data:
+            request_options['xliffStatus'] = file_data['xliffStatus']
+
+        if file_data['file_format'] in ['xliff'] and 'createUnknownCustomStates' in file_data:
+            request_options['createUnknownCustomStates'] = file_data['createUnknownCustomStates']
+
+        if 'skipLockedTranslations' in file_data and file_data['file_format'] in ['xliff']:
+            request_options['skipLockedTranslations'] = file_data['skipLockedTranslations']
+
+        if file_data['file_format'] in ['xliff'] and 'skipEmptyTranslations' in file_data:
+            request_options['skipEmptyTranslations'] = file_data['skipEmptyTranslations']
+
+        if file_data['file_format'] in ['xliff'] and 'onlyIfTextEmpty' in file_data:
+            request_options['onlyIfTextEmpty'] = file_data['onlyIfTextEmpty']
+        elif file_data['file_format'] in ['xliff']:
+            request_options['onlyIfTextEmpty'] = True
+
+        if file_data['file_format'] in ['xliff'] and'onlyAsDraft' in file_data:
+            request_options['onlyAsDraft'] = file_data['onlyAsDraft']
 
         if 'removeCrChar' in file_data:
             request_options['removeCrChar'] = file_data['removeCrChar']
@@ -407,7 +457,8 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
 
     headers = {
         'Authorization': 'Bearer ' + access_token,
-        'CLI-Version': constants.VERSION_NUMBER
+        'CLI-Version': constants.VERSION_NUMBER,
+        'X-Integration': constants.X_INTEGRATION_HEADER_VALUE
     }
 
     url = constants.APPLANGA_HOST

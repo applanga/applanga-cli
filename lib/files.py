@@ -146,6 +146,22 @@ def getFiles(source):
             if 'disable_plurals' in source:
                 return_files[file]['disable_plurals'] = source['disable_plurals']
 
+            if 'xliffStatus' in source:
+                return_files[file]['xliffStatus'] = source['xliffStatus']
+            if 'createUnknownCustomStates' in source:
+                return_files[file]['createUnknownCustomStates'] = source['createUnknownCustomStates']
+            if 'importSourceLanguage' in source:
+                return_files[file]['importSourceLanguage'] = source['importSourceLanguage']
+            if 'skipLockedTranslations' in source: 
+                return_files[file]['skipLockedTranslations'] = source['skipLockedTranslations']
+            if 'skipEmptyTranslations' in source: 
+                return_files[file]['skipEmptyTranslations'] = source['skipEmptyTranslations']
+            if 'onlyIfTextEmpty' in source: 
+                return_files[file]['onlyIfTextEmpty'] = source['onlyIfTextEmpty']
+            if 'onlyAsDraft' in source: 
+                return_files[file]['onlyAsDraft'] = source['onlyAsDraft']
+            if 'importIntoGroup' in source: 
+                return_files[file]['importIntoGroup'] = source['importIntoGroup']
 
     return {
                 'skipped': skipped_files,

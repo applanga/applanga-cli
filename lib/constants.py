@@ -1,9 +1,10 @@
-VERSION_NUMBER = '1.0.91'
+VERSION_NUMBER = '1.0.92'
 APPLANGA_HOST = 'https://api.applanga.com'
 API_BASE_PATH = '/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
 ENVIRONMENT_VARIABLE = 'APPLANGA_CONFIG'
+X_INTEGRATION_HEADER_VALUE = '1'
 FILE_FORMATS = {
     'android_xml': {
         'name': 'Android XML',
@@ -169,5 +170,11 @@ FILE_FORMATS = {
         'extension': 'toml',
         'default_file_path': './<language>.toml',
         'default_tag_name': 'app:language.toml'
+    },
+    'xliff': {
+        'name': 'Xliff',
+        'extension': 'xliff',
+        'default_file_path': './<language>.xliff',
+        'default_tag_name': 'app:language.xliff'
     }
 }

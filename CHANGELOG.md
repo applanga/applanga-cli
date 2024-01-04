@@ -5,9 +5,16 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.92 (4 Jan 2024)
+#### Added
+- Added `xliff` file format
+- Added `X-Integration` header
+---
+
 ### Version 1.0.91 (7 Dec 2023)
 #### Added
 - Added `remove_cr_char` option
+---
 
 ### Version 1.0.89 (7 Aug 2023)
 #### Added

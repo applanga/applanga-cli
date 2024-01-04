@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.91
+*Version:* 1.0.92
 
 *Website:* <https://www.applanga.com>
 
@@ -98,7 +98,7 @@ To push existing local translations to Applanga:
 	applanga push
 ```
 
-The default config usually just pushes the source language and pulls all target languages. For some initial setup cases, you may need to push target values as well. For this case, there is the **pushtarget** command. It behaves the same as the push command, but this command pushes all files that are set as targets in the config. If you want to override already existing translations on the backend, you’ll need to combine this with the `--force` command
+The default config usually just pushes the source language and pulls all target languages. For some initial setup cases, you may need to push target values as well. For this case, there is the **pushtarget** command. It behaves the same as the push command, but this command pushes all files that are set as targets in the config. If you want to override already existing translations on the backend, you’ll need to combine this with the `--force` command. Exception for this is the `xliff` file format. For this format `--force` is disabled. If you want to override existing values/translations please provide the `onlyIfTextEmpty` option and set it to `false`
 
 ```sh
 	applanga pushtarget
@@ -116,7 +116,9 @@ For cases where you need to pull the source language changes from the dashboard 
 
  - **--force**
  
-By default values are only pushed if they do not yet exist on the dashboard. This prevents accidental overwrite of translations. If you want to push locally changed files you can do so with the `--force` option. But be cautious with this option as it might overwrite values set by a translator on the dashboard; be sure to pull before you push.
+By default values are only pushed if they do not yet exist on the dashboard. This prevents accidental overwrite of translations. If you want to push locally changed files you can do so with the `--force` option. But be cautious with this option as it might overwrite values set by a translator on the dashboard; be sure to pull before you push. 
+
+For the xliff file format, the only way to override existing values or translations is by providing the onlyIfTextEmpty option and setting it to false. It's important to note that the --force option should not be used in conjunction with the xliff file format and the onlyIfTextEmpty option set to false, as the --force option is disregarded in this context.
 
 ```sh
 	applanga push --force
@@ -215,6 +217,7 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - microsoft_resw: [Microsoft Resw](https://www.applanga.com/docs/formats/microsoft_resx) (.resw)
 	 - microsoft_resx: [Microsoft Resx](https://www.applanga.com/docs/formats/microsoft_resx) (.resx)
 	 - toml : [Toml](https://www.applanga.com/docs/formats/toml) (.toml)
+	 - xliff: [Xliff](https://www.applanga.com/docs/formats/xliff) (.xliff)
 
 	***Example:*** `"file_format": "android_xml"`
 
@@ -410,7 +413,68 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	In download when the option set to `true`, the downloded files will contain only the Unicode/Mac new line character (LF).
 	
 	***Example:*** `"remove_cr_char": true`
+
+
+### Xliff specific options
+
+The following options will only work if the file_format is set to `xliff` (see [Applanga Xliff Format Documentation](https://applanga.com/docs/formats/xliff) for more information of the xliff format).
+
+
+- **"xliffStatus"**
 	
+	The files will import/export the given statuses of the xliff file. This options by default is set to `false`.
+
+	***Example:*** `"xliffStatus": true`
+
+- **"createUnknownCustomStates"** *(push commands only)*
+	
+	Default value is `false`. If set to true custom statuses provided inside the xliff format will be importet into Applanga.
+
+	***Example:*** `"createUnknownCustomStates": true`
+
+- **"includeContextUrl"** *(pull commands only)*
+
+	The downloaded xliff file will include contextUrl's for screenshots of the project
+
+	***Example:*** `"includeContextUrl": true`
+
+- **"importSourceLanguage"** *(push commands only)*
+
+	If the source language varies from the base language of the project you can specify this parameter to have a correct import adjusting for the varying base language. Default is `false`. To upload with a specified source language set this to the language iso name of the language. 
+
+	***Example:*** `"importSourceLanguage": "en"`
+
+- **"skipLockedTranslations"** *(push commands only)*
+	
+	Default is `false`. If set to true all entries inside the uploaded file, that are locked in your application, will be ignored.
+
+	***Example:*** `"skipLockedTranslations": true`
+
+- **"skipEmptyTranslations"** *(push commands only)*
+
+	Default is `false`. By default entries inside the file that are empty will be ignored in the `xliff` format. If this option is true, empty entries inside the file will be created in the Project. Empty entries will never overwrite entries that already exist within the Project.
+
+
+	***Example:*** `"skipEmptyTranslations": true`
+
+- **"onlyAsDraft"** *(push commands only)*
+	
+	Default is `false`. If set to true all values inside the xliff will only be applied to draft values of the application. If your application is a Branching application, this value will be ignored.
+
+	***Example:*** `"onlyAsDraft": true`
+	
+- **"onlyIfTextEmpty"** *(push commands only)*
+
+	The pushed file will only overwrite keys that do have an empty text value in Applanga. This overrides the --force option of the commandline. Default is set to `true`.
+
+	***Example:*** `"onlyIfTextEmpty": true`
+
+- **"importIntoGroup"** *(push commands only)*
+
+	Default is `false`. By default all Keys will be pushed into the groups they currently are assigned to. If true all pushed keys in the file will be but into the 'main' group.
+
+	***Example:*** `"importIntoGroup": true`
+
 # Configuration Examples
 ---
 ## Android Configuration Examples
