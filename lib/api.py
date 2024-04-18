@@ -246,6 +246,9 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 if 'tag' in file_data:
                     send_data['tag'] = file_data['tag']
 
+                if 'keepTagIds' in file_data:
+                    send_data['keepTagIds'] = file_data['keepTagIds']
+
                 if 'key_prefix' in file_data:
                     send_data['key_prefix'] = file_data['key_prefix']
 
@@ -353,6 +356,9 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
 
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']
+
+        if 'keepTagIds' in file_data:
+            request_data['keepTagIds'] = file_data['keepTagIds']
 
         if 'key_prefix' in file_data:
             request_data['addKeyPrefix'] = file_data['key_prefix']

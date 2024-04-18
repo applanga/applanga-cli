@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.92
+*Version:* 1.0.93
 
 *Website:* <https://www.applanga.com>
 
@@ -254,6 +254,11 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	
 	***Example (Tag Array):*** `"tag": ["main page", "other page"]`
 
+- **"keepTagIds"** *(push commands only)*
+
+	This option is only considered when you provide the 'tag' option. If you wish to retain all entries tagged with the current Tag, even if they are not included in the uploaded file, then set this option to true.
+
+	***Example:*** `"keepTagIds": true`
 
 - **"language"**
 

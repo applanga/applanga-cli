@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.93 (18 Apr 2024)
+#### Fixed
+- Fixed keepTagIds option for push commands
+---
+
 ### Version 1.0.92 (4 Jan 2024)
 #### Added
 - Added `xliff` file format

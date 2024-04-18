@@ -136,6 +136,8 @@ def getFiles(source):
             # Add other properties which got defined for file
             if 'tag' in source:
                 return_files[file]['tag'] = source['tag']
+            if 'keepTagIds' in source:
+                return_files[file]['keepTagIds'] = source['keepTagIds']
             if 'file_format' in source:
                 return_files[file]['file_format'] = source['file_format']
             if 'key_prefix' in source:
