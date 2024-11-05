@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.101 (5 Nov 2024)
+#### Fixed
+- Added error messages for contradictory configurations
+---
+
 ### Version 1.0.93 (18 Apr 2024)
 #### Fixed
 - Fixed keepTagIds option for push commands

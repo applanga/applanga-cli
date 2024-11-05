@@ -3,6 +3,7 @@ from lib import constants
 import os
 import platform
 import json
+from functools import cmp_to_key
 
 
 class ApplangaConfigFileNotValidException(Exception):
@@ -105,32 +106,141 @@ def readRaw():
                     raise ApplangaConfigFileNotValidException('The config file is not valid. Either a push or pull block has to be set')
 
                 if 'push' in config_data['app']:
-	                if 'source' not in config_data['app']['push']:
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source set.')
-	                if 1 > len(config_data['app']['push']['source']):
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. The source does not have any entry.')
-	                if 'path' not in config_data['app']['push']['source'][0]:
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source path set under source.')
-	                if 'file_format' not in config_data['app']['push']['source'][0]:
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source file_format set under source.')
-
+                    if 'source' not in config_data['app']['push']:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source set.')
+                    if 1 > len(config_data['app']['push']['source']):
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. The source does not have any entry.')
+                    if 'path' not in config_data['app']['push']['source'][0]:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source path set under source.')
+                    if 'file_format' not in config_data['app']['push']['source'][0]:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have source file_format set under source.')
 
                 if 'pull' in config_data['app']:
-	                if 'target' not in config_data['app']['pull']:
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target set.')
-	                if 1 > len(config_data['app']['pull']['target']):
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. The target does not have any entry.')
-	                if 'path' not in config_data['app']['pull']['target'][0]:
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target path set under target.')
-	                if 'file_format' not in config_data['app']['pull']['target'][0]:
-	                    raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target file_format set under target.')
+                    if 'target' not in config_data['app']['pull']:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target set.')
+                    if 1 > len(config_data['app']['pull']['target']):
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. The target does not have any entry.')
+                    if 'path' not in config_data['app']['pull']['target'][0]:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target path set under target.')
+                    if 'file_format' not in config_data['app']['pull']['target'][0]:
+                        raise ApplangaConfigFileNotValidException('The config file is not valid. It does not have target file_format set under target.')
 
+                testTagConflict(config_data)
+                
                 return config_data
 
             except ValueError as e:
                 raise ApplangaConfigFileNotValidException('The config file can not be parsed. Please fix or create a new one.')
     except IOError:
         raise ApplangaConfigFileNotValidException('The config file does not exist. Please initialize the project first with "applanga init"')
+
+
+#Utiliti claas used to see if a cli target / source block is tackling the same language/path/tag together
+class FileBlock:
+    def __init__(self, fileBlockData):
+        self.language = None
+        if 'language' in fileBlockData:
+            self.language = fileBlockData['language']
+
+        self.tag = None
+        if 'tag' in fileBlockData:
+            self.tag = fileBlockData['tag']
+            
+        self.path = ''
+        if 'path' in fileBlockData:
+            self.path = fileBlockData['path']
+
+        self.exclude_languages = []
+        if 'exclude_languages' in fileBlockData:
+            self.exclude_languages = fileBlockData['exclude_languages']
+
+    def compareTag(self, other): 
+        tagEqual = None
+        if isinstance(self.tag, list):
+            if isinstance(other.tag, list):
+                overlap = set(self.tag) & set(other.tag)
+                if overlap:
+                    tagEqual = list(overlap)[0]
+            elif other.tag in self.tag:
+                tagEqual = other.tag
+        else:
+            if isinstance(other.tag, list) and self.tag in other.tag:
+                tagEqual = self.tag
+            elif self.tag == other.tag:
+                tagEqual = self.tag
+        return tagEqual
+
+    def compare(self, other):
+        if self.tag == None and other.tag == None:
+            return False
+        
+        tagEqual = self.compareTag(other) != None
+
+        if tagEqual == False:
+            return False
+        
+        if self.language == None:
+            if other.language == None:
+                if set(self.exclude_languages).intersection(other.exclude_languages):
+                    return True
+            else:
+                if other.language not in self.exclude_languages:
+                    return True
+        else:
+            if other.language == None:
+                if self.language not in other.exclude_languages:
+                    return True
+            else:
+                if self.language == other.language:
+                    return True
+        return False
+    
+
+    def __str__(self):
+        return '''{language}:{tag}:{path}:{exc}'''.format(tag=self.tag, language=self.language, path=self.path, exc=self.exclude_languages)
+
+            
+
+def testTagConflict(config_data):
+    push_map = {}
+    if 'push' in config_data['app']:
+        # to spare us some backend requests sort all entries that have the <language> var to the end so we can compare with statically set langs overlaps
+        config_data['app']['push']['source'].sort(key=cmp_to_key(lambda a, b: +1 if 'path' in a and '<language>' in a['path'] else -1 if 'path' in b and '<language>' in b['path'] else 0))
+        
+        blocks = []
+        for push_conf in config_data['app']['push']['source']:
+            blocks.append(FileBlock(push_conf))
+        
+        for i, blockA in enumerate(blocks):
+            for j, blockB in enumerate(blocks):
+                if i == j or j < i: continue
+                if blockA.compare(blockB):
+                    lang = blockA.language
+                    if lang == None:
+                        lang = "<language>"
+                    
+                    raise ApplangaConfigFileNotValidException('''The tag "{tag}" is used across multiple files for the language "{language}" in your push block. Please ensure tags are unique per file'''.format(tag=blockA.compareTag(blockB), language=lang))
+
+    if 'pull' in config_data['app']:
+        # to spare us some backend requests sort all entries that have the <language> var to the end so we can compare with statically set langs overlaps
+        config_data['app']['pull']['target'].sort(key=cmp_to_key(lambda a, b: +1 if 'path' in a and '<language>' in a['path'] else
+                                                                                -1 if 'path' in b and '<language>' in b['path'] else 0))
+        
+        blocks = []
+        for push_conf in config_data['app']['pull']['target']:
+            blocks.append(FileBlock(push_conf))
+
+        for i, blockA in enumerate(blocks):
+            for j, blockB in enumerate(blocks):
+                if i == j or j < i: continue
+                if blockA.compare(blockB):
+                    lang = blockA.language
+                    if lang == None:
+                        lang = "<language>"
+                    raise ApplangaConfigFileNotValidException('''The tag "{tag}" is used across multiple files for the language "{language}" in your pull block. Please ensure tags are unique per file'''.format(tag=blockA.compareTag(blockB), language=lang))
+
+
+
 
 
 def read():
