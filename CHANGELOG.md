@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.102 (21 Nov 2024)
+#### Fixed
+- Fixed initialize script and documentation for android / ios default setup
+---
+
 ### Version 1.0.101 (5 Nov 2024)
 #### Fixed
 - Added error messages for contradictory configurations

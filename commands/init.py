@@ -164,12 +164,6 @@ def init(ctx):
                             'file_format': file_format,
                             'path': baselanguage_path,
                             'tag': tag
-                        },
-                        {
-                            'exclude_languages': [base_language],
-                            'file_format': file_format,
-                            'path': source_path,
-                            'tag': tag
                         }
                     ]
                 },

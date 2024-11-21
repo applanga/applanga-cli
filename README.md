@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.101
+*Version:* 1.0.102
 
 *Website:* <https://www.applanga.com>
 
@@ -495,13 +495,6 @@ The base Android strings are located in `./app/src/main/res/values/strings.xml`,
 		"pull": {
 			"target": [
 				{
-					"language": "en",
-					"file_format": "android_xml",
-					"export_empty": true,
-					"path": "./app/src/main/res/values/strings.xml",
-					"tag": "app:strings.xml"
-				},
-				{
 					"exclude_languages": ["en"],
 					"file_format": "android_xml",
 					"path": "./app/src/main/res/values-<language>/strings.xml",
@@ -515,12 +508,6 @@ The base Android strings are located in `./app/src/main/res/values/strings.xml`,
 					"language": "en",
 					"file_format": "android_xml", 
 					"path": "./app/src/main/res/values/strings.xml",
-					"tag": "app:strings.xml"
-				},
-				{
-					"exclude_languages": ["en"],
-					"file_format": "android_xml", 
-					"path": "./app/src/main/res/values-<language>/strings.xml",
 					"tag": "app:strings.xml"
 				}
 			]
@@ -541,37 +528,16 @@ Apps can have strings in multiple files or in shared libraries. You can specify 
 		"pull": {
 			"target": [
 				{
-					"language": "en",
-					"file_format": "android_xml",
-					"export_empty": true,
-					"tag": "app:strings.xml",
-					"path": "./app/src/main/res/values/strings.xml"
-				},
-				{
 					"exclude_languages": ["en"],
 					"file_format": "android_xml",
 					"tag": "app:strings.xml",
 					"path": "./app/src/main/res/values-<language>/strings.xml"
 				},
 				{
-					"language": "en",
-					"file_format": "android_xml",
-					"export_empty": true,
-					"tag": "app:other.xml",
-					"path": "./app/src/main/res/values/other.xml"
-				},
-				{
 					"exclude_languages": ["en"],
 					"file_format": "android_xml",
 					"tag": "module:other.xml",
 					"path": "./app/src/main/res/values-<language>/other.xml"
-				},
-				{
-					"language": "en",
-					"file_format": "android_xml",
-					"export_empty": true,
-					"tag": "module:strings.xml", 
-					"path": "./mylibrary/src/main/res/values/strings.xml"
 				},
 				{
 					"exclude_languages": ["en"],
@@ -590,34 +556,16 @@ Apps can have strings in multiple files or in shared libraries. You can specify 
 					"path": "./app/src/main/res/values/strings.xml"
 				},
 				{
-					"exclude_languages": ["en"],
-					"file_format": "android_xml",
-					"tag": "app:strings.xml",
-					"path": "./app/src/main/res/values-<language>/strings.xml"
-				},
-				{
 					"language": "en",
 					"file_format": "android_xml",
 					"tag": "app:other.xml",
 					"path": "./app/src/main/res/values/other.xml"
 				},
 				{
-					"exclude_languages": ["en"],
-					"file_format": "android_xml",
-					"tag": "app:other.xml",
-					"path": "./app/src/main/res/values-<language>/other.xml"
-				},
-				{
 					"language": "en",
 					"file_format": "android_xml",
 					"tag": "module:strings.xml", 
 					"path": "./mylibrary/src/main/res/values/strings.xml"
-				},
-				{
-					"exclude_languages": ["en"],
-					"file_format": "android_xml",
-					"tag": "module:strings.xml",
-					"path": "./mylibrary/src/main/res/values-<language>/strings.xml"
 				}
 			]
 		}
@@ -638,13 +586,6 @@ If Base Localization is enabled, the base iOS strings are located in `./Base.lpr
 		"pull": {
 			"target": [
 				{
-					"language": "en",
-					"file_format": "ios_strings",
-					"export_empty": true,
-					"path": "./Base.lproj/Localizable.strings",
-					"tag": "app:Localizable.strings"
-				},
-				{
 					"exclude_languages": ["en"],
 					"file_format": "ios_strings",
 					"path": "./<language>.lproj/Localizable.strings",
@@ -658,12 +599,6 @@ If Base Localization is enabled, the base iOS strings are located in `./Base.lpr
 					"language": "en",
 					"file_format": "ios_strings", 
 					"path": "./Base.lproj/Localizable.strings",
-					"tag": "app:Localizable.strings"
-				},
-				{
-					"exclude_languages": ["en"],
-					"file_format": "ios_strings", 
-					"path": "./<language>.lproj/Localizable.strings",
 					"tag": "app:Localizable.strings"
 				}
 			]
@@ -690,37 +625,16 @@ For Pluralization, apple introduced the [.stringsdict File Format](https://devel
 		"pull": {
 			"target": [
 				{
-					"language": "en",
-					"file_format": "ios_strings",
-					"tag": "app:Localizable.strings",
-					"export_empty": true,
-					"path": "./Base.lproj/Localizable.strings"
-				},
-				{
 					"exclude_languages": ["en"],
 					"file_format": "ios_strings",
 					"tag": "app:Localizable.strings",
 					"path": "./<language>.lproj/Localizable.strings"
 				},
 				{
-					"language": "en",
-					"file_format": "ios_stringsdict",
-					"tag": "app:Localizable.strings",
-					"export_empty": true,
-					"path": "./Base.lproj/Localizable.stringsdict"
-				},
-				{
 					"exclude_languages": ["en"],
 					"file_format": "ios_stringsdict",
 					"tag": "app:Localizable.strings",
 					"path": "./<language>.lproj/Localizable.stringsdict"
-				},
-				{
-					"language": "en",
-					"file_format": "ios_strings",
-					"tag": "storyboard:Localizable.strings",
-					"export_empty": true,
-					"path": "./Base.lproj/MainStoryboard.strings"
 				},
 				{
 					"exclude_languages": ["en"],
@@ -740,34 +654,16 @@ For Pluralization, apple introduced the [.stringsdict File Format](https://devel
 					"path": "./Base.lproj/Localizable.strings"
 				},
 				{
-					"exclude_languages": ["en"],
-					"file_format": "ios_strings",
-					"tag": "app:Localizable.strings",
-					"path": "./<language>.lproj/Localizable.strings"
-				},
-				{
 					"language": "en",
 					"file_format": "ios_stringsdict",
 					"tag": "app:Localizable.strings",
 					"path": "./Base.lproj/Localizable.stringsdict"
 				},
 				{
-					"exclude_languages": ["en"],
-					"file_format": "ios_stringsdict",
-					"tag": "app:Localizable.strings",
-					"path": "./<language>.lproj/Localizable.stringsdict"
-				},
-				{
 					"language": "en",
 					"file_format": "ios_strings",
 					"tag": "storyboard:Localizable.strings",
 					"path": "./Base.lproj/MainStoryboard.strings"
-				},
-				{
-					"exclude_languages": ["en"],
-					"file_format": "ios_strings",
-					"tag": "storyboard:Localizable.strings",
-					"path": "./<language>.lproj/MainStoryboard.strings"
 				}
 			]
 		}
