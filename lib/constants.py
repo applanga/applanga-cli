@@ -1,10 +1,11 @@
-VERSION_NUMBER = '1.0.102'
+VERSION_NUMBER = '1.0.103'
 APPLANGA_HOST = 'https://api.applanga.com'
 API_BASE_PATH = '/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
 DEBUG_TEXT_COLOR = 'blue'
 ENVIRONMENT_VARIABLE = 'APPLANGA_CONFIG'
 X_INTEGRATION_HEADER_VALUE = '1'
+EXCLUDE_FORMAT_OVERLAP = [['ios_strings', 'ios_stringsdict']]
 FILE_FORMATS = {
     'android_xml': {
         'name': 'Android XML',

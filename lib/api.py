@@ -2,6 +2,7 @@ import click
 import requests
 import json
 import os
+import errno
 import re
 import time
 from lib import constants
@@ -137,7 +138,7 @@ def downloadFile(file_data, debug=False):
             try:
                 os.makedirs(os.path.dirname(file_path))
             except OSError as e:
-                if e.errno != os.errno.EEXIST:
+                if e.errno != errno.EEXIST:
                     raise
 
         open(file_path, 'wb').write(response.content)

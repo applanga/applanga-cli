@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.103 (10 Dec 2024)
+#### Fixed
+- Fixed contradictory configurations error messages for ios / ios_stringsdict overlap
+---
+
 ### Version 1.0.102 (21 Nov 2024)
 #### Fixed
 - Fixed initialize script and documentation for android / ios default setup

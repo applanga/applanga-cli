@@ -154,6 +154,10 @@ class FileBlock:
         if 'exclude_languages' in fileBlockData:
             self.exclude_languages = fileBlockData['exclude_languages']
 
+        self.file_format = None
+        if 'file_format' in fileBlockData:
+            self.file_format = fileBlockData['file_format']
+
     def compareTag(self, other): 
         tagEqual = None
         if isinstance(self.tag, list):
@@ -170,6 +174,12 @@ class FileBlock:
                 tagEqual = self.tag
         return tagEqual
 
+    def ignoreFormatOverlap(self, other):
+        for exclude in constants.EXCLUDE_FORMAT_OVERLAP:
+            if (self.file_format == exclude[0] and other.file_format == exclude[1]) or (self.file_format == exclude[1] and other.file_format == exclude[0]):
+                return True
+        return False
+
     def compare(self, other):
         if self.tag == None and other.tag == None:
             return False
@@ -177,6 +187,9 @@ class FileBlock:
         tagEqual = self.compareTag(other) != None
 
         if tagEqual == False:
+            return False
+        
+        if self.ignoreFormatOverlap(other):
             return False
         
         if self.language == None:
@@ -197,7 +210,7 @@ class FileBlock:
     
 
     def __str__(self):
-        return '''{language}:{tag}:{path}:{exc}'''.format(tag=self.tag, language=self.language, path=self.path, exc=self.exclude_languages)
+        return '''{language}:{tag}:{path}:{exc}:{format}'''.format(tag=self.tag, language=self.language, path=self.path, exc=self.exclude_languages, format=self.file_format)
 
             
 
