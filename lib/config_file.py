@@ -4,6 +4,7 @@ import os
 import platform
 import json
 from functools import cmp_to_key
+from pathlib import Path
 
 
 class ApplangaConfigFileNotValidException(Exception):
@@ -175,8 +176,10 @@ class FileBlock:
         return tagEqual
 
     def ignoreFormatOverlap(self, other):
+        if Path(self.path).stem != Path(other.path).stem:
+            return False
         for exclude in constants.EXCLUDE_FORMAT_OVERLAP:
-            if (self.file_format == exclude[0] and other.file_format == exclude[1]) or (self.file_format == exclude[1] and other.file_format == exclude[0]):
+            if ((self.file_format == exclude[0] and other.file_format == exclude[1]) or (self.file_format == exclude[1] and other.file_format == exclude[0])):
                 return True
         return False
 

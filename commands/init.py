@@ -146,7 +146,7 @@ def init(ctx):
             default_baselanguage_path = constants.FILE_FORMATS[file_format]['default_baselanguage_path']
             if platform.system() == 'Windows':
                 # If we are in Windows convert into correct format
-                default_baselanguage_path = files.convertToWindowsPath(defaultdefault_baselanguage_path_source_baselanguage_path)
+                default_baselanguage_path = files.convertToWindowsPath(default_baselanguage_path)
 
             baselanguage_path = input('Base language path [\"%s\"]: ' % default_baselanguage_path)
             baselanguage_path = baselanguage_path or default_baselanguage_path

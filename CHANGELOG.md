@@ -5,7 +5,13 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.103 (10 Dec 2024)
+### Version 1.0.104 (19 Dec 2024)
+#### Fixed
+- Added improved contradictory configuration error 
+- Fixed init script for windows file path conversion
+---
+
+### Version 1.0.103 (10 Dez 2024)
 #### Fixed
 - Fixed contradictory configurations error messages for ios / ios_stringsdict overlap
 ---
