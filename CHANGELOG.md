@@ -5,7 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
-### Version 1.0.104 (19 Dec 2024)
+### Version 1.0.105 (20 Feb 2025)
+#### Added
+- Added `csv`, `tsv` and `xls` file formats
+---
+
+### Version 1.0.104 (19 Dez 2024)
 #### Fixed
 - Added improved contradictory configuration error 
 - Fixed init script for windows file path conversion

@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.104'
+VERSION_NUMBER = '1.0.105'
 APPLANGA_HOST = 'https://api.applanga.com'
 API_BASE_PATH = '/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
@@ -177,5 +177,23 @@ FILE_FORMATS = {
         'extension': 'xliff',
         'default_file_path': './<language>.xliff',
         'default_tag_name': 'app:language.xliff'
+    },
+    'csv': {
+        'name': 'CSV File',
+        'extension': 'csv',
+        'default_file_path': './<language>.csv',
+        'default_tag_name': 'app:language.csv'
+    },
+    'tsv': {
+        'name': 'TSV File',
+        'extension': 'tsv',
+        'default_file_path': './<language>.tsv',
+        'default_tag_name': 'app:language.tsv'
+    },
+    'xls': {
+        'name': 'Excel',
+        'extension': 'xls',
+        'default_file_path': './<language>.xls',
+        'default_tag_name': 'app:language.xls'
     }
 }

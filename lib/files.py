@@ -148,8 +148,12 @@ def getFiles(source):
             if 'disable_plurals' in source:
                 return_files[file]['disable_plurals'] = source['disable_plurals']
 
+            #'importStatus' overwrites 'xliffStatus' if both are present
             if 'xliffStatus' in source:
-                return_files[file]['xliffStatus'] = source['xliffStatus']
+                return_files[file]['importStatus'] = source['xliffStatus']
+            if 'importStatus' in source:
+                return_files[file]['importStatus'] = source['importStatus']
+
             if 'createUnknownCustomStates' in source:
                 return_files[file]['createUnknownCustomStates'] = source['createUnknownCustomStates']
             if 'importSourceLanguage' in source:
@@ -164,6 +168,18 @@ def getFiles(source):
                 return_files[file]['onlyAsDraft'] = source['onlyAsDraft']
             if 'importIntoGroup' in source: 
                 return_files[file]['importIntoGroup'] = source['importIntoGroup']
+
+            if 'columnDescription' in source:
+                if '<language>' in source['columnDescription']:
+                    #only replace '<language>' if the same languiages does not yet exist in the 'columnDescription'
+                    if file_language not in source['columnDescription']:
+                        source['columnDescription'][file_language] = source['columnDescription']['<language>']
+                    del source['columnDescription']['<language>']
+                return_files[file]['columnDescription'] = source['columnDescription']
+            if 'sheetName' in source:
+                return_files[file]['sheetName'] = source['sheetName']
+            if 'excludeHeaderRow' in source:
+                return_files[file]['includeFirstRow'] = source['excludeHeaderRow']
 
     return {
                 'skipped': skipped_files,

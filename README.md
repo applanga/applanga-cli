@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.104
+*Version:* 1.0.105
 
 *Website:* <https://www.applanga.com>
 
@@ -193,6 +193,7 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - android_xml : [Android XML ](https://www.applanga.com/docs/formats/android_xml) (.xml)
 	 - angular_translate_json : [Angular Translate](https://www.applanga.com/docs/formats/angular_translate_json) (.json)
 	 - chrome_i18n_json : [Chrome i18n](https://www.applanga.com/docs/formats/chrome_i18n_json) (.json)
+	 - csv : [CSV](https://www.applanga.com/docs/formats/csv) (.csv)
 	 - ember_i18n_json_module : [Ember i18n JSON Module](https://www.applanga.com/docs/formats/ember_i18n_json_module) (.js)
 	 - ini : [INI](https://www.applanga.com/docs/formats/ini) (.ini)
 	 - gettext_po : [Gettext PO File](https://www.applanga.com/docs/formats/gettext_po) (.po)
@@ -217,7 +218,9 @@ There are a few mandatory and several optional properties that you can use to cu
 	 - microsoft_resw: [Microsoft Resw](https://www.applanga.com/docs/formats/microsoft_resx) (.resw)
 	 - microsoft_resx: [Microsoft Resx](https://www.applanga.com/docs/formats/microsoft_resx) (.resx)
 	 - toml : [Toml](https://www.applanga.com/docs/formats/toml) (.toml)
+	 - tsv : [TSV](https://www.applanga.com/docs/formats/tsv) (.tsv)
 	 - xliff: [Xliff](https://www.applanga.com/docs/formats/xliff) (.xliff)
+	 - xls: [Microsoft Excel](https://www.applanga.com/docs/formats/xls) (.xls or .xlsx)
 
 	***Example:*** `"file_format": "android_xml"`
 
@@ -419,21 +422,77 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	
 	***Example:*** `"remove_cr_char": true`
 
+- **"includeStatus"** *(pull commands only)*
+
+	The option is applicable only to file formats: csv, tsv, xls and xliff. If the value is set to `true`, the downloded files will contain the current statuse and the lastest comment for a particular string. This options by default is set to `false`.
+	
+	***Example:*** `"includeStatus": true`
+
+- **"excludeBaseLang"** *(pull commands only)*
+
+	The option is applicable only to file formats: csv, tsv, and xls. If the value is set to `true`, the downloaded files do not containe the base language column. This options by default is set to `false`.
+	
+	***Example:*** `"excludeBaseLang": true`
+
+- **"excludeHeaderRow"**
+
+	The option is applicable only to file formats: csv, tsv, and xls. This options by default is set to `false`.
+	
+	If the value is set to `true` for pull command, the downloaded file does not containe the usual header row that describes what is in which column (e.g. ID, en, description, etc). Instead, the exported content should start in row 1 without the header row. 
+
+	For pull command, for the `true` value the translation data is read from file from the first raw (there is no header). Otherwise the first row is not included in scope and treated as a header. 
+	
+	***Example:*** `"excludeHeaderRow": true`
+
+- **"columnDescription"**  *(push commands only, **mandatory for csv, tsv, and xls**)* 
+
+	The option is applicable only to file formats: csv, tsv, and xls. For these file formats the option must be provided. or the import will fail. It should contain an object linking columns numbers to the type of data found in them. The columns are numberd from 0 (A -> 0, B -> 1, etc.). The data types are:
+
+	- entry `KEY`
+	- exact language code (i.e. `en`) or language placeholder `<language>`
+	- entry `DESCRIPTION`
+	- string max `LENGTH`
+	- `METADATA_` keyword followed by the metadata name
+
+	A minimum the `KEY` and any other column must be specified.
+
+	***Example:*** 
+    ```json
+    "columnDescription": {
+        "KEY": 0,
+        "da": 2,
+        "DESCRIPTION": 4,
+        "LENGTH": 5,
+        "METADATA_product name": 6,
+        "METADATA_project": 7
+    }
+    ```
+
+- **sheetName**  *(push commands only)*
+
+	The option is applicable only to xls file formats. For multi-sheet Excel files, the data is imported only from one sheet. The option needs to be given for the data to be imported from a specific sheet. Otherwise by defualt the first sheet is imported.
+
+	***Example:*** `"sheetName": "Latest Sources"`
+
 
 ### Xliff specific options
 
 The following options will only work if the file_format is set to `xliff` (see [Applanga Xliff Format Documentation](https://applanga.com/docs/formats/xliff) for more information of the xliff format).
 
 
-- **"xliffStatus"**
+- **"xliffStatus"**  *- deprecated*
 	
-	The files will import/export the given statuses of the xliff file. This options by default is set to `false`.
+	Use **importStatus** option for push commands or **includeStatus** in pull commands
 
-	***Example:*** `"xliffStatus": true`
+- **"importStatus"** *(push commands only)*
+
+	The statuses in the xliff file will be imported into Applanga. This options by default is set to  `false`.
+
+	***Example:*** `"importStatus": true`
 
 - **"createUnknownCustomStates"** *(push commands only)*
 	
-	Default value is `false`. If set to true custom statuses provided inside the xliff format will be importet into Applanga.
+	Default value is `false`. If set to true custom statuses provided inside the xliff format will be imported into Applanga. The option only works if **importStatus** is also set to `true`.
 
 	***Example:*** `"createUnknownCustomStates": true`
 

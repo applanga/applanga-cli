@@ -57,16 +57,23 @@ def downloadFile(file_data, debug=False):
     if file_data['file_format'] in ['nested_json', 'react_nested_json', 'ruby_on_rails_yaml', 'symfony_yaml', 'symfony2_yaml', 'ember_i18n_json_module', 'node_2_json', 'go_i18n_json'] and 'disable_plurals' in file_data:
             request_options['disablePlurals'] = file_data['disable_plurals'] is True
 
-    if 'includeMetadata' in file_data:
+    if 'includeMetadata' in file_data and file_data['file_format'] in ['csv', 'tsv', 'xliff', 'xls', 'arb']:
         request_options['includeMetadata'] = file_data['includeMetadata']
     
     if 'includeInvisibleId' in file_data:
         request_options['includeInvisibleId'] = file_data['includeInvisibleId']
 
-    if 'xliffStatus' in file_data:
-        request_options['xliffStatus'] = file_data['xliffStatus']
+    if 'xliffStatus' in file_data and file_data['file_format'] in ['xliff']:
+        #'includeStatus' replaces 'xliffStatus' so both options should not be present
+        if 'includeStatus' in file_data:
+            raise ApplangaRequestException('The \'includeStatus\' option replaced \'xliffStatus\' options. Please use \'includeStatus\' option.\nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.')
+        request_options['includeStatus'] = file_data['xliffStatus']
 
-    if 'includeContextUrl' in file_data:
+    #'includeStatus' overwrites 'xliffStatus' if both are present
+    if 'includeStatus' in file_data and file_data['file_format'] in ['xliff', 'csv', 'tsv', 'xls']:
+        request_options['includeStatus'] = file_data['includeStatus']
+
+    if 'includeContextUrl' in file_data and file_data['file_format'] in ['xliff']:
         request_options['includeContextUrl'] = file_data['includeContextUrl']
 
     # check conditions for key_prefix
@@ -86,6 +93,14 @@ def downloadFile(file_data, debug=False):
     if 'remove_cr_char' in file_data:
         if file_data['remove_cr_char'] == True:
             request_options['removeCrChar'] = True
+
+    if file_data['file_format'] in ['csv', 'tsv', 'xls']:
+        if 'excludeHeaderRow' in file_data:
+            request_options['excludeHeaderRow'] = file_data['excludeHeaderRow']
+
+        if 'excludeBaseLang' in file_data:
+            request_options['excludeBaseLang'] = file_data['excludeBaseLang']
+
 
     try:
         # Request the file from server
@@ -214,6 +229,51 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 )
                 continue
 
+        #extra checks for comuplosry properties for Sheet imports
+        if source['file_format'] in ['csv', 'tsv', 'xls']:
+            #does 'columnDescription' property exist?
+            if 'columnDescription' not in source:
+                return_data.append( {
+                    'path': source['file_format'],
+                    'error': 'For \'csv\', \'tsv\' and \'xls\' providing the \'columnDescription\' property is compulsory. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                })
+                continue
+
+            columnDescription = source['columnDescription']
+            #does it contan 'KEY' property
+            if ('KEY' not in columnDescription):
+               return_data.append({
+                    'path': source['columnDescription'],
+                    'error': 'For \'csv\', \'tsv\' and \'xls\' providing the \'KEY\' in \'columnDescription\' property is compulsory. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                })
+               continue
+
+
+            valid_properties = ['<language>', 'DESCRIPTION', 'LENGTH']
+            language_regex = re.compile('^([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)$')
+            meta_regex = re.compile('^METADATA_.+')
+            #does it contay any other property than 'KEY; and is it a valid one?
+            if(len(columnDescription) == 1 or
+                not(
+                    any(prop in columnDescription for prop in valid_properties) or
+                    any(language_regex.match(prop) for prop in columnDescription) or
+                    any(meta_regex.match(prop) for prop in columnDescription)
+                )
+            ):
+                return_data.append({
+                    'path': source['columnDescription'],
+                    'error': 'For \'csv\', \'tsv\' and \'xls\' in \'columnDescription\' property the \'KEY\' and at least one other property like language code, \'<language>\', \'DESCRIPTION\', \'LENGTH\' or metadta is compulsory. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                })
+                continue
+
+            #are values inide columnDescription only numbers
+            if not all(isinstance(value, int) and value >= 0 for value in columnDescription.values()):
+                return_data.append( {
+                    'path': source['columnDescription'],
+                    'error': 'For \'csv\', \'tsv\' and \'xls\' a;; ptoprties in \'columnDescription\' must have none-negative integer value. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                })
+                continue
+
         language_files = files.getFiles(source)
 
         files_to_upload.append(language_files['found'])
@@ -256,8 +316,8 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 if  'disable_plurals' in file_data:
                     send_data['disable_plurals'] = file_data['disable_plurals']
 
-                if 'xliffStatus' in file_data:
-                    send_data['xliffStatus'] = file_data['xliffStatus']
+                if 'importStatus' in file_data:
+                    send_data['importStatus'] = file_data['importStatus']
 
                 if file_data['file_format'] in ['xliff'] and 'skipLockedTranslations' in file_data:
                     send_data['skipLockedTranslations'] = file_data['skipLockedTranslations']
@@ -279,6 +339,14 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
 
                 if file_data['file_format'] in ['xliff'] and 'importSourceLanguage' in file_data:
                     send_data['importSourceLanguage'] = file_data['importSourceLanguage']
+
+                if file_data['file_format'] in ['csv', 'tsv', 'xls']:
+                    if 'includeFirstRow' in file_data:
+                        send_data['includeFirstRow'] = file_data['includeFirstRow']
+                    if 'columnDescription' in file_data:
+                        send_data['columnDescription'] = file_data['columnDescription']
+                    if 'sheetName' in file_data:
+                        send_data['sheetName'] = file_data['sheetName']
 
                 response = uploadFile(send_data, force=force, draft=draft, debug=debug)
                 return_data.append(
@@ -326,8 +394,8 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
         if file_data['file_format'] in ['xliff'] and 'importSourceLanguage' in file_data:
             request_options['importSourceLanguage'] = file_data['importSourceLanguage']
 
-        if file_data['file_format'] in ['xliff'] and 'xliffStatus' in file_data:
-            request_options['xliffStatus'] = file_data['xliffStatus']
+        if file_data['file_format'] in ['xliff'] and 'importStatus' in file_data:
+            request_options['importStatus'] = file_data['importStatus']
 
         if file_data['file_format'] in ['xliff'] and 'createUnknownCustomStates' in file_data:
             request_options['createUnknownCustomStates'] = file_data['createUnknownCustomStates']
@@ -348,6 +416,15 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
 
         if 'removeCrChar' in file_data:
             request_options['removeCrChar'] = file_data['removeCrChar']
+
+        if file_data['file_format'] in ['csv', 'tsv', 'xls'] and 'columnDescription' in file_data:
+            spreadsheetOptions = {}
+            spreadsheetOptions['columnDescription'] = file_data['columnDescription']
+            if 'includeFirstRow' in file_data:
+                spreadsheetOptions['includeFirstRow'] = file_data['includeFirstRow']
+            if 'sheetName' in file_data:
+                spreadsheetOptions['sheetName'] = file_data['sheetName']
+            request_options['spreadsheetOptions'] = spreadsheetOptions
 
         request_data = {
             'file-format': file_data['file_format'],

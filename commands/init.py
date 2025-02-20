@@ -39,8 +39,8 @@ def init(ctx):
     target_path = None
     baselanguage_path = None
     tag = None
-	
-	
+    keyCol = None
+    langCol = None
 
     # Request all properties which are needed and did not get supplied
     # as arguments by user
@@ -111,6 +111,21 @@ def init(ctx):
         tag = input('Tag name [\"%s\"]: ' % default_tag_name)
         tag = tag or default_tag_name
 
+    if file_format in ['csv', 'tsv', 'xls']:
+        keyCol = input('\nChoose \'KEY\' column number (A -> 0, B -> 1, etc.) [\"0\"]:')
+        try:
+            keyCol = int(keyCol)
+        except:
+            keyCol = 0
+        if keyCol < 0:
+            keyCol = 0
+        langCol = input('\nChoose \'%s\' base language column number (A -> 0, B -> 1, etc.) [\"%d\"]:' % (base_language, keyCol + 1))
+        try:
+            langCol = int(langCol)
+        except:
+            langCol = keyCol + 1
+        if langCol < 0 or langCol == keyCol:
+            langCol = keyCol + 1
 
     # Save the configuration file
     configfile_data = {
@@ -185,6 +200,13 @@ def init(ctx):
                     ]
                 }
             }
+        }
+
+    #add mandatory minimum for spreadsheet formats
+    if file_format in ['csv', 'tsv', 'xls']:
+        configfile_data['app']['push']['source'][0]['columnDescription'] = {
+            'KEY': keyCol,
+            base_language: langCol
         }
 
     # Write the new config file to local folder
