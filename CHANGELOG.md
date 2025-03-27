@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.106 (27 Mar 2025)
+#### Added
+- Added `skipNonStringValues` option for json formats
+---
+
 ### Version 1.0.105 (20 Feb 2025)
 #### Added
 - Added `csv`, `tsv` and `xls` file formats

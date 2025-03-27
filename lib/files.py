@@ -180,6 +180,8 @@ def getFiles(source):
                 return_files[file]['sheetName'] = source['sheetName']
             if 'excludeHeaderRow' in source:
                 return_files[file]['includeFirstRow'] = source['excludeHeaderRow']
+            if 'skipNonStringValues' in source:
+                return_files[file]['skipNonStringValues'] = source['skipNonStringValues']
 
     return {
                 'skipped': skipped_files,

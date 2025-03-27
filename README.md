@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.105
+*Version:* 1.0.106
 
 *Website:* <https://www.applanga.com>
 
@@ -408,6 +408,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	***Example:*** `"key_prefix": "added_prefix1-"`
 
+
 - **"sort_by_key"** *(pull commands only)*
 
 	The keys in files downloaded on pull or **pullsource** command are sorted alphabetically. This option is by default set to `false`.
@@ -433,6 +434,15 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	The option is applicable only to file formats: csv, tsv, and xls. If the value is set to `true`, the downloaded files do not containe the base language column. This options by default is set to `false`.
 	
 	***Example:*** `"excludeBaseLang": true`
+
+- **"skipNonStringValues"** *(push commands only)*
+
+	The option is applicable only to json file formats. This option by default is set to `false`.
+
+	If you are uploading a json file where any key is not a string, you will by default get an error during pushing, since non string content is not allowed.
+	With this option set to `true` non string values are ignored during import and no error is returned.
+
+	***Example:*** `"skipNonStringValues": true`
 
 - **"excludeHeaderRow"**
 

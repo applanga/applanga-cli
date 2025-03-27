@@ -340,6 +340,9 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                 if file_data['file_format'] in ['xliff'] and 'importSourceLanguage' in file_data:
                     send_data['importSourceLanguage'] = file_data['importSourceLanguage']
 
+                if 'json' in file_data['file_format'] and 'skipNonStringValues' in file_data:
+                    send_data['skipNonStringValues'] = file_data['skipNonStringValues']
+
                 if file_data['file_format'] in ['csv', 'tsv', 'xls']:
                     if 'includeFirstRow' in file_data:
                         send_data['includeFirstRow'] = file_data['includeFirstRow']
@@ -425,6 +428,9 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
             if 'sheetName' in file_data:
                 spreadsheetOptions['sheetName'] = file_data['sheetName']
             request_options['spreadsheetOptions'] = spreadsheetOptions
+        
+        if 'json' in file_data['file_format'] and 'skipNonStringValues' in file_data:
+            request_options['skipNonStringValues'] = file_data['skipNonStringValues']
 
         request_data = {
             'file-format': file_data['file_format'],
