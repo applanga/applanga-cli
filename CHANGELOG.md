@@ -5,6 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.110 (5 Jun 2025)
+#### Fixed
+- Fixed an issue with the `columnDescription` option with `<language>` placeholder in use
+- Adapted the documentation for the `excludeHeaderRow` option to be more clear
+---
+
 ### Version 1.0.106 (27 Mar 2025)
 #### Added
 - Added `skipNonStringValues` option for json formats

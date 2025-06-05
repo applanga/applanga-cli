@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.106
+*Version:* 1.0.110
 
 *Website:* <https://www.applanga.com>
 
@@ -429,12 +429,6 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	
 	***Example:*** `"includeStatus": true`
 
-- **"excludeBaseLang"** *(pull commands only)*
-
-	The option is applicable only to file formats: csv, tsv, and xls. If the value is set to `true`, the downloaded files do not containe the base language column. This options by default is set to `false`.
-	
-	***Example:*** `"excludeBaseLang": true`
-
 - **"skipNonStringValues"** *(push commands only)*
 
 	The option is applicable only to json file formats. This option by default is set to `false`.
@@ -444,19 +438,33 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	***Example:*** `"skipNonStringValues": true`
 
+
+### Spreadsheet specific options (csv, tsv, xls)
+
+- **"excludeBaseLang"** *(pull commands only)*
+
+	If the value is set to `true`, the downloaded files do not containe the base language column. This options by default is set to `false`.
+	
+	***Example:*** `"excludeBaseLang": true`
+
 - **"excludeHeaderRow"**
 
-	The option is applicable only to file formats: csv, tsv, and xls. This options by default is set to `false`.
-	
-	If the value is set to `true` for pull command, the downloaded file does not containe the usual header row that describes what is in which column (e.g. ID, en, description, etc). Instead, the exported content should start in row 1 without the header row. 
+	By default, this option is set to `false`.
 
-	For pull command, for the `true` value the translation data is read from file from the first raw (there is no header). Otherwise the first row is not included in scope and treated as a header. 
+	This option has different meanings depending on if it is within a push part of the configuration or the pull part of the configuration.
+
+	For the push command, if the value is set to `true`, content is imported starting from the first row in the file. If the value is set to `false`, the first row is skipped and not included in the upload.
+
+	For the pull command, if the value is set to `true`, there will be no header section row added to generated file and the file will only contain the content in scope starting from row one. If the value is set to `false`, the generated file will contain a header section in the first row that describes the column content (e.g. ID, language, description, etc).
+
+	This means this setting should always match between push and pull blocks that are related to the same file.
+	If your files do not contain a header row and the translated files should **not** contain a header row either, excludeHeaderRow should be set to `true` for both push and pull.
 	
 	***Example:*** `"excludeHeaderRow": true`
 
 - **"columnDescription"**  *(push commands only, **mandatory for csv, tsv, and xls**)* 
 
-	The option is applicable only to file formats: csv, tsv, and xls. For these file formats the option must be provided. or the import will fail. It should contain an object linking columns numbers to the type of data found in them. The columns are numberd from 0 (A -> 0, B -> 1, etc.). The data types are:
+	For these file formats the option must be provided. or the import will fail. It should contain an object linking columns numbers to the type of data found in them. The columns are numberd from 0 (A -> 0, B -> 1, etc.). The data types are:
 
 	- entry `KEY`
 	- exact language code (i.e. `en`) or language placeholder `<language>`

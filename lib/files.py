@@ -1,6 +1,7 @@
 import click
 import glob2
 import re
+import copy
 from lib import config_file
 
 
@@ -170,12 +171,13 @@ def getFiles(source):
                 return_files[file]['importIntoGroup'] = source['importIntoGroup']
 
             if 'columnDescription' in source:
+                returnedColumnDescription = copy.deepcopy(source['columnDescription'])
                 if '<language>' in source['columnDescription']:
                     #only replace '<language>' if the same languiages does not yet exist in the 'columnDescription'
-                    if file_language not in source['columnDescription']:
-                        source['columnDescription'][file_language] = source['columnDescription']['<language>']
-                    del source['columnDescription']['<language>']
-                return_files[file]['columnDescription'] = source['columnDescription']
+                    if file_language not in source['columnDescription'] :
+                        returnedColumnDescription[file_language] = source['columnDescription']['<language>']
+                    del returnedColumnDescription['<language>']
+                return_files[file]['columnDescription'] = returnedColumnDescription
             if 'sheetName' in source:
                 return_files[file]['sheetName'] = source['sheetName']
             if 'excludeHeaderRow' in source:
