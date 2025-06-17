@@ -7,9 +7,11 @@ import commands
 @click.group()
 @click.version_option(constants.VERSION_NUMBER)
 @click.option('--debug/--no-debug', default=False)
+@click.option('--disable-cert-verification', default=False, is_flag=True)
 @click.pass_context
-def cli(ctx, debug):
+def cli(ctx, debug, disable_cert_verification):
     ctx.obj['DEBUG'] = debug
+    ctx.obj['disable-cert-verification'] = disable_cert_verification
 
 
 # Add all the commands we support

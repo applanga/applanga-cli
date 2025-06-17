@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.110
+*Version:* 1.0.111
 
 *Website:* <https://www.applanga.com>
 
@@ -13,8 +13,9 @@
   1. [Installation](#installation)
   2. [Initialization](#initialize-project)
   3. [Usage](#push-and-pull-translation-files)
-  4. [Configuration](#configuration)
-  5. [Configuration Examples](#configuration-examples)
+  4. [Connection Options](#connection-options)
+  5. [Configuration](#configuration)
+  6. [Configuration Examples](#configuration-examples)
 	- [Android Examples](#android-configuration-examples)
 	- [iOS Examples](#ios-configuration-examples)
 
@@ -111,6 +112,17 @@ For cases where you need to pull the source language changes from the dashboard 
 ```
 
 
+### Connection Options
+  - **--disable-cert-verification**
+By default the CLI uses certificate verification utilizing Mozilla’s carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates while verifying the identity of TLS hosts. This protects against man-in-the-middle attacks.
+However, certain network configurations, such as those involving proxies, might encounter issues with certificate verification. If you're in such a situation, you can disable certificate verification using this flag.
+We strongly discourage disabling certificate verification unless you have a specific setup that absolutely requires it, as it could compromises security.
+
+Example:
+```sh
+	applanga --disable-cert-verification push
+	applanga --disable-cert-verification pull
+```
 
 ### Push Options
 

@@ -5,6 +5,13 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.111 (17 Jun 2025)
+#### Added
+- Added `disable-cert-verification` option to disable certificate verification
+#### Fixed
+- Error handling for certain requests
+---
+
 ### Version 1.0.110 (5 Jun 2025)
 #### Fixed
 - Fixed an issue with the `columnDescription` option with `<language>` placeholder in use

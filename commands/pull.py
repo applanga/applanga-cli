@@ -20,8 +20,12 @@ def pull(ctx):
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
         return
 
-    projectVersion = api.getProjectVersion(debug=ctx.obj['DEBUG'])
-
+    try: 
+        projectVersion = api.getProjectVersion(ctx)
+    except api.ApplangaRequestException as e:
+        click.echo(str(e))
+        return
+    
     all_app_languages = []
     for target in config_file_data['app']['pull']['target']:
         if 'language' not in target:
@@ -31,7 +35,7 @@ def pull(ctx):
                 continue
 
             try:
-                all_app_languages = api.getAllAppLanguages(projectVersion, debug=ctx.obj['DEBUG'])
+                all_app_languages = api.getAllAppLanguages(ctx, projectVersion)
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')
                 click.secho('There was a problem getting the app languages:\n%s\n' % str(e), err=True, fg='red')
@@ -74,7 +78,7 @@ def pull(ctx):
             click.echo('=' * 60)
 
             try:
-                file_written = api.downloadFile(target, debug=ctx.obj['DEBUG'])
+                file_written = api.downloadFile(ctx, target)
                 click.echo('Result: "Success"')
                 click.echo('Wrote file: %s' % file_written)
 

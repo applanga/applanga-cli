@@ -58,7 +58,7 @@ def init(ctx):
                 'keepEmptyDataEntries' : 'false'
             }
         try:
-            response = api.makeRequest(access_token=access_token, data=data, debug=ctx.obj['DEBUG'])
+            response = api.makeRequest(ctx, access_token=access_token, data=data)
             response_data = response.json()
             click.echo('Access data got checked and is valid for app: "%s"\n' % response_data['name'])
             base_language = response_data['baseLanguage']

@@ -6,6 +6,7 @@ import os
 import tarfile
 import json
 from lib import api
+from lib import connection
 
 
 @click.command('updateSettingsfiles')
@@ -41,11 +42,11 @@ def updateSettingsfiles(ctx):
                     try:
                         url = "/projects/%s/updateSettings" % (appId)
 
-                        responseJson = api.makeRequest(api_path=url, data={
+                        responseJson = api.makeRequest(ctx, api_path=url, data={
                                                        'groupIds': groupIds, 'apiSecret': apiSecret, 'lastVersion': lastVersion}, base_path='/v1').json()
 
                         if responseJson['update'] == True:
-                            downloadSettingsFile(responseJson['settings'], path)
+                            downloadSettingsFile(ctx, responseJson['settings'], path)
                             click.echo('---> Settingsfile updated!')
                         else:
                             click.echo('---> Settingsfile up-to-date')
@@ -54,7 +55,7 @@ def updateSettingsfiles(ctx):
                         click.secho('Settingsfile update error:\n%s\n' %str(e), err=True, fg='red')
 
 
-def downloadSettingsFile(url, path):
+def downloadSettingsFile(ctx, url, path):
     """Downloads a settings file from given url
 
     Args:
@@ -65,7 +66,7 @@ def downloadSettingsFile(url, path):
         None
     """
     try:
-        response = requests.get(url)
+        response = connection.requestWrap(ctx, 'get', url)
         open(path, 'wb').write(response.content)
     except requests.exceptions.ConnectionError as e:
         raise api.ApplangaRequestException('Problem connecting to server. Please check your internet connection.')

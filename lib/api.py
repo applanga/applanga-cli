@@ -5,9 +5,11 @@ import os
 import errno
 import re
 import time
+
 from lib import constants
 from lib import config_file
 from lib import files
+from lib import connection
 
 try:
     FileNotFoundError
@@ -18,14 +20,13 @@ class ApplangaRequestException(Exception):
     pass
 
 
-
-def downloadFile(file_data, debug=False):
+def downloadFile(ctx, file_data):
     """Downloads file from Applanga.
 
     Args:
+        ctx: click context
         file_data: Data about the files to download.
-        debug: Display debug output.
-
+            
     Returns:
         Path of file which got downloaded
 
@@ -117,7 +118,7 @@ def downloadFile(file_data, debug=False):
 
         request_data['version'] = file_data['projectVersion']
 
-        response = makeRequest(data=request_data, api_path='/files', debug=debug)
+        response = makeRequest(ctx, data=request_data, api_path='/files')
 
     except ApplangaRequestException as e:
         raise ApplangaRequestException(str(e))
@@ -163,12 +164,14 @@ def downloadFile(file_data, debug=False):
 
 
 
-def uploadFiles(upload_files, force=False, draft=False, debug=False):
+def uploadFiles(ctx, upload_files, force=False, draft=False):
     """Uploads multiple files to Applanga.
 
     Args:
-        file_data: Data about the files to upload.
-        debug: Display debug output.
+        ctx: click context
+        upload_files: Data about the files to upload.
+        force: if true overwrite entries in the project
+        draft: if true push content as draft values
 
     Returns:
         API response
@@ -351,7 +354,7 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
                     if 'sheetName' in file_data:
                         send_data['sheetName'] = file_data['sheetName']
 
-                response = uploadFile(send_data, force=force, draft=draft, debug=debug)
+                response = uploadFile(ctx, send_data, force=force, draft=draft)
                 return_data.append(
                     {
                         'language': file_data['language'],
@@ -372,12 +375,14 @@ def uploadFiles(upload_files, force=False, draft=False, debug=False):
 
 
 
-def uploadFile(file_data, force=False, draft=False, debug=False):
+def uploadFile(ctx, file_data, force=False, draft=False):
     """Uploads a file to Applanga.
 
     Args:
+        ctx: click context
         file_data: Data about the file to upload.
-        debug: Display debug output.
+        force: if true overwrite entries in the project
+        draft: if true push content as draft values
 
     Returns:
         API response
@@ -447,18 +452,19 @@ def uploadFile(file_data, force=False, draft=False, debug=False):
         if 'key_prefix' in file_data:
             request_data['addKeyPrefix'] = file_data['key_prefix']
 
-        return makeRequest(data=request_data, api_path='/files', upload_file=file_data['path'], method='POST', debug=debug)
+        return makeRequest(ctx, data=request_data, api_path='/files', upload_file=file_data['path'], method='POST')
     except ApplangaRequestException as e:
         raise ApplangaRequestException(str(e))
 
 
 
-def getAllAppLanguages(projectVersion, debug):
+def getAllAppLanguages(ctx, projectVersion):
     """Gets all the languages the app has defined
 
     Args:
-        debug: Display debug output.
-
+        ctx: click context
+        projectVersion: version to request
+    
     Returns:
         Array of languages
     """
@@ -473,7 +479,7 @@ def getAllAppLanguages(projectVersion, debug):
         'version': projectVersion
     }
 
-    response = makeRequest(data=data, debug=debug)
+    response = makeRequest(ctx, data=data)
     response_data = response.json()
 
     if 'data' not in response_data:
@@ -483,11 +489,11 @@ def getAllAppLanguages(projectVersion, debug):
 
 
 
-def getProjectVersion(debug):
+def getProjectVersion(ctx):
     """Gets the latest project version
 
     Args:
-        debug: Display debug output.
+        ctx: click context
 
     Returns:
         Version number
@@ -496,7 +502,7 @@ def getProjectVersion(debug):
         'timestamp': time.time()
     }
 
-    response = makeRequest(data=request_data, api_path='/projectVersion', debug=debug)
+    response = makeRequest(ctx, data=request_data, api_path='/projectVersion')
     response_data = response.json()
 
     if 'appVersion' not in response_data:
@@ -506,16 +512,16 @@ def getProjectVersion(debug):
 
 
 
-def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, method='GET', debug=False, base_path=constants.API_BASE_PATH):
+def makeRequest(ctx, data={}, api_path=None, access_token=None, upload_file=None, method='GET', base_path=constants.API_BASE_PATH):
     """Makes a request to Applanga API.
 
     Args:
+        ctx: click context
         data: Data to send to API.
         api_path: Path to append to API URL.
         access_token: The access token to use.
         upload_file: File to upload with request.
         method: Request method to use.
-        debug: Display debug output.
         base_url: Api base path if specified will overwrite default '/v1/api'
 
     Returns:
@@ -569,7 +575,7 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
         data['branch'] = branch_id
 
 
-    if debug:
+    if ctx.obj['DEBUG']:
         click.secho('\nStart request:', fg=constants.DEBUG_TEXT_COLOR)
         click.secho('  URL: %s'  % (url), fg=constants.DEBUG_TEXT_COLOR)
         click.secho('  Method: %s'  % (method), fg=constants.DEBUG_TEXT_COLOR)
@@ -578,7 +584,9 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
 
     if method == 'GET':
         try:
-            response = requests.get(url, params=data, headers=headers)
+            response = connection.requestWrap(ctx, 'get', url, params=data, headers=headers)
+        except requests.exceptions.SSLError as e:
+            raise ApplangaRequestException('Request failed: HTTPS Certificate could not be verified. Potential man in the middle attack. If this is on purpose and you need to use a local certificate please use the --disable-cert-verification flag.')
         except requests.exceptions.ConnectionError as e:
             raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
     else:
@@ -586,7 +594,9 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
             try:
                 with open(upload_file, 'rb') as upload_file_content:
                     try:
-                        response = requests.post(url, params=data, headers=headers, files={upload_file: upload_file_content})
+                        response = connection.requestWrap(ctx, 'post', url, params=data, headers=headers, files={upload_file: upload_file_content})
+                    except requests.exceptions.SSLError as e:
+                        raise ApplangaRequestException('Request failed: HTTPS Certificate could not be verified. Potential man in the middle attack. If this is on purpose and you need to use a local certificate please use the --disable-cert-verification flag.')
                     except requests.exceptions.ConnectionError as e:
                         raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
 
@@ -595,12 +605,16 @@ def makeRequest(data={}, api_path=None, access_token=None, upload_file=None, met
                 raise ApplangaRequestException('Problem with accessing file to upload. The file does probably not exist or there are problems with the access rights.')
 
         else:
-            response = requests.post(url, params=data, headers=headers)
+            try:
+                response = connection.requestWrap(ctx, 'post', url, params=data, headers=headers)
+            except requests.exceptions.SSLError as e:
+                raise ApplangaRequestException('Request failed: HTTPS Certificate could not be verified. Potential man in the middle attack. If this is on purpose and you need to use a local certificate please use the --disable-cert-verification flag.')
+            except requests.exceptions.ConnectionError as e:
+                raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
 
-    if debug:
+    if ctx.obj['DEBUG']:
         click.secho('\nRequest response: %s' % response.text, fg=constants.DEBUG_TEXT_COLOR)
         click.secho('  Status code: %s'  % (response.status_code), fg=constants.DEBUG_TEXT_COLOR)
-
 
     if response.status_code != 200:
         # Request was not successful so raise exception

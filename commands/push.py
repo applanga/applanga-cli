@@ -23,7 +23,7 @@ def push(ctx, force, draft):
 
 
     try:
-        file_responses = api.uploadFiles(config_file_data['app']['push']['source'], force=force, draft=draft, debug=ctx.obj['DEBUG'])
+        file_responses = api.uploadFiles(ctx, config_file_data['app']['push']['source'], force=force, draft=draft)
     except api.ApplangaRequestException as e:
         click.secho('There was a problem with pushing files:\n%s\n' % str(e), err=True, fg='red')
         return
