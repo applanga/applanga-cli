@@ -114,7 +114,9 @@ For cases where you need to pull the source language changes from the dashboard 
 
 ### Connection Options
   - **--disable-cert-verification**
+
 By default the CLI uses certificate verification utilizing Mozilla’s carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates while verifying the identity of TLS hosts. This protects against man-in-the-middle attacks.
+
 However, certain network configurations, such as those involving proxies, might encounter issues with certificate verification. If you're in such a situation, you can disable certificate verification using this flag.
 We strongly discourage disabling certificate verification unless you have a specific setup that absolutely requires it, as it could compromises security.
 
