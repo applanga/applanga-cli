@@ -184,6 +184,8 @@ def getFiles(source):
                 return_files[file]['includeFirstRow'] = source['excludeHeaderRow']
             if 'skipNonStringValues' in source:
                 return_files[file]['skipNonStringValues'] = source['skipNonStringValues']
+            if 'autoGenerateMissingKeys' in source:
+                return_files[file]['autoGenerateMissingKeys'] = source['autoGenerateMissingKeys']
 
     return {
                 'skipped': skipped_files,

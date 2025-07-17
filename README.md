@@ -1,12 +1,14 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.111
+*Version:* 1.0.112
 
-*Website:* <https://www.applanga.com>
+*Website:* <https://www.globallinkstrings.com>
 
-*Changelog:* <https://www.applanga.com/changelog/cli>
+*Changelog:* <https://www.globallinkstrings.com/changelog/cli>
 ***
+
+> ⚠️ **Warning:** Please be aware that this article references our technology as Applanga. We are in the process of updating all materials to reflect our new brand name, GlobalLink Strings. While the functionality and content remain the same, you may see the old name in various sections. We appreciate your understanding and patience as we make these changes.
 
 ## Table of Contents
 
@@ -54,7 +56,7 @@ To update to the latest version call:
 ```
 
 ###### Installing on Mac pre-MacOS 11
-Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you have an older macOS you can use [Applanga CLI 1.0.51](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.applanga.com/changelog/cli) for more details.
+Please note that in order to run the latest Applanga CLI version on macOS you need to have at least macOS 11 (Big Sur) installed. If you have an older macOS you can use [Applanga CLI 1.0.51](https://github.com/applanga/applanga-cli/releases/tag/1.0.51) but be aware that not all features and fixes are available in that version. Please check the [Applanga CLI 1.0.51 README](https://github.com/applanga/applanga-cli/blob/1.0.51/README.md) and [CHANGELOG](https://www.globallinkstrings.com/changelog/cli) for more details.
 
 In order to install this via brew you need to run:
 	
@@ -65,7 +67,7 @@ In order to install this via brew you need to run:
 
 ##### Github
 
-To automate localization through Github please check the [Applanga Github Workflow Documentation](https://www.applanga.com/docs/integration-documentation/github-action).
+To automate localization through Github please check the [Applanga Github Workflow Documentation](https://www.globallinkstrings.com/docs/integration-documentation/github-action).
 
 ## Initialize Project
 
@@ -91,7 +93,7 @@ To pull translations from Applanga into local files:
 	applanga pull
 ```
 
-###### *NOTE: The CLI communicates with the [Applanga API](https://www.applanga.com/docs-integration/api) through our CDN to make sure the data is always reachable, but that also means changes (including pushes) are only available to pull after a 10 minute delay even if changes are already visible on the [Dashboard](https://dashboard.applanga.com)!*
+###### *NOTE: The CLI communicates with the [Applanga API](https://www.globallinkstrings.com/docs/integration-documentation/api) through our CDN to make sure the data is always reachable, but that also means changes (including pushes) are only available to pull after a 10 minute delay even if changes are already visible on the [Dashboard](https://dashboard.applanga.com)!*
 
 To push existing local translations to Applanga:
 
@@ -121,6 +123,7 @@ However, certain network configurations, such as those involving proxies, might 
 We strongly discourage disabling certificate verification unless you have a specific setup that absolutely requires it, as it could compromises security.
 
 Example:
+
 ```sh
 	applanga --disable-cert-verification push
 	applanga --disable-cert-verification pull
@@ -200,41 +203,41 @@ There are a few mandatory and several optional properties that you can use to cu
 
 	The file format specifies the format of the file that you want to push or pull which typically depends on the platform that you are localizing.
 
-	For a detailed format description check out the [Applanga File Format Documentation.](https://www.applanga.com/docs/formats)
+	For a detailed format description check out the [Applanga File Format Documentation.](https://www.globallinkstrings.com/docs/formats)
 	
 	Currently, the following formats are supported:
 
-	 - android_xml : [Android XML ](https://www.applanga.com/docs/formats/android_xml) (.xml)
-	 - angular_translate_json : [Angular Translate](https://www.applanga.com/docs/formats/angular_translate_json) (.json)
-	 - chrome_i18n_json : [Chrome i18n](https://www.applanga.com/docs/formats/chrome_i18n_json) (.json)
-	 - csv : [CSV](https://www.applanga.com/docs/formats/csv) (.csv)
-	 - ember_i18n_json_module : [Ember i18n JSON Module](https://www.applanga.com/docs/formats/ember_i18n_json_module) (.js)
-	 - ini : [INI](https://www.applanga.com/docs/formats/ini) (.ini)
-	 - gettext_po : [Gettext PO File](https://www.applanga.com/docs/formats/gettext_po) (.po)
-	 - gettext_pot : [Gettext POT File](https://www.applanga.com/docs/formats/gettext_pot) (.pot)
-	 - go_i18n_json : [go-i18n](https://www.applanga.com/docs/formats/go_i18n_json) (.json)
-	 - i18next_json : [i18next](https://www.applanga.com/docs/formats/i18next_json) (.json)
-	 - ios_strings : [iOS strings](https://www.applanga.com/docs/formats/ios_strings) (.strings)
-	 - ios_stringsdict : [iOS stringsdict](https://www.applanga.com/docs/formats/ios_stringsdict) (.stringsdict)
-	 - java_properties : [JAVA properties](https://www.applanga.com/docs/formats/java_properties)(.properties)
-	 - mozilla_i18n_json : [Mozilla i18n](https://www.applanga.com/docs/formats/mozilla_i18n_json) (.json)
-	 - mozilla_properties : [Mozilla properties](https://www.applanga.com/docs/formats/mozilla_properties) (.properties)
-	 - nested_json : [Nested JSON](https://www.applanga.com/docs/formats/nested_json)(.json)
-	 - node_2_json : [i18n-node-2](https://www.applanga.com/docs/formats/node_2_json) (.json)
-	 - react_nested_json : [React Nested JSON](https://www.applanga.com/docs/formats/react_nested_json) (.json)
-	 - react_simple_json : [React Simple JSON](https://www.applanga.com/docs/formats/react_simple_json) (.json)
-	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://www.applanga.com/docs/formats/ruby_on_rails_yaml) (.yaml)
-	 - symfony_yaml : [Symfony YAML](https://www.applanga.com/docs/formats/symfony_yaml) (.yaml)
-	 - symfony2_yaml : [Symfony 2 YAML](https://www.applanga.com/docs/formats/symfony2_yaml) (.yaml)
-	 - arb : [Flutter](https://www.applanga.com/docs/formats/arb) (.arb)
-	 - laravel_php : [PHP Laravel](https://www.applanga.com/docs/formats/laravel_php) (.php)
-	 - qt_ts : [Qt Linguist](https://www.applanga.com/docs/formats/ts) (.ts)
-	 - microsoft_resw: [Microsoft Resw](https://www.applanga.com/docs/formats/microsoft_resx) (.resw)
-	 - microsoft_resx: [Microsoft Resx](https://www.applanga.com/docs/formats/microsoft_resx) (.resx)
-	 - toml : [Toml](https://www.applanga.com/docs/formats/toml) (.toml)
-	 - tsv : [TSV](https://www.applanga.com/docs/formats/tsv) (.tsv)
-	 - xliff: [Xliff](https://www.applanga.com/docs/formats/xliff) (.xliff)
-	 - xls: [Microsoft Excel](https://www.applanga.com/docs/formats/xls) (.xls or .xlsx)
+	 - android_xml : [Android XML ](https://www.globallinkstrings.com/docs/formats/android_xml) (.xml)
+	 - angular_translate_json : [Angular Translate](https://www.globallinkstrings.com/docs/formats/angular_translate_json) (.json)
+	 - chrome_i18n_json : [Chrome i18n](https://www.globallinkstrings.com/docs/formats/chrome_i18n_json) (.json)
+	 - csv : [CSV](https://www.globallinkstrings.com/docs/formats/csv) (.csv)
+	 - ember_i18n_json_module : [Ember i18n JSON Module](https://www.globallinkstrings.com/docs/formats/ember_i18n_json_module) (.js)
+	 - ini : [INI](https://www.globallinkstrings.com/docs/formats/ini) (.ini)
+	 - gettext_po : [Gettext PO File](https://www.globallinkstrings.com/docs/formats/gettext_po) (.po)
+	 - gettext_pot : [Gettext POT File](https://www.globallinkstrings.com/docs/formats/gettext_pot) (.pot)
+	 - go_i18n_json : [go-i18n](https://www.globallinkstrings.com/docs/formats/go_i18n_json) (.json)
+	 - i18next_json : [i18next](https://www.globallinkstrings.com/docs/formats/i18next_json) (.json)
+	 - ios_strings : [iOS strings](https://www.globallinkstrings.com/docs/formats/ios_strings) (.strings)
+	 - ios_stringsdict : [iOS stringsdict](https://www.globallinkstrings.com/docs/formats/ios_stringsdict) (.stringsdict)
+	 - java_properties : [JAVA properties](https://www.globallinkstrings.com/docs/formats/java_properties)(.properties)
+	 - mozilla_i18n_json : [Mozilla i18n](https://www.globallinkstrings.com/docs/formats/mozilla_i18n_json) (.json)
+	 - mozilla_properties : [Mozilla properties](https://www.globallinkstrings.com/docs/formats/mozilla_properties) (.properties)
+	 - nested_json : [Nested JSON](https://www.globallinkstrings.com/docs/formats/nested_json)(.json)
+	 - node_2_json : [i18n-node-2](https://www.globallinkstrings.com/docs/formats/node_2_json) (.json)
+	 - react_nested_json : [React Nested JSON](https://www.globallinkstrings.com/docs/formats/react_nested_json) (.json)
+	 - react_simple_json : [React Simple JSON](https://www.globallinkstrings.com/docs/formats/react_simple_json) (.json)
+	 - ruby_on_rails_yaml : [Ruby on Rails YAML](https://www.globallinkstrings.com/docs/formats/ruby_on_rails_yaml) (.yaml)
+	 - symfony_yaml : [Symfony YAML](https://www.globallinkstrings.com/docs/formats/symfony_yaml) (.yaml)
+	 - symfony2_yaml : [Symfony 2 YAML](https://www.globallinkstrings.com/docs/formats/symfony2_yaml) (.yaml)
+	 - arb : [Flutter](https://www.globallinkstrings.com/docs/formats/arb) (.arb)
+	 - laravel_php : [PHP Laravel](https://www.globallinkstrings.com/docs/formats/laravel_php) (.php)
+	 - qt_ts : [Qt Linguist](https://www.globallinkstrings.com/docs/formats/ts) (.ts)
+	 - microsoft_resw: [Microsoft Resw](https://www.globallinkstrings.com/docs/formats/microsoft_resx) (.resw)
+	 - microsoft_resx: [Microsoft Resx](https://www.globallinkstrings.com/docs/formats/microsoft_resx) (.resx)
+	 - toml : [Toml](https://www.globallinkstrings.com/docs/formats/toml) (.toml)
+	 - tsv : [TSV](https://www.globallinkstrings.com/docs/formats/tsv) (.tsv)
+	 - xliff: [Xliff](https://www.globallinkstrings.com/docs/formats/xliff) (.xliff)
+	 - xls: [Microsoft Excel](https://www.globallinkstrings.com/docs/formats/xls) (.xls or .xlsx)
 
 	***Example:*** `"file_format": "android_xml"`
 
@@ -251,14 +254,35 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	
 	Defines the branch to use for the configuration. If the branch_id is not set, the "main" branch will be used. This will only work for Projects where branching is enabled. You can find the branch id in the **Project Settings** page.
 
-	To learn more about branching, please see the [Branching Documentation.](www.applanga.com/docs/advanced-features/branching)
+	To learn more about branching, please see the [Branching Documentation.](https://www.globallinkstrings.com/docs/advanced-features/branching)
 
 	***Example:*** `"branch_id": "<branch_id>"`
+
+	The branch_id property should be defined at the app level like this:
+	```json
+	{
+		"app": {
+			"access_token": "mytoken",
+			"branch_id": "mybranchid",
+			"base_language": "en",
+			"pull": {
+				"target": [
+				...
+				]
+			},
+			"push": {
+				"source": [
+				...
+				]
+			}
+		}
+	}
+	```
 
 
 - **"tag"**
 
-	This option is needed if you have multiple local files which is common for [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-submodule-library). If defined in the "source" block, it will set the specified tag to all strings that are uploaded from the given "path". In the "target" block, it will only download translations which have this tag applied.
+	This option is needed if you have multiple local files which is common for [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-and-submodule--library). If defined in the "source" block, it will set the specified tag to all strings that are uploaded from the given "path". In the "target" block, it will only download translations which have this tag applied.
 	This option also allows you to upload and download only a subset of all available strings to or from certain files. In addition to a single tag, you can also provide an array if you want to pull elements that are tagged differently into one file or if you want to add multiple tags for certain files on push.
 	
 	**Warning**: 
@@ -489,16 +513,23 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	A minimum the `KEY` and any other column must be specified.
 
 	***Example:*** 
-    ```json
-    "columnDescription": {
-        "KEY": 0,
-        "da": 2,
-        "DESCRIPTION": 4,
-        "LENGTH": 5,
-        "METADATA_product name": 6,
-        "METADATA_project": 7
-    }
-    ```
+	```json
+	"columnDescription": {
+		"KEY": 0,
+		"da": 2,
+		"DESCRIPTION": 4,
+		"LENGTH": 5,
+		"METADATA_product name": 6,
+		"METADATA_project": 7
+	}
+	```
+
+- **"autoGenerateMissingKeys"** *(push commands only)*
+
+	Default is `false`. By default entries inside the file with empty keys will be ignored in the `csv`, `tsv`, `xls` format. If enabled, keys will be automatically generated for imported entries that are missing one, based on a timestamp.
+
+
+	***Example:*** `"autoGenerateMissingKeys": true`
 
 - **sheetName**  *(push commands only)*
 
@@ -509,7 +540,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 ### Xliff specific options
 
-The following options will only work if the file_format is set to `xliff` (see [Applanga Xliff Format Documentation](https://applanga.com/docs/formats/xliff) for more information of the xliff format).
+The following options will only work if the file_format is set to `xliff` (see [Applanga Xliff Format Documentation](https://www.globallinkstrings.com/docs/formats/xliff) for more information of the xliff format).
 
 
 - **"xliffStatus"**  *- deprecated*
@@ -552,6 +583,7 @@ The following options will only work if the file_format is set to `xliff` (see [
 
 
 	***Example:*** `"skipEmptyTranslations": true`
+
 
 - **"onlyAsDraft"** *(push commands only)*
 	
@@ -607,7 +639,7 @@ The base Android strings are located in `./app/src/main/res/values/strings.xml`,
 }
 ```
 
-### Android App with Multiple Files & Submodule / Library
+### Android App with Multiple Files and Submodule / Library
 
 Apps can have strings in multiple files or in shared libraries. You can specify multiple files in the`.applanga.json` but to be able to upload and download the subset of strings to the correct file you need to use the **"tag"** property so that Applanga can properly identify which strings belong to which files.
 

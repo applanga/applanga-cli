@@ -349,6 +349,8 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                 if file_data['file_format'] in ['csv', 'tsv', 'xls']:
                     if 'includeFirstRow' in file_data:
                         send_data['includeFirstRow'] = file_data['includeFirstRow']
+                    if 'autoGenerateMissingKeys' in file_data:
+                        send_data['autoGenerateMissingKeys'] = file_data['autoGenerateMissingKeys']
                     if 'columnDescription' in file_data:
                         send_data['columnDescription'] = file_data['columnDescription']
                     if 'sheetName' in file_data:
@@ -430,6 +432,8 @@ def uploadFile(ctx, file_data, force=False, draft=False):
             spreadsheetOptions['columnDescription'] = file_data['columnDescription']
             if 'includeFirstRow' in file_data:
                 spreadsheetOptions['includeFirstRow'] = file_data['includeFirstRow']
+            if 'autoGenerateMissingKeys' in file_data:
+                request_options['autoGenerateMissingKeys'] = file_data['autoGenerateMissingKeys']
             if 'sheetName' in file_data:
                 spreadsheetOptions['sheetName'] = file_data['sheetName']
             request_options['spreadsheetOptions'] = spreadsheetOptions

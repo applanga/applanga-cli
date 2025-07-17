@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.112 (17 Jul 2025)
+#### Added
+- Added `autoGenerateMissingKeys` option for `csv`, `tsv` and `xls` formats
+---
+
 ### Version 1.0.111 (17 Jun 2025)
 #### Added
 - Added `disable-cert-verification` option to disable certificate verification
