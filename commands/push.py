@@ -3,15 +3,26 @@ import requests
 from lib import api
 from lib import config_file
 from lib import output
+from lib import options
 
 @click.command()
 @click.pass_context
 @click.option('--force', type=click.BOOL, is_flag=True, help="Overwrite existing values")
 @click.option('--draft', type=click.BOOL, is_flag=True, help="Upload values as draft")
-def push(ctx, force, draft):
+@click.option(
+    '--tag',
+    'tags',
+    multiple=True,
+    help='Only push files with the specified tags. Can be specified multiple times, e.g. --tag login --tag error'
+)
+def push(ctx, force, draft, tags):
     output.showCommandHeader('push', ctx)
 
-    try:
+    is_valid, parsed_tags = options.parse_and_validate_tags(tags)
+    if not is_valid:
+        return
+
+    try:        
         config_file_data = config_file.readRaw()
 
         if 'push' not in config_file_data['app']:
@@ -20,10 +31,19 @@ def push(ctx, force, draft):
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
         return
+    
+    source_files = config_file_data['app']['push']['source']
 
+    # Filter if parsed_tags is set
+    if parsed_tags:
+        try:
+            source_files = options.filter_files_by_tags(source_files, parsed_tags)
+        except Exception as e:
+            click.secho('There was a problem while filtering source files by tags:\n%s\n' % str(e), err=True, fg='red')
+            return
 
     try:
-        file_responses = api.uploadFiles(ctx, config_file_data['app']['push']['source'], force=force, draft=draft)
+        file_responses = api.uploadFiles(ctx, source_files, force=force, draft=draft)
     except api.ApplangaRequestException as e:
         click.secho('There was a problem with pushing files:\n%s\n' % str(e), err=True, fg='red')
         return

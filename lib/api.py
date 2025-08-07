@@ -110,6 +110,7 @@ def downloadFile(ctx, file_data):
             'language': file_data['language'],
             'options': json.dumps(request_options)
         }
+
         if 'tag' in file_data:
             request_data['tag'] = file_data['tag']
         
@@ -312,6 +313,9 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
 
                 if 'keepTagIds' in file_data:
                     send_data['keepTagIds'] = file_data['keepTagIds']
+                    
+                if 'tag_category' in file_data:
+                    send_data['tag_category'] = file_data['tag_category']
 
                 if 'key_prefix' in file_data:
                     send_data['key_prefix'] = file_data['key_prefix']
@@ -452,6 +456,9 @@ def uploadFile(ctx, file_data, force=False, draft=False):
 
         if 'keepTagIds' in file_data:
             request_data['keepTagIds'] = file_data['keepTagIds']
+        
+        if 'tag_category' in file_data:
+            request_data['tagCategory'] = file_data['tag_category']
 
         if 'key_prefix' in file_data:
             request_data['addKeyPrefix'] = file_data['key_prefix']

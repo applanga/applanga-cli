@@ -3,12 +3,24 @@ import requests
 from lib import api
 from lib import config_file
 from lib import output
+from lib import options
 
 
 @click.command()
 @click.pass_context
-def pull(ctx):
+@click.option(
+    '--tag',
+    'tags',
+    multiple=True,
+    help='Only pull entries with the specified tags. Can be specified multiple times, e.g. --tag login --tag error'
+)
+
+def pull(ctx, tags):
     output.showCommandHeader('pull', ctx)
+
+    is_valid, parsed_tags = options.parse_and_validate_tags(tags)
+    if not is_valid:
+        return
 
     try:
         config_file_data = config_file.readRaw()
@@ -44,7 +56,18 @@ def pull(ctx):
             break
 
     request_languages = []
-    for target in config_file_data['app']['pull']['target']:
+
+    target_files = config_file_data['app']['pull']['target']
+
+    # Filter if parsed_tags is set
+    if parsed_tags:
+        try:
+            target_files = options.filter_files_by_tags(target_files, parsed_tags)
+        except Exception as e:
+            click.secho('There was a problem while filtering target files by tags:\n%s\n' % str(e), err=True, fg='red')
+            return
+
+    for target in target_files:
 
         if 'language' in target:
             # Language is defined in config

@@ -139,6 +139,8 @@ def getFiles(source):
                 return_files[file]['tag'] = source['tag']
             if 'keepTagIds' in source:
                 return_files[file]['keepTagIds'] = source['keepTagIds']
+            if 'tag_category' in source:
+                return_files[file]['tag_category'] = source['tag_category']
             if 'file_format' in source:
                 return_files[file]['file_format'] = source['file_format']
             if 'key_prefix' in source:

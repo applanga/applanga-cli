@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.112
+*Version:* 1.0.113
 
 *Website:* <https://www.globallinkstrings.com>
 
@@ -117,38 +117,167 @@ For cases where you need to pull the source language changes from the dashboard 
 ### Connection Options
   - **--disable-cert-verification**
 
-By default the CLI uses certificate verification utilizing Mozilla’s carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates while verifying the identity of TLS hosts. This protects against man-in-the-middle attacks.
+	By default the CLI uses certificate verification utilizing Mozilla’s carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates while verifying the identity of TLS hosts. This protects against man-in-the-middle attacks.
 
-However, certain network configurations, such as those involving proxies, might encounter issues with certificate verification. If you're in such a situation, you can disable certificate verification using this flag.
-We strongly discourage disabling certificate verification unless you have a specific setup that absolutely requires it, as it could compromises security.
+	However, certain network configurations, such as those involving proxies, might encounter issues with certificate verification. If you're in such a situation, you can disable certificate verification using this flag.
+	We strongly discourage disabling certificate verification unless you have a specific setup that absolutely requires it, as it could compromises security.
 
-Example:
+	Example:
 
-```sh
-	applanga --disable-cert-verification push
-	applanga --disable-cert-verification pull
-```
+	```sh
+		applanga --disable-cert-verification push
+		applanga --disable-cert-verification pull
+	```
 
 ### Push Options
 
  - **--force**
  
-By default values are only pushed if they do not yet exist on the dashboard. This prevents accidental overwrite of translations. If you want to push locally changed files you can do so with the `--force` option. But be cautious with this option as it might overwrite values set by a translator on the dashboard; be sure to pull before you push. 
+	By default values are only pushed if they do not yet exist on the dashboard. This prevents accidental overwrite of translations. If you want to push locally changed files you can do so with the `--force` option. But be cautious with this option as it might overwrite values set by a translator on the dashboard; be sure to pull before you push. 
 
-For the xliff file format, the only way to override existing values or translations is by providing the onlyIfTextEmpty option and setting it to false. It's important to note that the --force option should not be used in conjunction with the xliff file format and the onlyIfTextEmpty option set to false, as the --force option is disregarded in this context.
+	For the xliff file format, the only way to override existing values or translations is by providing the onlyIfTextEmpty option and setting it to false. It's important to note that the --force option should not be used in conjunction with the xliff file format and the onlyIfTextEmpty option set to false, as the --force option is disregarded in this context.
 
-```sh
-	applanga push --force
-```
+	```sh
+		applanga push --force
+	```
 
  - **--draft**
  
-You can push values into the draft field to review them on the dashboard before you release/publish them using the `--draft` option. This is optional and only recommended if you plan to incorporate review of content on the Applanga dashboard. 
+	You can push values into the draft field to review them on the dashboard before you release/publish them using the `--draft` option. This is optional and only recommended if you plan to incorporate review of content on the Applanga dashboard. 
 
-```sh
-	applanga push --draft
-```
+	```sh
+		applanga push --draft
+	```
 
+- **--tag**
+
+	This option is used both for `push` and `pushtarget` commands. It lets you filter and limit the files to be pushed based on their assigned tags. The option can be specified **multiple times**, with each occurrence providing one tag value. Only those files whose `"tag"` field contains at least one of the specified values will be included.
+
+	> If the `"tag"` field is missing from a file in the config, that file will be ignored when `--tag` is used.
+
+	***.applanga.json Configuration Example:***
+
+	```json
+	{
+		"app": {
+			...,
+			"push": {
+				"source": [
+					{
+						"language": "en",
+						"path": "./en.json",
+						"tag": "sample"
+					},
+					{
+						"language": "en-CA",
+						"path": "./en-CA.json",
+						"tag": ["error", "enclave"]
+					},
+					{
+						"language": "en-AU",
+						"path": "./en-AU.json"
+					}
+				]
+			},
+			"pull": {
+				"target": [
+					{
+						"language": "fr",
+						"path": "./fr.json",
+						"tag": ["login", "signup"]
+					},
+					{
+						"language": "de",
+						"path": "./de.json",
+						"tag": "welcome"
+					}
+				]
+			}
+		}
+	}
+	```
+
+	***push command Example:***
+
+	```sh
+	applanga push --tag sample --tag error --tag loading
+	```
+
+	When the above command is run against the configuration only `en.json` and `en-CA.json` will be pushed, as their tags match the specified list. The file `en-AU.json` will be skipped because it has no tags defined.
+
+	***pushtarget command Example:***
+
+	```sh
+	applanga pushtarget --tag welcome
+	```
+
+	When the above command is run against the configuration only `de.json` will be pushed, as their tags match the specified list. The file `fr.json` will be skipped because it has no matching tags.
+
+
+### Pull Options
+
+- **--tag**
+
+	This option is used for both `pull` and `pullsource` commands. It lets you filter and limit the entries or files to be pulled based on their assigned tags. The option can be specified **multiple times**, with each occurrence providing one tag value. Only those files whose `"tag"` field contains at least one of the specified values will be included.
+
+	> If the `"tag"` field is missing from a file in the config, that file will be ignored when `--tag` is used.
+
+	***.applanga.json Configuration Example:***
+	```json
+	{
+		"app": {
+			...,
+			"push": {
+				"source": [
+					{
+						"language": "en",
+						"path": "./en.json",
+						"tag": "sample"
+					},
+					{
+						"language": "en-CA",
+						"path": "./en-CA.json",
+						"tag": ["error", "enclave"]
+					},
+					{
+						"language": "en-AU",
+						"path": "./en-AU.json"
+					}
+				]
+			},
+			"pull": {
+				"target": [
+					{
+						"language": "fr",
+						"path": "./fr.json",
+						"tag": ["login", "signup"]
+					},
+					{
+						"language": "de",
+						"path": "./de.json",
+						"tag": "welcome"
+					}
+				]
+			}
+		}
+	}
+	```
+
+	***pull command Example:***
+
+	```sh
+	applanga pull --tag login --tag error --tag signup
+	```
+
+	When the above command is run, only `fr.json` will be pulled, because its tags match the specified list. `de.json` will be skipped since it doesn't match any of the specified tags.
+
+	***pullsource command Example:***
+
+	```sh
+	applanga pullsource --tag enclave
+	```
+
+	In this case, only `en-CA.json` will be pulled, because its tags include `enclave`. `en.json` and `en-AU.json` will be skipped since they either don’t match or have no tags.
 
 
 ## Configuration
@@ -300,6 +429,16 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	This option is only considered when you provide the 'tag' option. If you wish to retain all entries tagged with the current Tag, even if they are not included in the uploaded file, then set this option to true.
 
 	***Example:*** `"keepTagIds": true`
+
+- **"tag_category"** *(push commands only)*
+
+	The tag category will be applied on the tag specified in the **tag** option. If the option contains an array of tags, the category will be applied on all tags in the array.
+	If the same tag is used multiple times in the CLI configuration file, the **tag_category** must be set consistently for all instances.
+	The allowed values are default catagory names *iOS*, *Android*, *Web*, *Jira*, custom tag category name (created in the project) or *None* for unsetting the category of a tag.
+	
+	An error will be returned if the **tag** property is not specified when **tag_category** is used OR if the specified tag category does not exist in the project.
+
+	***Example:*** `"tag_category": "Core strings"`
 
 - **"language"**
 

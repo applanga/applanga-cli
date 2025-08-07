@@ -5,6 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.113 (7 Aug 2025)
+#### Added
+- Added `tag_category` option
+- Added `--tag` option to `push`, `pushtarget`, `pull`, and `pullsource` commands for filtering files or entries by tag
+---
+
 ### Version 1.0.112 (17 Jul 2025)
 #### Added
 - Added `autoGenerateMissingKeys` option for `csv`, `tsv` and `xls` formats

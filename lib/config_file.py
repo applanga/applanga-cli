@@ -158,6 +158,10 @@ class FileBlock:
         self.file_format = None
         if 'file_format' in fileBlockData:
             self.file_format = fileBlockData['file_format']
+        
+        self.tag_category = None
+        if 'tag_category' in fileBlockData:
+            self.tag_category = fileBlockData['tag_category']
 
     def compareTag(self, other): 
         tagEqual = None
@@ -191,6 +195,11 @@ class FileBlock:
 
         if tagEqual == False:
             return False
+
+        if self.tag_category != other.tag_category:
+            selfTag = tag_to_str(self.tag)
+            otherTag = tag_to_str(other.tag)
+            raise ApplangaConfigFileNotValidException(f'Inconsistent tag_category for tag(s): "{self.tag_category}" for {selfTag} VS "{other.tag_category}" for {otherTag}.')
         
         if self.ignoreFormatOverlap(other):
             return False
@@ -215,7 +224,8 @@ class FileBlock:
     def __str__(self):
         return '''{language}:{tag}:{path}:{exc}:{format}'''.format(tag=self.tag, language=self.language, path=self.path, exc=self.exclude_languages, format=self.file_format)
 
-            
+def tag_to_str(tag):
+    return json.dumps(tag)
 
 def testTagConflict(config_data):
     push_map = {}
