@@ -19,6 +19,11 @@ except NameError:
 class ApplangaRequestException(Exception):
     pass
 
+class ApplangaConnectionException(Exception):
+    pass
+
+class ApplangaAuthenticationException(Exception):
+    pass
 
 def downloadFile(ctx, file_data):
     """Downloads file from Applanga.
@@ -599,7 +604,7 @@ def makeRequest(ctx, data={}, api_path=None, access_token=None, upload_file=None
         except requests.exceptions.SSLError as e:
             raise ApplangaRequestException('Request failed: HTTPS Certificate could not be verified. Potential man in the middle attack. If this is on purpose and you need to use a local certificate please use the --disable-cert-verification flag.')
         except requests.exceptions.ConnectionError as e:
-            raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
+            raise ApplangaConnectionException('Problem connecting to server. Please check your internet connection.')
     else:
         if upload_file:
             try:
@@ -609,7 +614,7 @@ def makeRequest(ctx, data={}, api_path=None, access_token=None, upload_file=None
                     except requests.exceptions.SSLError as e:
                         raise ApplangaRequestException('Request failed: HTTPS Certificate could not be verified. Potential man in the middle attack. If this is on purpose and you need to use a local certificate please use the --disable-cert-verification flag.')
                     except requests.exceptions.ConnectionError as e:
-                        raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
+                        raise ApplangaConnectionException('Problem connecting to server. Please check your internet connection.')
 
             except IOError as e:
                 click.echo(e)
@@ -621,7 +626,7 @@ def makeRequest(ctx, data={}, api_path=None, access_token=None, upload_file=None
             except requests.exceptions.SSLError as e:
                 raise ApplangaRequestException('Request failed: HTTPS Certificate could not be verified. Potential man in the middle attack. If this is on purpose and you need to use a local certificate please use the --disable-cert-verification flag.')
             except requests.exceptions.ConnectionError as e:
-                raise ApplangaRequestException('Problem connecting to server. Please check your internet connection.')
+                raise ApplangaConnectionException('Problem connecting to server. Please check your internet connection.')
 
     if ctx.obj['DEBUG']:
         click.secho('\nRequest response: %s' % response.text, fg=constants.DEBUG_TEXT_COLOR)
@@ -639,7 +644,11 @@ def makeRequest(ctx, data={}, api_path=None, access_token=None, upload_file=None
         except ValueError as e:
             exception_text = response.text
 
-        raise ApplangaRequestException('API response: ' + exception_text)
+        # check if it's an authentication error
+        if response.status_code == 403:
+            raise ApplangaAuthenticationException(exception_text)
+        else:
+            raise ApplangaRequestException('API response: ' + exception_text)
 
     # Request was successful so return
     return response

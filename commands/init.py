@@ -62,8 +62,14 @@ def init(ctx):
             response_data = response.json()
             click.echo('Access data got checked and is valid for app: "%s"\n' % response_data['name'])
             base_language = response_data['baseLanguage']
+        except api.ApplangaConnectionException as e:
+            click.secho(str(e), err=True, fg='red')
+            access_token = None
+        except api.ApplangaAuthenticationException as e:
+            click.secho('There was a problem with supplied access token: %s\n' % str(e), err=True, fg='red')
+            access_token = None
         except api.ApplangaRequestException as e:
-            click.secho('There was a problem with supplied access token:\n%s\n' % str(e), err=True, fg='red')
+            click.secho('Error: %s\n' % str(e), err=True, fg='red')
             access_token = None
 
     while not file_format or file_format not in constants.FILE_FORMATS.keys():
@@ -108,7 +114,14 @@ def init(ctx):
     
     if not tag:
         default_tag_name = constants.FILE_FORMATS[file_format]['default_tag_name']
-        tag = input('Tag name [\"%s\"]: ' % default_tag_name)
+        while True:
+            tag = input('Tag name [\"%s\"]: ' % default_tag_name)
+
+            # check tag name char limit
+            if len(tag) <= constants.TAG_NAME_CHAR_LIMIT:
+                break
+            else:
+                click.secho(f'Error: Tag name cannot be longer than {constants.TAG_NAME_CHAR_LIMIT} characters.', err=True, fg='red')
         tag = tag or default_tag_name
 
     if file_format in ['csv', 'tsv', 'xls']:

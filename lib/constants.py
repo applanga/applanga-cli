@@ -1,4 +1,4 @@
-VERSION_NUMBER = '1.0.113'
+VERSION_NUMBER = '1.0.114'
 APPLANGA_HOST = 'https://api.applanga.com'
 API_BASE_PATH = '/v1/api'
 CONFIG_FILE_NAME = '.applanga.json'
@@ -197,3 +197,5 @@ FILE_FORMATS = {
         'default_tag_name': 'app:language.xls'
     }
 }
+
+TAG_NAME_CHAR_LIMIT = 400

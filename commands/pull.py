@@ -4,6 +4,7 @@ from lib import api
 from lib import config_file
 from lib import output
 from lib import options
+import json
 
 
 @click.command()
@@ -31,9 +32,14 @@ def pull(ctx, tags):
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
         return
+    
+    options.log_config(ctx, config_file_data)
 
     try: 
         projectVersion = api.getProjectVersion(ctx)
+    except api.ApplangaConnectionException as e:
+        click.secho(str(e), err=True, fg='red')
+        return
     except api.ApplangaRequestException as e:
         click.echo(str(e))
         return
@@ -65,6 +71,10 @@ def pull(ctx, tags):
             target_files = options.filter_files_by_tags(target_files, parsed_tags)
         except Exception as e:
             click.secho('There was a problem while filtering target files by tags:\n%s\n' % str(e), err=True, fg='red')
+            return
+    else:
+        # check 400 chars limit for tag names
+        if not options.validate_tags_length_in_files(target_files):
             return
 
     for target in target_files:
@@ -104,6 +114,10 @@ def pull(ctx, tags):
                 file_written = api.downloadFile(ctx, target)
                 click.echo('Result: "Success"')
                 click.echo('Wrote file: %s' % file_written)
+
+            except api.ApplangaConnectionException as e:
+                click.secho(str(e), err=True, fg='red')
+                return
 
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')

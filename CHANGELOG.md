@@ -5,6 +5,13 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.114 (3 Nov 2025)
+#### Added
+- Added max length check for Tags (400 Characters)
+- Fixed a misleading error message about internet connection and invalid token
+- Added debug logs for unknown tags given via `--tag` option
+---
+
 ### Version 1.0.113 (7 Aug 2025)
 #### Added
 - Added `tag_category` option

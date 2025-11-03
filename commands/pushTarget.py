@@ -41,9 +41,16 @@ def pushTarget(ctx, force, draft, tags):
         except Exception as e:
             click.secho('There was a problem while filtering target files by tags:\n%s\n' % str(e), err=True, fg='red')
             return
+    else:
+        # check 400 chars limit for tag names
+        if not options.validate_tags_length_in_files(target_files):
+            return
 
     try:
         file_responses = api.uploadFiles(ctx, target_files, force=force, draft=draft)
+    except api.ApplangaConnectionException as e:
+        click.secho(str(e), err=True, fg='red')
+        return
     except api.ApplangaRequestException as e:
         click.secho('There was a problem with pushing files:\n%s\n' % str(e), err=True, fg='red')
         return

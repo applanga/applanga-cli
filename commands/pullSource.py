@@ -33,6 +33,9 @@ def pullSource(ctx, tags):
 
     try: 
         projectVersion = api.getProjectVersion(ctx)
+    except api.ApplangaConnectionException as e:
+        click.secho(str(e), err=True, fg='red')
+        return
     except api.ApplangaRequestException as e:
         click.echo(str(e))
         return
@@ -63,6 +66,10 @@ def pullSource(ctx, tags):
             source_files = options.filter_files_by_tags(source_files, parsed_tags)
         except Exception as e:
             click.secho('There was a problem while filtering source files by tags:\n%s\n' % str(e), err=True, fg='red')
+            return
+    else:
+        # check 400 chars limit for tag names
+        if not options.validate_tags_length_in_files(source_files):
             return
         
     
@@ -104,6 +111,10 @@ def pullSource(ctx, tags):
                 file_written = api.downloadFile(ctx, target)
                 click.echo('Result: "Success"')
                 click.echo('Wrote file: %s' % file_written)
+
+            except api.ApplangaConnectionException as e:
+                click.secho(str(e), err=True, fg='red')
+                return
 
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')

@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.113
+*Version:* 1.0.114
 
 *Website:* <https://www.globallinkstrings.com>
 
@@ -154,6 +154,8 @@ For cases where you need to pull the source language changes from the dashboard 
 	This option is used both for `push` and `pushtarget` commands. It lets you filter and limit the files to be pushed based on their assigned tags. The option can be specified **multiple times**, with each occurrence providing one tag value. Only those files whose `"tag"` field contains at least one of the specified values will be included.
 
 	> If the `"tag"` field is missing from a file in the config, that file will be ignored when `--tag` is used.
+	
+	> Tags have a maximum length of 400 Characters
 
 	***.applanga.json Configuration Example:***
 
@@ -221,6 +223,8 @@ For cases where you need to pull the source language changes from the dashboard 
 	This option is used for both `pull` and `pullsource` commands. It lets you filter and limit the entries or files to be pulled based on their assigned tags. The option can be specified **multiple times**, with each occurrence providing one tag value. Only those files whose `"tag"` field contains at least one of the specified values will be included.
 
 	> If the `"tag"` field is missing from a file in the config, that file will be ignored when `--tag` is used.
+	
+	> Tags have a maximum length of 400 Characters
 
 	***.applanga.json Configuration Example:***
 	```json
@@ -412,7 +416,7 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 - **"tag"**
 
 	This option is needed if you have multiple local files which is common for [iOS](#ios-app-with-pluralization-stringsdict-and-storyboard-strings) and [Android](#android-app-with-multiple-files-and-submodule--library). If defined in the "source" block, it will set the specified tag to all strings that are uploaded from the given "path". In the "target" block, it will only download translations which have this tag applied.
-	This option also allows you to upload and download only a subset of all available strings to or from certain files. In addition to a single tag, you can also provide an array if you want to pull elements that are tagged differently into one file or if you want to add multiple tags for certain files on push.
+	This option also allows you to upload and download only a subset of all available strings to or from certain files. In addition to a single tag, you can also provide an array if you want to pull elements that are tagged differently into one file or if you want to add multiple tags for certain files on push. *Note: Tags have a limit of 400 characters.*
 	
 	**Warning**: 
 	
