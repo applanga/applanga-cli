@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.115
+*Version:* 1.0.116
 
 *Website:* <https://www.globallinkstrings.com>
 
@@ -282,6 +282,61 @@ For cases where you need to pull the source language changes from the dashboard 
 	```
 
 	In this case, only `en-CA.json` will be pulled, because its tags include `enclave`. `en.json` and `en-AU.json` will be skipped since they either don’t match or have no tags.
+
+- **--languages**
+
+	This option lets you limit which languages are processed during a pull by specifying a comma-separated list of language codes. Only files for the specified languages will be processed.
+
+	> If you specify a language with `--languages` that is not configured for the current target in your `.applanga.json` file, does not exist in your Applanga project, or is excluded by any `exclude_languages` setting, it will be ignored and a warning will be displayed.
+
+	***Example usage:***
+	```sh
+	applanga pull --languages "fr,de"
+	```
+	This will only pull translations for French (`fr`) and German (`de`), ignoring any other languages defined in the configuration.
+
+	> When a language code specified with this option appears in the relevant target’s `exclude_languages`, or is not present in your config or Applanga project, it will be skipped, and a warning will be shown.
+
+	***.applanga.json Example with `exclude_languages`:***
+	```json
+	{
+		"app": {
+			// ... other configuration ...
+			"pull": {
+				"target": [
+					{
+						"path": "./<language>.json",
+						"file_format": "json",
+						"tag": "dashboard",
+						"exclude_languages": ["fr", "zh-Hans", "es", "pt-BR"]
+					}
+					// ... more targets ...
+				]
+			}
+		}
+	}
+	```
+
+	***Example command:***
+	```sh
+	applanga pull --languages "ja,fr,de,zh-Hans,es,pt-BR"
+	```
+	In this example:
+	- Only languages that appear in the `--languages` option and are **not** included in `exclude_languages` will be pulled.
+	- `ja` and `de` will be pulled.
+	- `fr`, `zh-Hans`, `es`, and `pt-BR` will be skipped, and a warning will inform you that these languages were excluded for this target.
+	- Any language that is not present in the configuration for the current target, or does not exist in your Applanga project, will be ignored and a warning will be displayed.
+
+
+	> The `--languages` option can be combined with `--tag` to further restrict which entries/files are processed. Regional codes and language codes must match the codes used in your Applanga project and configuration.
+
+	***Tags and Languages Together Example:***
+	```sh
+	applanga pull --languages fr,de --tag login
+	```
+	In this case, only files for French or German that also have the `login` tag will be pulled.
+
+
 
 
 ## Configuration

@@ -2,6 +2,7 @@
 import click
 from typing import List, Dict, Optional
 import json
+import re
 from copy import deepcopy
 from .constants import TAG_NAME_CHAR_LIMIT, DEBUG_TEXT_COLOR
 
@@ -139,3 +140,47 @@ def log_config(ctx, config_file_data):
         click.secho('Failed to log config file: %s' % str(e), err=True, fg='red')
 
 
+
+LANGUAGE_CODE_PATTERNS = [
+    re.compile(r'^[a-z]{2}(-[A-Z][a-z]{3})?(-[A-Z]{2})?$'),
+    re.compile(r'^[a-z]{3}$')
+]
+
+
+def language_code_is_valid(code):
+    """
+    Validate a language code. Return True if the given language code matches one of the supported formats.
+
+    Supported formats include:
+      - "en", "fr", "de"                  (2-letter ISO 639-1)
+      - "aaa", "aar"                      (3-letter ISO 639-2/3)
+      - "en-US", "de-DE"                  (language-REGION)
+      - "zh-Hant-TW", "sr-Cyrl-RS"        (language-Script-REGION)
+
+    Examples of invalid codes:
+      - "EN"          (must be lowercase)
+      - "en-us"       (region must be uppercase)
+      - "en_latn_US"  (wrong separators)
+      - "engl"        (too long, not ISO format)
+    """
+    return any(regex.match(code) for regex in LANGUAGE_CODE_PATTERNS)
+
+
+def parse_and_validate_languages(languages):
+    """Parse the --languages option and validate each code."""
+    if not languages:
+        return True, []
+
+    parsed = [code.strip() for code in languages.split(',') if code.strip()]
+
+    invalid = [code for code in parsed if not language_code_is_valid(code)]
+
+    if invalid:
+        click.secho(
+            'Invalid language code(s): %s' % ', '.join(invalid),
+            err=True,
+            fg='red'
+        )
+        return False, []
+
+    return True, parsed
