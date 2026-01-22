@@ -192,6 +192,9 @@ def pull(ctx, tags, languages):
 
     for target in target_files:
 
+        if 'language' in target and '<language>' in target['path']:
+            click.secho('The Block for path %s has a specific language defined and uses the <language> variable. We strongly advice you to only use one of either' % target['path'], err=True, fg='red')
+        
         if 'language' in target:
             # Language is defined in config
             request_languages = [target['language']]

@@ -5,6 +5,12 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.117 (22 Jan 2026)
+#### Added
+- Added additional warnings
+- Added skipped files count in pushing commands
+---
+
 ### Version 1.0.116 (18 Dec 2025)
 #### Added
 - Added `--languages` flag to `pull` command
@@ -15,6 +21,7 @@
 - Added max length check for Tags (400 Characters)
 - Fixed a misleading error message about internet connection and invalid token
 - Added debug logs for unknown tags given via `--tag` option
+- Fixed language mapping for cases like "zh-Hant": "zh-Hant-CN"
 ---
 
 ### Version 1.0.113 (7 Aug 2025)

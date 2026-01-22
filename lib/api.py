@@ -131,14 +131,6 @@ def downloadFile(ctx, file_data):
 
     language = file_data['language']
 
-    language_ = language.replace('-', '_')
-    if 'android_xml' == file_data['file_format'] and len(language) == 5:
-        language = language.replace('-', '-r')
-
-
-    if 'arb' == file_data['file_format'] and len(language) >= 5:
-        language = language_
-
     try:
         config_file_data = config_file.readRaw()
         languageMapping = config_file_data['languageMap']
@@ -146,7 +138,16 @@ def downloadFile(ctx, file_data):
             language = languageMapping[language]
     except Exception as e:
         pass
-    
+
+    # android_xml and arb files have special files naming conventions
+    # nb-NO.android_xml to nb-rNO.android.xml
+    # nb-NO.arb to nb_NO.arb
+    language_ = language.replace('-', '_')
+    if 'android_xml' == file_data['file_format'] and len(language) == 5:
+        language = language.replace('-', '-r')
+
+    if 'arb' == file_data['file_format'] and len(language) >= 5:
+        language = language_
 
     #if we detect a language folder with an _ locale but non with - we store the files int the _ folder
     file_path = file_data['path'].replace('<language>', language)
@@ -190,6 +191,8 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
 
     files_to_upload = [];
 
+    skippedFiles = [];
+
     for source in upload_files:
         # Check if we have the data we need for sure
         if 'path' not in source:
@@ -199,6 +202,7 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                     'error': 'No path defined'
                 }
             )
+            skippedFiles.append('<missing path>')
             continue
         if 'file_format' not in source:
             return_data.append(
@@ -207,15 +211,20 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                     'error': 'No file-format defined'
                 }
             )
+            skippedFiles.append(source['path'])
             continue
-        if 'path' in source and source['path'].find('<language>') == -1 and 'language' not in source:
+        if source['path'].find('<language>') == -1 and 'language' not in source:
             return_data.append(
                 {
                     'path': source['path'],
                     'error': 'You either need to use the <language> wildcard inside the path string or set it explicitly per file via the "language" property. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
                 }
             )
+            skippedFiles.append(source['path'])
             continue
+
+        if 'language' in source and '<language>' in source['path']:
+            click.secho('The Block for path %s has a specific language defined and uses the <language> variable. We strongly advice you to only use one of either' % source['path'], err=True, fg='red')
 
         # check conditions for key_prefix
         if 'path' in source and 'key_prefix' in source:
@@ -226,6 +235,7 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                         'error': 'The key prefix cannot be longer than 50 characters. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
                     }
                 )
+                skippedFiles.append(source['path'])
                 continue
             pattern = re.compile('^[a-zA-Z0-9 _-]*$')
             matchPatter = pattern.match(source['key_prefix'])
@@ -236,6 +246,7 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                         'error': 'The key prefix can contain only letters, numbers, space, undescore and dash. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
                     }
                 )
+                skippedFiles.append(source['path'])
                 continue
 
         #extra checks for comuplosry properties for Sheet imports
@@ -246,6 +257,7 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                     'path': source['file_format'],
                     'error': 'For \'csv\', \'tsv\' and \'xls\' providing the \'columnDescription\' property is compulsory. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
                 })
+                skippedFiles.append(source['path'])
                 continue
 
             columnDescription = source['columnDescription']
@@ -273,14 +285,16 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                     'path': source['columnDescription'],
                     'error': 'For \'csv\', \'tsv\' and \'xls\' in \'columnDescription\' property the \'KEY\' and at least one other property like language code, \'<language>\', \'DESCRIPTION\', \'LENGTH\' or metadta is compulsory. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
                 })
+                skippedFiles.append(source['path'])
                 continue
 
             #are values inide columnDescription only numbers
             if not all(isinstance(value, int) and value >= 0 for value in columnDescription.values()):
                 return_data.append( {
                     'path': source['columnDescription'],
-                    'error': 'For \'csv\', \'tsv\' and \'xls\' a;; ptoprties in \'columnDescription\' must have none-negative integer value. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
+                    'error': 'For \'csv\', \'tsv\' and \'xls\' a;; properties in \'columnDescription\' must have none-negative integer value. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.'
                 })
+                skippedFiles.append(source['path'])
                 continue
 
         language_files = files.getFiles(source)
@@ -305,6 +319,7 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                         'error': 'Request is incomplete. The file_format is missing.'
                     }
                 )
+                skippedFiles.append(source['path'])
 
             try:
                 send_data = {
@@ -373,6 +388,8 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                         'response': response
                     }
                 )
+                if('skipped' in language_files):
+                    skippedFiles = skippedFiles + language_files['skipped']
             except ApplangaRequestException as e:
                 return_data.append(
                     {
@@ -382,7 +399,7 @@ def uploadFiles(ctx, upload_files, force=False, draft=False):
                     }
                 )
 
-    return return_data
+    return return_data, skippedFiles
 
 
 

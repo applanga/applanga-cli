@@ -36,26 +36,38 @@ def convertLanguageName(language_name):
     """
     if '-' in language_name or '_' in language_name:
         split_name = language_name.split('-')
-        if len(split_name) != 2:
+        if len(split_name) not in [2, 3]:
             split_name = language_name.split('_')
-            if len(split_name) != 2:
-                # It has to have exactly two parts else it is not valid
+            if len(split_name) not in [2, 3]:
+                # It has to have exactly two or three parts else it is not valid
                 return None
 
-        second_part = split_name[1].lower();
+        # handle 2-part codes
+        if len(split_name) == 2:
+            second_part = split_name[1].lower()
 
-        if len(second_part) == 2:
-            # Normally the most have only two letters so return
-            return split_name[0].lower() + '-' + split_name[1].upper()
-        elif len(second_part) == 3 and second_part[0] == 'r':
-            # android prefixes the region with an lowercase r
-            return split_name[0].lower() + '-' + second_part[1:].upper()
-        elif len(second_part) == 4:
-            # Two special cases of 4 letter ones that are supported
-            if second_part == 'hant':
-                return split_name[0].lower() + '-Hant'
-            elif second_part == 'hans':
-                return split_name[0].lower() + '-Hans'
+            if len(second_part) == 2:
+                # Normally the most have only two letters so return
+                return split_name[0].lower() + '-' + split_name[1].upper()
+            elif len(second_part) == 3 and second_part[0] == 'r':
+                # android prefixes the region with an lowercase r
+                return split_name[0].lower() + '-' + second_part[1:].upper()
+            elif len(second_part) == 4:
+                # Two special cases of 4 letter ones that are supported
+                if second_part == 'hant':
+                    return split_name[0].lower() + '-Hant'
+                elif second_part == 'hans':
+                    return split_name[0].lower() + '-Hans'
+
+        # handle 3-part codes --> example for three lang codes is zh-Hant-HK
+        elif len(split_name) == 3:
+            first_part = split_name[0].lower()
+            second_part = split_name[1]
+            third_part = split_name[2].upper()
+            
+            # check if second part is a script code --> 4 letters like 'Hant', 'Hans'
+            if len(second_part) == 4 and second_part.isalpha():
+                return first_part + '-' + second_part.capitalize() + '-' + third_part
 
     else:
         return language_name.lower()
@@ -84,13 +96,16 @@ def getFiles(source):
     search_path = path
     uses_placeholder = False
 
-    if 'language' in source:
+    if 'language' in source and 'language' in path:
+        source_language = source['language']
+        search_path = path.replace('<language>', source['language'])
+    elif 'language' in source:
         # Language is given as parameter
         source_language = source['language']
     else:
         # Language is in path
         search_path = path.replace('<language>', '*')
-        language_regex_path = re.escape(path).replace(r'\*', '.*').replace(re.escape('<language>'), r'([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?)')
+        language_regex_path = re.escape(path).replace(r'\*', '.*').replace(re.escape('<language>'), r'([a-zA-Z]{2}([\-\_][a-zA-Z]{2,4})?(?:[\-\_][a-zA-Z]{2})?)')
         uses_placeholder = True
 
     files = glob2.glob(search_path)
@@ -115,7 +130,15 @@ def getFiles(source):
             try:
                 config_file_data = config_file.readRaw()
                 reversedDir = dict(map(reversed, config_file_data['languageMap'].items()))
-                file_language = reversedDir[file_language]
+                # try original
+                if file_language in reversedDir:
+                    file_language = reversedDir[file_language]
+                
+                # arb file fallback: try underscore --> dash since we convert dashes to underscores while pulling
+                elif source['file_format'] == 'arb':
+                    dashed_language = file_language.replace('_', '-')
+                    if dashed_language in reversedDir:
+                        file_language = reversedDir[dashed_language]
             except (config_file.ApplangaConfigFileNotValidException, KeyError) as e:
                 pass
             

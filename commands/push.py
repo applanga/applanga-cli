@@ -48,7 +48,7 @@ def push(ctx, force, draft, tags):
 
 
     try:
-        file_responses = api.uploadFiles(ctx, source_files, force=force, draft=draft)
+        (file_responses, skippedFiles) = api.uploadFiles(ctx, source_files, force=force, draft=draft)
     except api.ApplangaConnectionException as e:
         click.secho(str(e), err=True, fg='red')
         return
@@ -72,4 +72,4 @@ def push(ctx, force, draft, tags):
 
         # Import was successful
         response_json = upload_data['response'].json()
-        click.echo('Result: "Success"\n\n - Entries in file: %d\n - Added:           %d\n - Updated:         %d\n - Tag updates:     %d\n' % (response_json['total'], response_json['added'], response_json['updated'], response_json['tagUpdates']))
+        click.echo('Result: "Success"\n\n - Entries in file: %d\n - Added:           %d\n - Updated:         %d\n - Tag updates:     %d\n - Files skipped:   %d\n' % (response_json['total'], response_json['added'], response_json['updated'], response_json['tagUpdates'], len(skippedFiles)))

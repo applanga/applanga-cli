@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.116
+*Version:* 1.0.117
 
 *Website:* <https://www.globallinkstrings.com>
 
@@ -562,9 +562,18 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 	***Example:*** `"ignore_duplicates": true`
 
 
-- **"languageMapping"**
+- **"languageMap"**
 
-	If you use the `<language>` wildcard this option allows you to specify a map from Applanga language codes to different language codes that you use in your local folders or filenames. The example below maps “nb-NO” which is the language code as it's defined on the Applanga dashboard to “no_NO” as defined in a local project.
+	If you use the `<language>` wildcard this option allows you to specify a map from Applanga language codes to different language codes that you use in your local folders or filenames. This is useful when your project uses different naming conventions than Applanga's standard language codes.
+
+	***How Language Mapping Works for Both Commands (Pull/Push)***
+
+	| Command               | Direction       | Example                                            |
+	| --------------------- | --------------- | -------------------------------------------------- |
+	| **pull / pullsource** | **API → Local** | Project has `nb-NO` → file written as `no_NO.json` |
+	| **push / pushtarget** | **Local → API** | Local file `no_NO.json` → uploaded as `nb-NO`      |
+	
+	The example below maps “nb-NO” which is the language code as it's defined on the Applanga dashboard to “no_NO” as defined in a local project.
 
 	***Example:***
 	```json
@@ -573,6 +582,8 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 		"zh-Hans": "zh_CN"
 	}
 	```
+
+	The languageMap must be defined at the root level in your configuration file.
 	
 - **"includeMetadata"** *(pull commands only)*
 
