@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.118 (5 Mar 2026)
+#### Added
+- Added `--fail-on-error` command option
+---
+
 ### Version 1.0.117 (22 Jan 2026)
 #### Added
 - Added additional warnings

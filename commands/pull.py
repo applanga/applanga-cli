@@ -126,17 +126,24 @@ def filter_request_languages_for_target(
     default='',
     help='Comma separated list of language codes to limit pulled entries (e.g. "en,de-DE").'
 )
-def pull(ctx, tags, languages):
+@click.option(
+    '--fail-on-error',
+    is_flag=True,
+    help='Fail immediately on any validation or download error (exit code 1).'
+)
+def pull(ctx, tags, languages, fail_on_error):
     output.showCommandHeader('pull', ctx)
 
     # Tag parsing
     tags_valid, parsed_tags = options.parse_and_validate_tags(tags)
     if not tags_valid:
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     # Language parsing
     languages_valid, parsed_languages = options.parse_and_validate_languages(languages)
     if not languages_valid:
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     try:
@@ -144,9 +151,11 @@ def pull(ctx, tags, languages):
 
         if 'pull' not in config_file_data['app']:
             click.echo('In order to Pull you need to have a pull configuration set in your config file')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     options.log_config(ctx, config_file_data)
@@ -155,9 +164,11 @@ def pull(ctx, tags, languages):
         projectVersion = api.getProjectVersion(ctx)
     except api.ApplangaConnectionException as e:
         click.secho(str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
     except api.ApplangaRequestException as e:
         click.echo(str(e))
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     all_app_languages = []
@@ -173,6 +184,7 @@ def pull(ctx, tags, languages):
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')
                 click.secho('There was a problem getting the app languages:\n%s\n' % str(e), err=True, fg='red')
+                output.abort_if_fail_on_error(ctx, fail_on_error)
                 return
 
             break
@@ -184,10 +196,12 @@ def pull(ctx, tags, languages):
             target_files = options.filter_files_by_tags(target_files, parsed_tags)
         except Exception as e:
             click.secho('There was a problem while filtering target files by tags:\n%s\n' % str(e), err=True, fg='red')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
     else:
          # check 400 chars limit for tag names
         if not options.validate_tags_length_in_files(target_files):
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
 
     for target in target_files:
@@ -211,6 +225,10 @@ def pull(ctx, tags, languages):
                 'set it explicitly per file via the "language" property.\n',
                 err=True,
                 fg='red'
+            )
+            output.abort_if_fail_on_error(
+                ctx,
+                fail_on_error
             )
             continue
 
@@ -251,6 +269,7 @@ def pull(ctx, tags, languages):
 
             except api.ApplangaConnectionException as e:
                 click.secho(str(e), err=True, fg='red')
+                output.abort_if_fail_on_error(ctx, fail_on_error)
                 return
 
             except api.ApplangaRequestException as e:
@@ -258,4 +277,5 @@ def pull(ctx, tags, languages):
                 click.secho('There was a problem with downloading file:\n%s\n' % str(e), err=True, fg='red')
                 if str(e).startswith('API response: Error: Tag with name'):
                     click.echo('You might need to push your content in order to have the Tag created first')
+                output.abort_if_fail_on_error(ctx, fail_on_error)
                 return

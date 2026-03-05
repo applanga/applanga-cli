@@ -1,5 +1,4 @@
 import click
-import requests
 from lib import api
 from lib import config_file
 from lib import output
@@ -14,11 +13,17 @@ from lib import options
     multiple=True,
     help='Only pull entries with the specified tags. Can be specified multiple times, e.g. --tag login --tag error'
 )
-def pullSource(ctx, tags):
+@click.option(
+    '--fail-on-error',
+    is_flag=True,
+    help='Fail immediately on any validation or download error (exit code 1).'
+)
+def pullSource(ctx, tags, fail_on_error):
     output.showCommandHeader('pullSource', ctx)
 
     is_valid, parsed_tags = options.parse_and_validate_tags(tags)
     if not is_valid:
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     try:
@@ -26,18 +31,22 @@ def pullSource(ctx, tags):
 
         if 'push' not in config_file_data['app']:
             click.echo('In order to Pull Source you need to have a push configuration set in your config file')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     try: 
         projectVersion = api.getProjectVersion(ctx)
     except api.ApplangaConnectionException as e:
         click.secho(str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
     except api.ApplangaRequestException as e:
         click.echo(str(e))
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
     
     all_app_languages = []
@@ -53,6 +62,7 @@ def pullSource(ctx, tags):
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')
                 click.secho('There was a problem getting the app languages:\n%s\n' % str(e), err=True, fg='red')
+                output.abort_if_fail_on_error(ctx, fail_on_error)
                 return
 
             break
@@ -66,10 +76,16 @@ def pullSource(ctx, tags):
             source_files = options.filter_files_by_tags(source_files, parsed_tags)
         except Exception as e:
             click.secho('There was a problem while filtering source files by tags:\n%s\n' % str(e), err=True, fg='red')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
     else:
         # check 400 chars limit for tag names
         if not options.validate_tags_length_in_files(source_files):
+            output.abort_if_fail_on_error(
+                ctx,
+                fail_on_error,
+                'Tag validation failed in config file. See errors above.'
+            )
             return
         
     
@@ -91,6 +107,7 @@ def pullSource(ctx, tags):
             click.echo('=' * 60)
             click.echo('Result: "Error"')
             click.secho('You either need to use the <language> wildcard inside the path string or set it explicitly per file via the "language" property. \nFor more informations and examples on how todo that please refer to the Applanga CLI Integration Documentation.\n', err=True, fg='red')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             continue
 
 
@@ -117,9 +134,11 @@ def pullSource(ctx, tags):
 
             except api.ApplangaConnectionException as e:
                 click.secho(str(e), err=True, fg='red')
+                output.abort_if_fail_on_error(ctx, fail_on_error)
                 return
 
             except api.ApplangaRequestException as e:
                 click.echo('Result: "Error"')
                 click.secho('There was a problem with downloading file:\n%s\n' % str(e), err=True, fg='red')
+                output.abort_if_fail_on_error(ctx, fail_on_error)
                 return

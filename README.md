@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.117
+*Version:* 1.0.118
 
 *Website:* <https://www.globallinkstrings.com>
 
@@ -16,8 +16,9 @@
   2. [Initialization](#initialize-project)
   3. [Usage](#push-and-pull-translation-files)
   4. [Connection Options](#connection-options)
-  5. [Configuration](#configuration)
-  6. [Configuration Examples](#configuration-examples)
+  5. [Error Handling Options](#error-handling-options)
+  6. [Configuration](#configuration)
+  7. [Configuration Examples](#configuration-examples)
 	- [Android Examples](#android-configuration-examples)
 	- [iOS Examples](#ios-configuration-examples)
 
@@ -147,6 +148,14 @@ For cases where you need to pull the source language changes from the dashboard 
 
 	```sh
 		applanga push --draft
+	```
+
+- **--fail-on-error**
+
+	This option terminates execution with exit code 1 when any error is encountered. See [Error Handling Options](#error-handling-options) for full details.
+
+	```sh
+		applanga push --fail-on-error
 	```
 
 - **--tag**
@@ -336,7 +345,39 @@ For cases where you need to pull the source language changes from the dashboard 
 	```
 	In this case, only files for French or German that also have the `login` tag will be pulled.
 
+- **--fail-on-error**
 
+	This option terminates execution with exit code 1 when any error is encountered. See [Error Handling Options](#error-handling-options) for full details.
+
+	```sh
+		applanga pull --fail-on-error
+	```
+
+
+### Error Handling Options
+
+- **--fail-on-error**
+
+	By default, the CLI logs errors to the console but continues execution and exits with code 0. The `--fail-on-error` flag changes this behavior: whenever any error is encountered, the CLI terminates and exits with code 1.
+
+	The flag is available on all commands: `push`, `pull`, `pullsource`, and `pushtarget`.
+
+	```sh
+		applanga push --fail-on-error
+		applanga pull --fail-on-error
+		applanga pullsource --fail-on-error
+		applanga pushtarget --fail-on-error
+	```
+
+	It can be combined with any other option:
+
+	```sh
+		applanga push --force --fail-on-error
+		applanga pull --languages "fr,de" --tag login --fail-on-error
+		applanga pushtarget --force --draft --fail-on-error
+	```
+
+	> Without `--fail-on-error`, all commands exit with code 0 regardless of errors.
 
 
 ## Configuration

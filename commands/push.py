@@ -10,16 +10,22 @@ from lib import options
 @click.option('--force', type=click.BOOL, is_flag=True, help="Overwrite existing values")
 @click.option('--draft', type=click.BOOL, is_flag=True, help="Upload values as draft")
 @click.option(
+    '--fail-on-error',
+    is_flag=True,
+    help='Fail immediately on any validation or upload error (exit code 1).'
+)
+@click.option(
     '--tag',
     'tags',
     multiple=True,
     help='Only push files with the specified tags. Can be specified multiple times, e.g. --tag login --tag error'
 )
-def push(ctx, force, draft, tags):
+def push(ctx, force, draft, fail_on_error, tags):
     output.showCommandHeader('push', ctx)
 
     is_valid, parsed_tags = options.parse_and_validate_tags(tags)
     if not is_valid:
+        output.abort_if_fail_on_error(ctx,fail_on_error)
         return
 
     try:        
@@ -27,9 +33,11 @@ def push(ctx, force, draft, tags):
 
         if 'push' not in config_file_data['app']:
             click.echo('In order to Push you need to have a push configuration set in your config file')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
     except config_file.ApplangaConfigFileNotValidException as e:
         click.secho('There was a problem with the config file:\n%s\n' % str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
     
     source_files = config_file_data['app']['push']['source']
@@ -40,10 +48,12 @@ def push(ctx, force, draft, tags):
             source_files = options.filter_files_by_tags(source_files, parsed_tags)
         except Exception as e:
             click.secho('There was a problem while filtering source files by tags:\n%s\n' % str(e), err=True, fg='red')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
     else:
         # check 400 chars limit for tag names
         if not options.validate_tags_length_in_files(source_files):
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             return
 
 
@@ -51,13 +61,16 @@ def push(ctx, force, draft, tags):
         (file_responses, skippedFiles) = api.uploadFiles(ctx, source_files, force=force, draft=draft)
     except api.ApplangaConnectionException as e:
         click.secho(str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
     except api.ApplangaRequestException as e:
         click.secho('There was a problem with pushing files:\n%s\n' % str(e), err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
         return
 
     if len(file_responses) == 0:
         click.secho('No file to upload got found.', err=True, fg='red')
+        output.abort_if_fail_on_error(ctx, fail_on_error)
 
     for upload_data in file_responses:
         language = upload_data['language'] if 'language' in upload_data else 'language missing'
@@ -68,6 +81,7 @@ def push(ctx, force, draft, tags):
             # There was a problem with the import
             click.echo('Result: "Error"')
             click.secho('There was a problem with importing file:\n%s\n' % upload_data['error'], err=True, fg='red')
+            output.abort_if_fail_on_error(ctx, fail_on_error)
             continue
 
         # Import was successful
