@@ -73,11 +73,13 @@ def pullSource(ctx, tags, fail_on_error):
      # Filter if parsed_tags is set
     if parsed_tags:
         try:
-            source_files = options.filter_files_by_tags(source_files, parsed_tags)
+            source_files, unmatched_tags = options.filter_files_by_tags(source_files, parsed_tags)
         except Exception as e:
             click.secho('There was a problem while filtering source files by tags:\n%s\n' % str(e), err=True, fg='red')
             output.abort_if_fail_on_error(ctx, fail_on_error)
             return
+        if unmatched_tags:
+            output.abort_if_fail_on_error(ctx, fail_on_error)
     else:
         # check 400 chars limit for tag names
         if not options.validate_tags_length_in_files(source_files):

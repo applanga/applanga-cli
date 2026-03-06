@@ -1,6 +1,6 @@
 # lib/cli_utils.py
 import click
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 import json
 import re
 from copy import deepcopy
@@ -21,7 +21,7 @@ def parse_and_validate_tags(tags_list):
     if not parsed_tags:
         click.echo('"--tag" must be provided as a non-empty strings')
         return False, None
-    
+
     for tag in parsed_tags:
         if len(tag) > TAG_NAME_CHAR_LIMIT:
             click.echo(f'Tag name cannot be longer than {TAG_NAME_CHAR_LIMIT} characters.')
@@ -30,7 +30,7 @@ def parse_and_validate_tags(tags_list):
     return True, parsed_tags
 
 
-def filter_files_by_tags(files: List[Dict], parsed_tags: Optional[List[str]]) -> List[Dict]:
+def filter_files_by_tags(files: List[Dict], parsed_tags: Optional[List[str]]) -> Tuple[List[Dict], List[str]]:
     """
     Filters a list of file dictionaries based on the presence of matching tags.
 
@@ -42,14 +42,16 @@ def filter_files_by_tags(files: List[Dict], parsed_tags: Optional[List[str]]) ->
         parsed_tags: A list of tag strings to match against.
 
     Returns:
-        A filtered list of files where the "tag" field contains at least one matching tag.
-        If parsed_tags is None or empty, the original files list is returned unchanged.
+        A tuple of (filtered_files, unmatched_tags):
+        - filtered_files: list of files where the "tag" field contains at least one matching tag.
+          If parsed_tags is None or empty, the original files list is returned.
+        - unmatched_tags: list of tag strings from parsed_tags that did not match any file.
 
     Side effect:
         Logs an error if any of the provided tags did not match any file tag.
     """
     if not parsed_tags:
-        return files
+        return files, []
 
     parsed_tags_set = set(parsed_tags)
     filtered_files: List[Dict] = []
@@ -74,9 +76,9 @@ def filter_files_by_tags(files: List[Dict], parsed_tags: Optional[List[str]]) ->
             if match_found:
                 filtered_files.append(file)
 
-        # Ignore entries with missing or unsupported tag types silently 
+        # Ignore entries with missing or unsupported tag types silently
 
-    # Log any requested tags that didn’t match any file
+    # Log any requested tags that didn't match any file
     unmatched = [t for t in parsed_tags if t not in matched_tags]
     if unmatched:
         click.secho(
@@ -85,7 +87,7 @@ def filter_files_by_tags(files: List[Dict], parsed_tags: Optional[List[str]]) ->
             fg='red'
         )
 
-    return filtered_files
+    return filtered_files, unmatched
 
 
 
@@ -98,7 +100,7 @@ def validate_tags_length_in_files(files: List[Dict]) -> bool:
     for file_config in files:
         if 'tag' in file_config:
             tags_to_check = file_config['tag']
-            
+
             # create a tag list in case of one tag
             if not isinstance(tags_to_check, list):
                 tags_to_check = [tags_to_check]

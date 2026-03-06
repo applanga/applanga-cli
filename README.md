@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.118
+*Version:* 1.0.119
 
 *Website:* <https://www.globallinkstrings.com>
 

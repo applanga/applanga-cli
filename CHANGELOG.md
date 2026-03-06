@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.119 (6 Mar 2026)
+#### Fixed
+- Fixed `--fail-on-error` not aborting when `--tag` values do not match any configured file
+---
+
 ### Version 1.0.118 (5 Mar 2026)
 #### Added
 - Added `--fail-on-error` command option
