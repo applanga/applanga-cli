@@ -63,6 +63,9 @@ def downloadFile(ctx, file_data):
     if file_data['file_format'] in ['nested_json', 'react_nested_json', 'ruby_on_rails_yaml', 'symfony_yaml', 'symfony2_yaml', 'ember_i18n_json_module', 'node_2_json', 'go_i18n_json'] and 'disable_plurals' in file_data:
             request_options['disablePlurals'] = file_data['disable_plurals'] is True
 
+    if file_data['file_format'] == 'android_xml' and file_data.get('compose_multiplatform') is True:
+        request_options['composeMultiplatform'] = True
+
     if 'includeMetadata' in file_data and file_data['file_format'] in ['csv', 'tsv', 'xliff', 'xls', 'arb']:
         request_options['includeMetadata'] = file_data['includeMetadata']
     

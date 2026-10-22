@@ -5,6 +5,11 @@
 *Applanga CLI Documentation:* <https://www.applanga.com/docs-integration/cli>
 ***
 
+### Version 1.0.120 (22 Oct 2026)
+#### Added
+- Added `compose_multiplatform` pull option for `android_xml` to write files with Compose Multiplatform escaping
+---
+
 ### Version 1.0.119 (6 Mar 2026)
 #### Fixed
 - Fixed `--fail-on-error` not aborting when `--tag` values do not match any configured file

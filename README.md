@@ -1,7 +1,7 @@
 # Applanga Localization Command Line Interface (CLI)
 
 ***
-*Version:* 1.0.119
+*Version:* 1.0.120
 
 *Website:* <https://www.globallinkstrings.com>
 
@@ -686,6 +686,19 @@ It is possible to set the variable `<language>` in the path. In the "source" blo
 
 	- If it is the same pattern, it will keep the original.  
 
+- **"compose_multiplatform"** *(pull commands only)*
+
+	Only for `"file_format": "android_xml"`. [Compose Multiplatform](https://kotlinlang.org/docs/multiplatform/compose-multiplatform-resources-usage.html#strings) reads `strings.xml` files but only decodes `\n`, `\t`, `\uXXXX` and `\\`, so Android escapes like `\'` would show up in the app. If set to `true` the file is written with Compose Multiplatform escaping:
+
+	- `'`, `"`, `@` and `?` are written without a backslash, e.g. `it's "new"` instead of `it\'s \"new\"`
+	- `&`, `<` and `>` are written as `&amp;`, `&lt;` and `&gt;`, except the HTML tags Android supports (e.g. `<b>`). CDATA sections are written as they are
+	- newlines and tabs are written as `\n` and `\t`
+	- `\uXXXX`, `\t` and `\\` are kept as they are, every other backslash is doubled, e.g. `C:\new` is written as `C:\\new`. Compose Multiplatform then shows the same text as Android
+
+	See [Compose Multiplatform App](#compose-multiplatform-app) for a full example.
+
+	***Example:*** `"compose_multiplatform": true`
+
 - **"key_prefix"**
 
 	If you need to import multiple files with similar keys, but different text, this option allows you to add prefixes to the keys on push and remove prefixes on pull.
@@ -939,6 +952,38 @@ Apps can have strings in multiple files or in shared libraries. You can specify 
 					"file_format": "android_xml",
 					"tag": "module:strings.xml", 
 					"path": "./mylibrary/src/main/res/values/strings.xml"
+				}
+			]
+		}
+	}
+}
+```
+
+### Compose Multiplatform App
+
+Compose Multiplatform uses the Android `strings.xml` format for all platforms, but it does not unescape Android escapes like `\'` or `\"`. Set **"compose_multiplatform"** on the pull target so the files are written with Compose Multiplatform escaping. Region languages are written to Android style folders, e.g. `values-nb-rNO`.
+
+```json
+{
+	"app": {
+		"access_token": "5b1f..!..2ab",
+		"base_language": "en",
+		"pull": {
+			"target": [
+				{
+					"exclude_languages": ["en"],
+					"file_format": "android_xml",
+					"compose_multiplatform": true,
+					"path": "./composeApp/src/commonMain/composeResources/values-<language>/strings.xml"
+				}
+			]
+		},
+		"push": {
+			"source": [
+				{
+					"language": "en",
+					"file_format": "android_xml",
+					"path": "./composeApp/src/commonMain/composeResources/values/strings.xml"
 				}
 			]
 		}
